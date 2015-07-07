@@ -1,0 +1,21 @@
+#content
+{
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.DocumentList
+{
+	list-style-type: none;
+	padding: 0;
+}
+
+.DocumentListItem
+{
+	width: 100%;
+	border: 2px solid navy;
+
+	margin-top: 10px;
+	margin-bottom: 10px;
+}

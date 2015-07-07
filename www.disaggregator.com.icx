@@ -1,0 +1,176 @@
+<config xmlns="http://iota.richardgomer.co.uk/xml/config">
+
+<!-- 
+	REMEMBER TO CLEAR THE CACHED CONFIG FROM systemp/config/ AFTER EDITING THIS FILE!
+ -->
+ 
+	<setting>
+		<key>dynamic_class_loading</key>
+		<value>0</value>
+	</setting>
+ 
+	<setting>
+		<key>dataDir</key>
+		<value>sites/disaggregator/app/</value>
+	</setting>
+	
+	<setting>
+		<key>errorDir</key>
+		<value>sites/disaggregator/errors</value>
+	</setting>
+	
+	<setting>
+		<key>tauUser_userDir</key>
+		<value>sites/disaggregator/users/</value>
+	</setting>
+	
+	<setting>
+		<key>tauTemplates</key>
+		<value>
+			<array>
+				<value key=".">sites/disaggregator/template/template.php</value>
+			</array>
+		</value>
+	</setting>
+	
+	<setting>
+            <key>document_dir</key>
+            <value>sites/disaggregator/data/documents</value>
+        </setting>
+
+	<setting type="merge">
+		<key>tauTemplate_dresserOptions</key>
+		<value>
+			<array>
+				<value key="nicenames">1</value>
+			</array>
+		</value>
+	</setting>
+	
+	
+<!-- SEO 
+
+	<setting>
+		<key>tauseo_enabled</key>
+		<value>1</value>
+	</setting>
+	
+
+	<setting>
+		<key>tauseo_dbhost</key>
+		<value>127.0.0.1</value>
+	</setting>
+	
+	<setting>
+		<key>tauseo_dbuser</key>
+		<value>root</value>
+	</setting>
+	
+	<setting>
+		<key>tauseo_dbpass</key>
+		<value>password</value>
+	</setting>
+	
+	<setting>
+		<key>tauseo_dbname</key>
+		<value>seotest</value>
+	</setting>
+	
+	<setting>
+		<key>tauseo_dbtable</key>
+		<value>tauSEO_fields</value>
+	</setting>
+	-->
+	
+
+<!-- Load custom extensions -->
+
+	<!-- This setting adds a new path the list of extension locations (hence the "merge" in the type attribute) -->
+	<setting type="merge">
+		<key>tau_moduleDir</key>
+		<value>
+			<array>
+				<value>sites/disaggregator/extensions</value>
+			</array>
+		</value>
+	</setting>
+	
+	<!-- This setting names a file to load.  All configured extension locations are searched for it. -->
+	<setting type="merge">
+		<key>tau_modulelist</key>
+		<value>
+			<array>
+				<value>demo.lib.php</value>
+			</array>
+		</value>
+	</setting>
+	
+	<!-- Database settings -->
+        <setting>
+                <key>dbhost</key>
+                <value>localhost</value>
+        </setting>
+
+        <setting>
+                <key>dbuser</key>
+                <value>disaggregator</value>
+        </setting>
+
+        <setting>
+                <key>dbpass</key>
+                <value>password</value>
+        </setting>
+
+        <setting>
+                <key>dbname</key>
+                <value>disaggregatordb</value>
+        </setting>
+
+<!-- Set up authentication using our custom class -->
+<setting>
+        <key>tauUser_userClass</key>
+        <value>DisaggregatorPerson</value>
+</setting>
+
+<setting>
+        <key>tauUser_errorLoginRequired</key>
+        <value>errors/login.php</value>
+</setting>
+
+<setting>
+        <key>tauUser_errorBadAuth</key>
+        <value>errors/badlogin.php</value>
+</setting>
+
+<setting>
+    <key>tauUser_authProvider</key>
+    <value><array><value>tauAuthLoginPage</value><value>tauCookieAuth</value></array></value>
+</setting>
+
+<setting>
+    <key>tauUser_authObserver</key>
+    <value><array><value>tauCookieAuth</value></array></value>
+</setting>
+
+<setting type="merge">
+        <key>moduledir</key>
+        <value>
+                <array>
+                        <value>sites/disaggregator/extensions</value>
+                        <value>extensions/packages</value>
+                </array>
+        </value>
+</setting>
+
+<setting type="merge">
+        <key>modulelist</key>
+        <value>
+                <array>
+                        <value>setup.php</value>
+                        <value>db.lib.php</value>
+                </array>
+        </value>
+</setting>
+
+
+</config>
