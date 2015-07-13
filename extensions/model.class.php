@@ -45,11 +45,17 @@ class DisaggregatorModel extends ADROModel
             	$this->registerClass($this->person, 'DisaggregatorPerson');
 		$this->registerClass($this->document, 'Document');
 		$this->registerClass($this->descriptor, 'Descriptor');
-		//$this->registerClass($this->descriptor, 'Descriptor');
-
+                $this->registerClass($this->field, 'Field');
+                $this->registerClass($this->descriptorfield, 'DescriptorField');
+                
 		$this->addRelation('person.UserID', 'document.UserID');
 		$this->addRelation('document.UserID', 'person.UserID');
-
+                
+                $this->addRelation('descriptor.DescriptorID', 'descriptorfield.DescriptorID');
+                $this->addRelation('descriptorfield.DescriptorID', 'descriptor.DescriptorID');
+                $this->addRelation('field.FieldID', 'descriptorfield.FieldID');
+                $this->addRelation('descriptorfield.FieldID', 'field.FieldID');
+                
 	}
 
 	private $user = false;

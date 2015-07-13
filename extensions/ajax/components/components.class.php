@@ -11,12 +11,18 @@ class ComponentUI extends tauAjaxXmlTag
 
 		$this->person = $person;
 
-		$this->addChild($jumbo = new Jumbotron("Components"));
+		$this->addChild($jumbo = new BootstrapJumbotron("Components"));
 		$jumbo->addChild(new tauAjaxParagraph("Components describe the discrete chunks of information that may be extracted
         from a document. They can be used to describe any piece of data that may 
         provide valuable information even away from its parent document."));
 	
+                $this->attachEvent('init', $this, 'e_init');
 	}
+        
+        public function e_init(tauAjaxEvent $e)
+        {
+            $this->addChild($this->descriptorCreator = new DescriptorCreator($this->person));
+        }
 
 }
 

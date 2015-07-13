@@ -19,3 +19,13 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
+
+.BootstrapModalModal
+{
+    position: fixed;
+}
+
+.FieldCreator
+{
+    width: 500px;
+}

@@ -7,7 +7,7 @@
 <?php
 
 	$conf = iotaConf::getInstance();
-	$jsdir = "sites/disaggregator/js";
+	$jsdir = "sites/Disaggregator2/js";
 
 ?>
 
@@ -19,13 +19,13 @@
 	<meta name="robots" content="index, follow" />
 	
 	<!-- CSS -->	
- 	<link rel="stylesheet" type="text/css" href="sites/disaggregator/template/css/bootstrap.min.css" />	 
-	<link rel="stylesheet" type="text/css" href="sites/disaggregator/template/css/style.css" />
+ 	<link rel="stylesheet" type="text/css" href="sites/Disaggregator2/template/css/bootstrap.min.css" />	 
+	<link rel="stylesheet" type="text/css" href="sites/Disaggregator2/template/css/style.css" />
 
 	<!-- JS -->
 	<script type="text/javascript" src="lib/tauAjax/tauAjax.lib.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>	
-	
+        <script type="text/javascript" src="sites/Disaggregator2/js/bootstrap.min.js"></script>
 </head>
 <body>
 <?php 
@@ -73,7 +73,7 @@
                 </div>  
             </nav>
 
-	<div id="content">
+	<div id="content" class="container">
 	[[CONTENT]]
 		<div id="footer">
 		

@@ -11,31 +11,31 @@
  
 	<setting>
 		<key>dataDir</key>
-		<value>sites/disaggregator/app/</value>
+		<value>sites/Disaggregator2/app/</value>
 	</setting>
 	
 	<setting>
 		<key>errorDir</key>
-		<value>sites/disaggregator/errors</value>
+		<value>sites/Disaggregator2/errors</value>
 	</setting>
 	
 	<setting>
 		<key>tauUser_userDir</key>
-		<value>sites/disaggregator/users/</value>
+		<value>sites/Disaggregator2/users/</value>
 	</setting>
 	
 	<setting>
 		<key>tauTemplates</key>
 		<value>
 			<array>
-				<value key=".">sites/disaggregator/template/template.php</value>
+				<value key=".">sites/Disaggregator2/template/template.php</value>
 			</array>
 		</value>
 	</setting>
 	
 	<setting>
             <key>document_dir</key>
-            <value>sites/disaggregator/data/documents</value>
+            <value>sites/Disaggregator2/data/documents</value>
         </setting>
 
 	<setting type="merge">
@@ -90,7 +90,7 @@
 		<key>tau_moduleDir</key>
 		<value>
 			<array>
-				<value>sites/disaggregator/extensions</value>
+				<value>sites/Disaggregator2/extensions</value>
 			</array>
 		</value>
 	</setting>
@@ -156,7 +156,7 @@
         <key>moduledir</key>
         <value>
                 <array>
-                        <value>sites/disaggregator/extensions</value>
+                        <value>sites/Disaggregator2/extensions</value>
                         <value>extensions/packages</value>
                 </array>
         </value>

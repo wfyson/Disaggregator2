@@ -2,6 +2,6 @@
 
 class Descriptor extends adro 
 {
-
+    
 }
 

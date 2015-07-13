@@ -1,6 +1,6 @@
 <?php
 
-class Jumbotron extends tauAjaxXmlTag
+class BootstrapJumbotron extends tauAjaxXmlTag
 {
 	public function __construct($heading)
 	{

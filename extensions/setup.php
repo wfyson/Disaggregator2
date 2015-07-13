@@ -12,11 +12,15 @@ $loader = iotaLoader::getInstance();
 
 $loader->load(array(
  
+        'bootstrap/button.class.php', 
+        'bootstrap/badge.class.php', 
 	'bootstrap/jumbotron.class.php',   
+        'bootstrap/modal.class.php',
     
         'documents/documentBrowser.class.php',
 	
-	'components/components.class.php'
+	'components/components.class.php',
+        'components/descriptorCreator.class.php'
 
 	), dirname(__FILE__) . '/ajax/');
 
