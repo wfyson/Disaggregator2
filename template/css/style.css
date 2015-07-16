@@ -5,6 +5,28 @@
 	margin-right: auto;
 }
 
+/*
+    Bootstrap
+*/
+.BootstrapModalModal
+{
+    position: fixed;
+}
+
+.BootstrapModalFooter.modal-footer button
+{
+    margin-top: 0px;
+}
+
+.list-group-item:hover
+{
+    background: #eee;
+    cursor: pointer;
+}
+
+/*
+    Documents
+*/
 .DocumentList
 {
 	list-style-type: none;
@@ -20,12 +42,29 @@
 	margin-bottom: 10px;
 }
 
-.BootstrapModalModal
+/*
+    Components
+*/
+.DescriptorCreator button, .DescriptorCreator .BootstrapModal
 {
-    position: fixed;
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 10px;
 }
 
 .FieldCreator
 {
     width: 500px;
 }
+
+.FieldCreator div
+{
+    margin-top: 10px;
+}
+
+.FieldCreator div .tauAjaxCheckbox
+{
+    margin-left: 10px;
+    vertical-align: top;
+}
+

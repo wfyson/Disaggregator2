@@ -2,17 +2,30 @@
 
 class BootstrapModal extends tauAjaxXmlTag
 {
+        private $id;
+    
 	public function __construct($id, $launch, $title, $confirm=null)
 	{		
                 parent::__construct('div');
             
+                $this->id = $id;
+                
                 $this->addChild($this->launcher = new BootstrapModalLauncher($id, $launch)); 
-                $this->addChild($this->modal = new BootstrapModalModal($id, $title, $confirm));               
+                $this->addChild($this->modal = new BootstrapModalModal($id, $title, $confirm));  
+                
+                $this->attachEvent('close', $this, 'e_close');
 	}        
         
         public function addBody(tauAjaxXmlTag $body)
         {
             $this->modal->addBody($this->body = $body);
+        }
+        
+        public function e_close(tauAjaxEvent $e)
+        {
+            $this->modal->runJS("
+                $('#$this->id').modal('hide');
+            ");                    
         }
 }
 

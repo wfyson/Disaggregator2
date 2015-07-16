@@ -50,25 +50,43 @@ class DescriptorCreator extends tauAjaxXmlTag
                 $('button').addClass('btn btn-primary');
             ");
             
-            //add a field viewer           
-            $this->addChild($this->fieldList = new FieldList($this->descriptor)); 
-            $this->fieldList->addClass("col-md-4 col-md-offset-2");
+            //add a field viewer     
+            $this->addChild($this->fieldViewer = new tauAjaxXmlTag('div'));
+            $this->fieldViewer->addChild(new tauAjaxLabel($this->fieldList = new FieldList($this->descriptor), "Fields"));
+            $this->fieldViewer->addChild($this->fieldList); 
+            $this->fieldViewer->addClass("col-md-4 col-md-offset-2");
         }
         
         public function e_saved(tauAjaxEvent $e)
         {
-            //we're going to need to get the fields from the descriptor fields component here!            
+            //we're going to need to get the fields from the descriptor fields component here!  
+            $model = $this->descriptor->getModel();
+            $fields = $this->fieldList->getFields();
+            foreach($fields as $field)
+            {
+                if($field->isNew())
+                {
+                    $fieldID = $field->save();
+                    
+                    $descriptorfield = $model->descriptorfield->getNew();
+                    $descriptorfield->DescriptorID = $this->descriptor->DescriptorID;
+                    $descriptorfield->FieldID = $fieldID;
+                    $descriptorfield->save();
+                }
+            }
         }
         
         public function e_addField(tauAjaxEvent $e)
         {
+            $this->fieldModal->triggerEvent('close');
+            
             $field = $this->fieldCreator->getField();
             $this->fieldList->addField($field);
         }
         
 }
 
-class FieldList extends tauAjaxList
+class FieldList extends ListGroup
 {
     private $descriptor;
     private $fields = array();
@@ -76,30 +94,52 @@ class FieldList extends tauAjaxList
     public function __construct(Descriptor $descriptor)
     {
         parent::__construct();
-        $this->addClass("list-group");
         
-        $this->descriptor = $descriptor;
+        $this->descriptor = $descriptor;                
         
         //show existing fields if appropriate
+        if($descriptor->isNew() || count($descriptor->getdescriptorfields()) == 0)
+        {
+            $this->addChild(new ListGroupItem("No Fields"));
+        }
+        else
+        {
+            //show fields
+        }
     }
     
     public function addField(Field $field)
-    {
+    {        
+        //remove "No Fields" item if present
+        if(count($this->fields) == 0)
+        {
+            $this->setData("");
+        }
+        
+        //add new field item
         $fieldItem = new FieldListItem($field);
         $this->fields[] = $fieldItem;
         $this->addChild($fieldItem);
-    }
+    }       
     
+    public function getFields()
+    {
+        $returnFields = array();
+        foreach($this->fields as $fieldItem)
+        {
+            $returnFields[] = $fieldItem->getField();
+        }
+        return $returnFields;
+    }
 }
 
-class FieldListItem extends tauAjaxListItem
+class FieldListItem extends ListGroupItem
 {
     private $field;
     
     public function __construct(Field $field)
     {
         parent::__construct();
-        $this->addClass("list-group-item");
         
         $this->field = $field;       
         if($field->Mandatory)        
@@ -108,6 +148,11 @@ class FieldListItem extends tauAjaxListItem
             $this->addChild(new BootstrapBadge("Mul"));            
         
         $this->addChild(new tauAjaxSpan($field->Name));
+    }
+    
+    public function getField()
+    {
+        return $this->field;
     }
 }
 
@@ -152,12 +197,14 @@ class FieldCreator extends tauAjaxXmlTag
         //}  
         
         //mandatory
-        $this->addChild(new tauAjaxLabel($this->check_mandatory = new tauAjaxCheckbox(), 'Required'));
-        $this->addChild($this->check_mandatory);
+        $this->addChild($this->mandatory = new tauAjaxXmlTag('div'));
+        $this->mandatory->addChild(new tauAjaxLabel($this->check_mandatory = new tauAjaxCheckbox(), 'Required'));
+        $this->mandatory->addChild($this->check_mandatory);
         
         //multi
-        $this->addChild(new tauAjaxLabel($this->check_multi = new tauAjaxCheckbox(), 'Multi'));  
-        $this->addChild($this->check_multi);
+        $this->addChild($this->multi = new tauAjaxXmlTag('div'));
+        $this->multi->addChild(new tauAjaxLabel($this->check_multi = new tauAjaxCheckbox(), 'Multi'));  
+        $this->multi->addChild($this->check_multi);
     }  
     
     public function getField()
