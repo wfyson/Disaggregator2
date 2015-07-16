@@ -19,9 +19,7 @@ class Document extends adro
         	// Lookup the location of the store and build a name for the new file
 	        $aspath = 'site/documents';
 	        $aname = 'd_'.$person->UserID.'_'.uniqid().'.'.$ext;
-	        $fullpath = iotaPath::makepath($aspath, $aname);;
-        
-		error_log($fullpath);
+	        $fullpath = iotaPath::makepath($aspath, $aname);;        
 
         	$file->move($fullpath);
         

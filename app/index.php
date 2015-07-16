@@ -5,7 +5,6 @@ if(array_key_exists('login', $_GET))
 {
 	if(!disaggregatorUtil::requireUser())
 	{
-		error_log("whaa");
 		return false;
 	}
 }

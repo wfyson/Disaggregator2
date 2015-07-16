@@ -11,29 +11,40 @@ class ComponentUI extends tauAjaxXmlTag
 
 		$this->person = $person;
 
-		$this->addChild($this->jumbo = new BootstrapJumbotron("Components"));
-		$this->jumbo->addChild(new tauAjaxParagraph("Components describe the discrete chunks of information that may be extracted
-        from a document. They can be used to describe any piece of data that may 
-        provide valuable information even away from its parent document."));                                
+		$this->addChild($this->header = new BootstrapHeader("Components", "View and add components"));  
                 
                 $this->attachEvent('init', $this, 'e_init');
+                $this->attachEvent("edit_descriptor", $this, "e_show_creator");
 	}
         
         public function e_init(tauAjaxEvent $e)
-        {
-            $this->jumbo->addChild($this->btn_component = new BootstrapButton("Add New Component", "btn-success"));
-            $this->btn_component->attachEvent("onclick", $this, "e_component");
-            
+        {            
             $this->addChild($this->descriptorBrowser = new DescriptorBrowser($this->person));
             
             $this->addChild($this->descriptorCreator = new DescriptorCreator($this->person));
-            $this->descriptorCreator->addClass("hide");
-        }
+            $this->descriptorCreator->addClass("hide");                        
+        }        
         
-        public function e_component(tauAjaxEvent $e)
-        {            
+        public function e_show_creator(tauAjaxEvent $e)
+        {
+            error_log("show creator");
+            
+            $descriptor = $e->getParam("descriptor");
+            if($descriptor)
+            {
+                $this->descriptorCreator->setDescriptor($descriptor);
+            }
+            $this->descriptorCreator->init();
             $this->descriptorBrowser->addClass("hide");
             $this->descriptorCreator->removeClass("hide");
+        }
+        
+        public function e_show_browser(tauAjaxEvent $e)
+        {
+            $this->descriptorCreator->addClass("hide");
+            
+            $this->descriptorBrowser->init();
+            $this->descriptorBrowser->removeClass("hide");            
         }
 
 }

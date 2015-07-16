@@ -45,6 +45,16 @@
 /*
     Components
 */
+.DescriptorViewer
+{
+    margin-top: 20px;
+}
+
+.DescriptorViewer .TauAjaxADRORecord
+{
+    margin-bottom: 10px;
+}
+
 .DescriptorCreator button, .DescriptorCreator .BootstrapModal
 {
     display: inline-block;

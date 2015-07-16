@@ -35,8 +35,6 @@ class DisaggregatorPerson extends adro implements tauUser
                 $conf = iotaConf::getInstance();
 
 		$pw = $this->Password;
-
-		error_log($this->hash($secret));
 		
 		if($this->hash($secret) == $pw)
 		{
