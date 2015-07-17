@@ -5,21 +5,11 @@ class DescriptorCreator extends tauAjaxXmlTag
 
 	private $descriptor;
 
-	public function __construct(DisaggregatorPerson $person, Descriptor $descriptor=null)
+	public function __construct(DisaggregatorPerson $person)
 	{
 		parent::__construct('div');
                 
-                $this->person = $person;
-        
-                if($descriptor == null)          
-                {
-                    $this->descriptor = DisaggregatorModel::get()->descriptor->getNew();                            
-                    $this->descriptor->UserID = $person->UserID;                    
-                }
-                else
-                {
-                    $this->descriptor = $descriptor;      
-                }                    
+                $this->person = $person;                                            
 	}
 
         public function init($editable=array('Name', 'Description'))
@@ -52,28 +42,39 @@ class DescriptorCreator extends tauAjaxXmlTag
             
             //add a field viewer     
             $this->addChild($this->fieldViewer = new tauAjaxXmlTag('div'));
-            $this->fieldViewer->addChild(new tauAjaxLabel($this->fieldList = new FieldList($this->descriptor), "Fields"));
+            $this->fieldViewer->addChild(new tauAjaxLabel($this->fieldList = new FieldList($this->descriptor, true), "Fields"));
             $this->fieldViewer->addChild($this->fieldList); 
             $this->fieldViewer->addClass("col-md-4 col-md-offset-2");
         }
         
         public function e_saved(tauAjaxEvent $e)
         {
-            //we're going to need to get the fields from the descriptor fields component here!  
+            //first delete descriptorfields
+            $this->descriptor->deleteDescriptorFields();
+            
+            //now recreate the descriptorfields with the new list
             $model = $this->descriptor->getModel();
             $fields = $this->fieldList->getFields();
+            
             foreach($fields as $field)
             {
+                //create new descriptorfield entry
+                $descriptorfield = $model->descriptorfield->getNew();                
+                $descriptorfield->DescriptorID = $this->descriptor->DescriptorID;
+                
+                //if field is new save it before adding to descriptorfield
                 if($field->isNew())
-                {
-                    $fieldID = $field->save();
-                    
-                    $descriptorfield = $model->descriptorfield->getNew();
-                    $descriptorfield->DescriptorID = $this->descriptor->DescriptorID;
-                    $descriptorfield->FieldID = $fieldID;
-                    $descriptorfield->save();
-                }
+                    $field->save();
+                
+                $descriptorfield->FieldID = $field->FieldID;
+                                
+                //save the descriptor field entry
+                $descriptorfield->save();
             }
+                       
+            $name = $this->descriptor->Name;
+            $alert = new BootstrapAlert("Saved component descriptor: $name", "alert-success");
+            $this->triggerEvent("show_browser", array('alert'=>$alert));
         }
         
         public function e_addField(tauAjaxEvent $e)
@@ -81,14 +82,21 @@ class DescriptorCreator extends tauAjaxXmlTag
             $this->fieldModal->triggerEvent('close');
             
             $field = $this->fieldCreator->getField();
-            $this->fieldList->addField($field);
+            $this->fieldList->addField($field, true);
         }
         
-        public function setDescriptor(Descriptor $descriptor)
+        public function setDescriptor(Descriptor $descriptor=null)
         {
-            $this->descriptor = $descriptor;
-        }
-        
+            if(isset($descriptor))          
+            {
+                $this->descriptor = $descriptor;  
+            }
+            else
+            {
+                $this->descriptor = DisaggregatorModel::get()->descriptor->getNew();                            
+                $this->descriptor->UserID = $this->person->UserID;
+            }
+        }       
 }
 
 ?>

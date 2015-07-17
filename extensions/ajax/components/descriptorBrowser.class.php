@@ -13,9 +13,14 @@ class DescriptorBrowser extends tauAjaxXmlTag
 		$this->init();
 	}
 
-        public function init()
+        public function init(BootstrapAlert $alert=null)
         {   
             $this->setData("");
+            
+            if(isset($alert))
+            {
+                $this->addChild($alert);
+            }
             
             //show the descriptors
             $this->addChild($this->descriptors = new tauAjaxXmlTag('div'));
@@ -83,8 +88,10 @@ class DescriptorListItem extends ListGroupItem
     
     public function e_select(tauAjaxEvent $e)
     {
+        $this->runJS("$('.active').removeClass('active');");
+        
         $this->addClass("active");
-        $this->triggerEvent("show_descriptor", array("descriptor" => $this->descriptor));
+        $this->triggerEvent("show_descriptor", array("descriptor" => $this->descriptor));                
     }
 }
 

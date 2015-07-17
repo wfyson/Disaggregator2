@@ -78,3 +78,19 @@
     vertical-align: top;
 }
 
+.FieldList .FieldListItem
+{
+    list-style-type: none;
+}
+
+.FieldList .FieldListItem .list-group-item
+{
+    display: inline-block;
+    width: 80%;
+}
+
+.FieldList .FieldListItem button
+{
+    vertical-align: baseline;
+}
+

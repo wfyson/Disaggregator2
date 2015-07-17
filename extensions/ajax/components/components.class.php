@@ -15,6 +15,7 @@ class ComponentUI extends tauAjaxXmlTag
                 
                 $this->attachEvent('init', $this, 'e_init');
                 $this->attachEvent("edit_descriptor", $this, "e_show_creator");
+                $this->attachEvent("show_browser", $this, "e_show_browser");
 	}
         
         public function e_init(tauAjaxEvent $e)
@@ -26,14 +27,14 @@ class ComponentUI extends tauAjaxXmlTag
         }        
         
         public function e_show_creator(tauAjaxEvent $e)
-        {
-            error_log("show creator");
-            
+        {            
             $descriptor = $e->getParam("descriptor");
-            if($descriptor)
-            {
+            
+            if($descriptor)            
                 $this->descriptorCreator->setDescriptor($descriptor);
-            }
+            else
+                $this->descriptorCreator->setDescriptor();
+            
             $this->descriptorCreator->init();
             $this->descriptorBrowser->addClass("hide");
             $this->descriptorCreator->removeClass("hide");
@@ -43,7 +44,7 @@ class ComponentUI extends tauAjaxXmlTag
         {
             $this->descriptorCreator->addClass("hide");
             
-            $this->descriptorBrowser->init();
+            $this->descriptorBrowser->init($e->getParam("alert"));
             $this->descriptorBrowser->removeClass("hide");            
         }
 

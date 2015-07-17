@@ -10,21 +10,23 @@ $loader = iotaLoader::getInstance();
 
 $loader->load(array(
  
-        'bootstrap/button.class.php', 
-        'bootstrap/badge.class.php', 
-        'bootstrap/header.class.php', 
-	'bootstrap/jumbotron.class.php',
-        'bootstrap/listGroup.class.php',
-        'bootstrap/modal.class.php',
+    'bootstrap/alert.class.php',
+    'bootstrap/badge.class.php',
+    'bootstrap/button.class.php', 
+    'bootstrap/glyphicon.class.php',
+    'bootstrap/header.class.php', 
+    'bootstrap/jumbotron.class.php',
+    'bootstrap/listGroup.class.php',
+    'bootstrap/modal.class.php',
     
-        'documents/documentBrowser.class.php',
+    'documents/documentBrowser.class.php',
 	
-	'components/components.class.php',
-        'components/descriptorBrowser.class.php',
-        'components/descriptorCreator.class.php',
-        'components/fieldCreator.class.php'
+    'components/components.class.php',
+    'components/descriptorBrowser.class.php',
+    'components/descriptorCreator.class.php',
+    'components/fieldCreator.class.php'
 
-	), dirname(__FILE__) . '/ajax/');
+), dirname(__FILE__) . '/ajax/');
 
 
 ?>
