@@ -24,7 +24,17 @@ $loader->load(array(
     'components/components.class.php',
     'components/descriptorBrowser.class.php',
     'components/descriptorCreator.class.php',
-    'components/fieldCreator.class.php'
+    'components/fieldCreator.class.php',
+    
+    'disaggregator/disaggregator.class.php',
+    'disaggregator/documentSelector.class.php',
+    'disaggregator/descriptorSelector.class.php',
+    'disaggregator/compoundBuilder.class.php',
+    'disaggregator/documentViewer.class.php',
+    'disaggregator/stages/builderStage.class.php',
+    'disaggregator/stages/textStage.class.php',
+    'disaggregator/stages/fileStage.class.php',
+    'disaggregator/stages/compoundStage.class.php'
 
 ), dirname(__FILE__) . '/ajax/');
 
