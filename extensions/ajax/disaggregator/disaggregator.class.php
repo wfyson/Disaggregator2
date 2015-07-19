@@ -1,6 +1,6 @@
 <?php
 
-class DisaggreagtorUI extends tauAjaxXmlTag
+class DisaggregatorUI extends tauAjaxXmlTag
 {
 
     private $person;
@@ -15,7 +15,8 @@ class DisaggreagtorUI extends tauAjaxXmlTag
         $this->document = $document;
         $this->descriptor = $descriptor;
 
-        $this->attachEvent('init', $this, 'e_init');                        
+        $this->attachEvent('init', $this, 'e_init');   
+        $this->attachEvent('descriptor_select', $this, "e_descriptor_select");
     }
         
     public function e_init(tauAjaxEvent $e)
@@ -39,7 +40,13 @@ class DisaggreagtorUI extends tauAjaxXmlTag
         //yes we have everything
         $this->addChild($this->compoundBuilder = new CompoundBuilder($this->person, $this->document, $this->descriptor));
         $this->addChild($this->documentViewer = new DocumentViewer($this->person, $this->document));            
-    }            
+    }          
+    
+    public function e_descriptor_select(tauAjaxEvent $e)
+    {
+        $this->descriptor = $e->getParam("descriptor");
+        $this->triggerEvent("init");
+    }
 }
 
 

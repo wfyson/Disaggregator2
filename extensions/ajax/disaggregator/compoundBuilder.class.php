@@ -15,17 +15,19 @@ class CompoundBuilder extends tauAjaxPager
     {
 	parent::__construct();
 
+        error_log($descriptor->Name);
+        
         $this->person = $person;
         $this->document = $document;
         $this->descriptor = $descriptor;
 
-        $this->attachEvent('init', $this, 'e_init');                        
+        $this->init();                        
     }
         
-    public function e_init(tauAjaxEvent $e)
+    public function init()
     {      
         //create a page for each of the descriptor's fields
-        $this->descriptor->getdescriptorfields();
+        $descriptorFields = $this->descriptor->getdescriptorfields();
         $i = $descriptorFields->getIterator();
         while($i->hasNext())
         {
@@ -33,11 +35,13 @@ class CompoundBuilder extends tauAjaxPager
             $field = $descriptorField->getDisaggregatorField();
             $this->addBuilderStage($field);
         }
+        
+        $this->toPage(0);
     }    
     
     public function addBuilderStage(Field $field)
     {
-        switch($field->type)
+        switch($field->Type)
         {
             case "Text":
                 $this->addPage(new TextStage($field));

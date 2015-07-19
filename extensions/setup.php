@@ -18,6 +18,7 @@ $loader->load(array(
     'bootstrap/jumbotron.class.php',
     'bootstrap/listGroup.class.php',
     'bootstrap/modal.class.php',
+    'bootstrap/panel.class.php',
     
     'documents/documentBrowser.class.php',
 	
