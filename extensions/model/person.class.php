@@ -25,7 +25,7 @@ class DisaggregatorPerson extends adro implements tauUser
 
 	}
 
-	private function hash($string)
+	public function hash($string)
         {
         	return sha1($this->Username.$string);
         }
@@ -56,6 +56,16 @@ class DisaggregatorPerson extends adro implements tauUser
 			$query->setOrder('document.DocumentID DESC');
 		return $query->run();	
 	}
+        
+        public function getContributor()
+        {
+            $model = DisaggregatorModel::get();
+            $query = new ADROQuery($model);
+            $query->addTable($model->getTable('contributor'));
+            $query->addRestriction(new adroQueryEq($query, 'contributor.UserID', $this->UserID));
+            $contributors = $query->run();
+            return $contributors->get(0);
+        }
 }
 
 class disaggregatorUtil

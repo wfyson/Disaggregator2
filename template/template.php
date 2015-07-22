@@ -55,15 +55,18 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/iota/">Disaggregator</a>
+                        <a class="navbar-brand" href="/">Disaggregator</a>
                     </div>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="?f=components"><span class="glyphicon glyphicon-cog"></span> Components</a>
                         </li>
-
+                            
 			<?php if($loggedin){ ?>
 			<li>
+                            <a href="?f=profile"><span class="glyphicon glyphicon-user"></span> Profile</a>
+                        </li>
+                        <li>
 			    <a id="logout" href="?f=logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
 			</li>
 			<?php } ?>

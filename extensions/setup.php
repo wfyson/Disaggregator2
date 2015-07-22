@@ -35,7 +35,11 @@ $loader->load(array(
     'disaggregator/stages/builderStage.class.php',
     'disaggregator/stages/textStage.class.php',
     'disaggregator/stages/fileStage.class.php',
-    'disaggregator/stages/compoundStage.class.php'
+    'disaggregator/stages/compoundStage.class.php',
+    
+    'register/register.class.php',
+    
+    'profile/profile.class.php'
 
 ), dirname(__FILE__) . '/ajax/');
 

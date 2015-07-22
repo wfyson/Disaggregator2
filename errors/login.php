@@ -65,10 +65,7 @@ switch($reason)
 
         <div id="register">
             <h4>No account..?</h4> 
-            <form action="index.php?action=register" method="post" style="width: 50%;">
-                <input type="hidden" name="registerform" value="true" />
-                <input class="btn btn-default" type="submit" name="registerform" value="Register" />
-            </form>
+            <a href="?f=register" class="btn btn-default">Register</a>            
         </div>
 
     </div>

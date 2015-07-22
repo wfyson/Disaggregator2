@@ -25,6 +25,16 @@
 }
 
 /*
+    Register
+*/
+.RegisterForm .btn
+{
+    margin-top: 10px;
+}
+
+
+
+/*
     Documents
 */
 .DocumentList
