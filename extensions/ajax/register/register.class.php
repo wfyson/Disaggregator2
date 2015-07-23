@@ -49,7 +49,7 @@ class RegisterForm extends tauAjaxXmlTag
             //family name input
             $this->registerForm->addChild(new tauAjaxLabel($this->family = new tauAjaxTextInput(), "Family Name"));
             $this->registerForm->addChild($this->family);
-            $this->family->setValue($this->family->FamilyName);
+            $this->family->setValue($this->contributor->FamilyName);
             
             //username input
             if($this->person->isNew())

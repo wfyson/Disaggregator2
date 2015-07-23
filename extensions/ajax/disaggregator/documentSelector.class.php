@@ -2,9 +2,9 @@
 
 class DocumentSelector extends tauAjaxXmlTag
 {
-
     private $person;
-
+    private $selected;
+    
     public function __construct(DisaggregatorPerson $person)
     {
 	parent::__construct('div');       
@@ -29,13 +29,30 @@ class DocumentSelector extends tauAjaxXmlTag
         $this->existingDocuments->addChild($this->documentList = new DocumentListGroup());        
         $documents = $this->person->getdocuments();
         $this->documentList->showDocuments($documents);
+        $this->attachEvent('select_document', $this, 'e_existing');
         
         //upload a document
         $this->interface->addChild($this->importDocument = new tauAjaxXmlTag('div'));
-        $this->importDocument->addClass("col-md-5");
+        $this->importDocument->addClass("col-md-5 col-md-offset-2");
         
         $this->importDocument->addChild(new tauAjaxHeading(2, "Import a document"));
+        
+        //select a document  
+        $this->addChild($this->controls = new tauAjaxXmlTag('div'));
+        $this->controls->addClass("col-md-12");
+        $this->controls->addChild($this->btn_select = new BootstrapButton("Select", "btn-primary"));
+        $this->btn_select->attachEvent("onclick", $this, "e_select");
     }            
+    
+    public function e_existing(tauAjaxEvent $e)
+    {
+        $this->selected = $e->getParam('document');
+    }
+    
+    public function e_select(tauAjaxEvent $e)
+    {
+        $this->triggerEvent("document_select", array("document"=> $this->selected));
+    }
 }
 
 class DocumentListGroup extends ListGroup

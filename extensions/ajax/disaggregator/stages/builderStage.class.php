@@ -8,10 +8,9 @@ abstract class BuilderStage extends tauAjaxXmlTag implements tauAjaxPage
     public function __construct(Field $field)
     {
 	parent::__construct("div");
+        $this->addClass("BuilderStage");
         
         $this->field = $field;
-        
-        $this->addChild(new tauAjaxHeading(4, $field->Name));
     }
     
     public function isComplete()
@@ -21,8 +20,9 @@ abstract class BuilderStage extends tauAjaxXmlTag implements tauAjaxPage
     
     public function trigger()
     {
-        
+        $this->triggerEvent('progress', array("field"=>$this->field));
     }
+        
 }
 
 

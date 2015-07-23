@@ -16,6 +16,7 @@ class DisaggregatorUI extends tauAjaxXmlTag
         $this->descriptor = $descriptor;
 
         $this->attachEvent('init', $this, 'e_init');   
+        $this->attachEvent('document_select', $this, "e_document_select");
         $this->attachEvent('descriptor_select', $this, "e_descriptor_select");
     }
         
@@ -40,7 +41,13 @@ class DisaggregatorUI extends tauAjaxXmlTag
         //yes we have everything
         $this->addChild($this->compoundBuilder = new CompoundBuilder($this->person, $this->document, $this->descriptor));
         $this->addChild($this->documentViewer = new DocumentViewer($this->person, $this->document));            
-    }          
+    }       
+    
+    public function e_document_select(tauAjaxEvent $e)
+    {
+        $this->document = $e->getParam("document");
+        $this->triggerEvent("init");
+    }        
     
     public function e_descriptor_select(tauAjaxEvent $e)
     {

@@ -19,6 +19,7 @@ $loader->load(array(
     'bootstrap/listGroup.class.php',
     'bootstrap/modal.class.php',
     'bootstrap/panel.class.php',
+    'bootstrap/progress.class.php',
     
     'documents/documentBrowser.class.php',
 	
@@ -32,6 +33,7 @@ $loader->load(array(
     'disaggregator/descriptorSelector.class.php',
     'disaggregator/compoundBuilder.class.php',
     'disaggregator/documentViewer.class.php',
+    'disaggregator/viewable.class.php',
     'disaggregator/stages/builderStage.class.php',
     'disaggregator/stages/textStage.class.php',
     'disaggregator/stages/fileStage.class.php',
@@ -39,9 +41,13 @@ $loader->load(array(
     
     'register/register.class.php',
     
-    'profile/profile.class.php'
+    'profile/profile.class.php',    
 
 ), dirname(__FILE__) . '/ajax/');
+
+$loader->load(array(
+        'readers/wordReader.class.php'
+), dirname(__FILE__));
 
 
 ?>
