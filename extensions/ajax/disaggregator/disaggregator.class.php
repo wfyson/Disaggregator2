@@ -16,8 +16,10 @@ class DisaggregatorUI extends tauAjaxXmlTag
         $this->descriptor = $descriptor;
 
         $this->attachEvent('init', $this, 'e_init');   
-        $this->attachEvent('document_select', $this, "e_document_select");
-        $this->attachEvent('descriptor_select', $this, "e_descriptor_select");
+        $this->attachEvent('document_select', $this, 'e_document_select');
+        $this->attachEvent('descriptor_select', $this, 'e_descriptor_select');
+        
+        $this->attachEvent('update_builder', $this, 'e_update_builder');
     }
         
     public function e_init(tauAjaxEvent $e)
@@ -53,6 +55,11 @@ class DisaggregatorUI extends tauAjaxXmlTag
     {
         $this->descriptor = $e->getParam("descriptor");
         $this->triggerEvent("init");
+    }
+    
+    public function e_update_builder(tauAjaxEvent $e)
+    {
+        $this->compoundBuilder->setValue($e->getParam("value"));
     }
 }
 

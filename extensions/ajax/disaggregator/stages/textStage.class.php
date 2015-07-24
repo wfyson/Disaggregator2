@@ -10,8 +10,13 @@ class TextStage extends BuilderStage
         $this->addChild($this->txt_input);
     }
     
+    public function setValue($value)
+    {
+        $this->txt_input->setValue($value);
+    }
+        
     public function isComplete()
-    {                
+    {                           
         return true;
     }
 }

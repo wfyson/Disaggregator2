@@ -1,9 +1,8 @@
 <?php
 
-class CompoundStage extends BuilderStage
+class FileStage extends BuilderStage
 {
-
-    
+        
 }
 
 

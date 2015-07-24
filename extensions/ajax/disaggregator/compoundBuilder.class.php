@@ -65,10 +65,16 @@ class CompoundBuilder extends tauAjaxPager
         }
     }
     
+    public function setValue($value)
+    {
+        $page = $this->getPage($this->page);
+        $page->setValue($value);
+    }
+    
     public function e_progress(tauAjaxEvent $e)
     {       
         $this->progress->setProgress((($this->page+1) / count($this->pages)) * 100); 
-    }
+    }       
 }
 
 

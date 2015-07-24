@@ -29,7 +29,8 @@ class DocumentViewer extends tauAjaxXmlTag
         }
         
         $this->addChild($this->highlighter = new tauAjaxXmlTag('div'));
-        $this->highlighter->setAttribute("id", "highlighter");
+        $this->highlighter->setAttribute("id", "highlighter");  
+        $this->attachEvent('update', $this, "e_update");
         
         $this->runJS('
             $(".content").mouseup(function(e)
@@ -37,7 +38,7 @@ class DocumentViewer extends tauAjaxXmlTag
                 var selection = getSelectionText();
                 if(selection.length > 0)
                 {
-                    $("#highlighter").data("value", selection);
+                    $("#highlighter").data("value", selection);                    
 
                     //text has been selected
                     var x = e.pageX + 10;
@@ -55,11 +56,7 @@ class DocumentViewer extends tauAjaxXmlTag
             $("#highlighter").click(function(){
                 $(this).hide();
                 var selection = $(this).data("value");
-                console.log(selection);
-                $input = $(".CompoundBuilder .BuilderStage input");
-                $input.val(selection);
-                $input.attr("value", selection);
-                
+                _client.sendEvent("update", _target, {"selection": selection});                
             });
             
             function getSelectionText()
@@ -79,7 +76,12 @@ class DocumentViewer extends tauAjaxXmlTag
                 return text;
             };
         ');
-    }            
+    }
+    
+    public function e_update(tauAjaxEvent $e)
+    {
+        $this->triggerEvent("update_builder", array("value"=>$e->getParam("selection")));
+    }
 }
 
 
