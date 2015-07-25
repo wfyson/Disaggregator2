@@ -41,7 +41,7 @@ class DisaggregatorUI extends tauAjaxXmlTag
         }
             
         //yes we have everything
-        $this->addChild($this->compoundBuilder = new CompoundBuilder($this->person, $this->document, $this->descriptor));
+        $this->addChild($this->componentBuilder = new ComponentBuilder($this->person, $this->document, $this->descriptor));
         $this->addChild($this->documentViewer = new DocumentViewer($this->person, $this->document));            
     }       
     
@@ -59,7 +59,7 @@ class DisaggregatorUI extends tauAjaxXmlTag
     
     public function e_update_builder(tauAjaxEvent $e)
     {
-        $this->compoundBuilder->setValue($e->getParam("value"));
+        $this->componentBuilder->setValue($e->getParam("value"));
     }
 }
 

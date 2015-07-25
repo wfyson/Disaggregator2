@@ -113,17 +113,17 @@
      margin-top: 63px;
  }
  
- .CompoundBuilder .tauAjaxPager_buttons
+ .ComponentBuilder .tauAjaxPager_buttons
  {
      height: 40px;
  }
 
- .CompoundBuilder .tauAjaxPager_buttons button
+ .ComponentBuilder .tauAjaxPager_buttons button
  {
      float: right;
  }
  
- .CompoundBuilder .tauAjaxPager_buttons button.previous
+ .ComponentBuilder .tauAjaxPager_buttons button.previous
  {
      float: left;
  }

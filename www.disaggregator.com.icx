@@ -38,6 +38,11 @@
             <value>sites/Disaggregator2/data/documents</value>
         </setting>
 
+        <setting>
+            <key>file_dir</key>
+            <value>sites/Disaggregator2/data/files</value>
+        </setting>
+
 	<setting type="merge">
 		<key>tauTemplate_dresserOptions</key>
 		<value>

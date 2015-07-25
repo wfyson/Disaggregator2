@@ -2,9 +2,11 @@
 
 $conf = iotaConf::getInstance();
 $conf->addKey('document_Dir', new pathToIotaStoreFSDriver(), 'Where the documents are stored.'); 
+$conf->addKey('file_Dir', new pathToIotaStoreFSDriver(), 'Where the files are stored.'); 
 
 $store = iotaStore::getInstance();
 $store->mount($conf->document_dir, '/site/documents', true);
+$store->mount($conf->file_dir, '/site/files', true);
 
 $loader = iotaLoader::getInstance();
 
@@ -31,7 +33,7 @@ $loader->load(array(
     'disaggregator/disaggregator.class.php',
     'disaggregator/documentSelector.class.php',
     'disaggregator/descriptorSelector.class.php',
-    'disaggregator/compoundBuilder.class.php',
+    'disaggregator/componentBuilder.class.php',
     'disaggregator/documentViewer.class.php',
     'disaggregator/viewable.class.php',
     'disaggregator/stages/builderStage.class.php',

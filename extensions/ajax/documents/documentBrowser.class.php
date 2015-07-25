@@ -19,7 +19,7 @@ class DocumentBrowser extends tauAjaxXmlTag
 
 	public function e_init(tauAjaxEvent $e=null)
 	{	
-		$this->addChild($this->up = new TauAjaxUpload(4096, 'Add Attachment'));
+		$this->addChild($this->up = new TauAjaxUpload(4096, 'Upload Document'));
 		$this->up->attachEvent('uploadcomplete', $this, 'e_uploaded');
 
 		$this->addChild($this->documentList = new DocumentList());
