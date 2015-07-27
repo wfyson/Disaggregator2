@@ -5,42 +5,55 @@
  * redact or disaggregate it.
  */
 
+define("IMAGE_REL_TYPE", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image");
+
 class WordReader
 {    
     public static function read(Document $document)
     {              
         $root = $_SERVER['DOCUMENT_ROOT'];
-        $zip = zip_open($root . "sites/Disaggregator2/data/documents/$document->Filepath");        
+        $documentDir = "sites/Disaggregator2/data/documents/";
         
-        $zipEntry = zip_read($zip);
+        //derive image directory path
+        $imageDir = $documentDir . substr($document->Filepath, 0, strpos($document->Filepath, "."));
         
+        //first get the image rels
+        $zip = zip_open($root . $documentDir . $document->Filepath);               
+        $zipEntry = zip_read($zip);        
+        while ($zipEntry != false)
+        {
+            $entryName = zip_entry_name($zipEntry);
+            if(strpos($entryName, 'word/_rels/document.xml.rels') !== FALSE)
+            {
+                $relList = self::readRels($zipEntry);
+            }
+            $zipEntry = zip_read($zip);            
+        }        
+        
+        //now get everything else (i.e. images and text)
+        $zip = zip_open($root . $documentDir . $document->Filepath);               
+        $zipEntry = zip_read($zip);        
         while ($zipEntry != false)
         {
             //read through all the files, call appropriate functions for each            
             $entryName = zip_entry_name($zipEntry);
             //for image files
             if (strpos($entryName, 'word/media/') !== FALSE) {
-                self::readImage($entryName, $zipEntry);
+                self::readImage($imageDir, $entryName, $zipEntry);
             }
-            
-            //for image rels
-            //if(strpos($entryName, 'word/_rels/document.xml.rels') !== FALSE)
-            //{
-            //    $this->rels = $this->readRels($zipEntry);
-            //}
             
             //for document content
             if (strpos($entryName, 'word/document.xml') !== FALSE)
             {
-                $text = self::readText($zipEntry);
+                $text = self::readText($zipEntry, $imageDir, $relList);
             }            
             $zipEntry = zip_read($zip);
-        }       
+        }      
         
         return $text;
     }   
         
-    public static function readText($zipEntry)
+    public static function readText($zipEntry, $imageDir, $relList)
     {
         $results = array();
         
@@ -86,7 +99,7 @@ class WordReader
             $content = '';
             $element->registerXPathNamespace('a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
             $element->registerXPathNamespace('pic', 'http://schemas.openxmlformats.org/drawingml/2006/picture');
-            $paraElements = $element->xpath('w:r/w:t | w:r/w:drawing/wp:*/a:graphic/a:graphicData/pic:pic'); //we only want text or images (no smartart I'm afraid!)
+            $paraElements = $element->xpath('w:r/w:t | w:r/w:drawing/wp:*/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed'); //we only want text or images (no smartart I'm afraid!)
             foreach($paraElements as $pe)
             {
                 //get the path for the pe
@@ -97,29 +110,53 @@ class WordReader
                     $content = $content . $pe;
                 }
                 else
-                {
-                    //we have an image
-                    $content = "DRAWING!!!!";
+                {                    
+                    $content = $imageDir . "/" . $relList[(string)$pe];
                     $style = "image";
                 }
             }       
                                     
             //construct a viewable element
             $results[] = new Viewable($content, $xpath, $style, $styleVal);
-        }
-        
+        }        
         return $results;
     }   
     
-    public static function readImage($entryName, $zipEntry)
-    {
-        //$img = zip_entry_read($zipEntry, zip_entry_filesize($zipEntry));
-        //if ($img !== null)
-        //{
-        //    $imagePath = $this->path . basename($entryName);
-        //    file_put_contents($imagePath, $img);
-        //}
-        //return $imagePath;        
+    public static function readImage($imageDir, $entryName, $zipEntry)
+    {  
+        //make an image directory 
+        $imageDir = $_SERVER['DOCUMENT_ROOT'] . $imageDir;
+        if (!file_exists($imageDir))
+        {
+            mkdir($imageDir, 0777, true);
+	}
+        
+        $img = zip_entry_read($zipEntry, zip_entry_filesize($zipEntry));
+        if ($img !== null)
+        {
+            $imagePath = $imageDir . "/" . basename($entryName);
+            file_put_contents($imagePath, $img);
+        }      
+    }
+    
+    public static function readRels($zipEntry)
+    {        
+        $relList = array();                       
+        $rels = zip_entry_read($zipEntry, zip_entry_filesize($zipEntry));
+        $xml = simplexml_load_string($rels);
+        
+        for ($i = 0; $i < $xml->count(); $i++) {
+            $record = $xml->Relationship{$i};
+            $type = $record->attributes()->Type;
+            $cmp = strcmp($type, constant("IMAGE_REL_TYPE"));
+            if ($cmp == 0)
+            {
+                $id = $record->attributes()->Id;
+                $target = basename($record->attributes()->Target);                   
+                $relList[(string)$id] = $target;           
+            }
+        }
+        return $relList;        
     }
 }
 

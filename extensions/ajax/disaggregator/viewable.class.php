@@ -29,9 +29,8 @@ class Viewable extends tauAjaxXmlTag
             case "heading":
                 $this->addChild($this->content = new tauAjaxHeading($this->styleValue, $this->content));
                 break;
-             case "image":
-                 error_log("$this->content");
-                $this->addChild($this->content = new tauAjaxParagraph($this->content));
+             case "image":                      
+                $this->addChild($this->content = new tauAjaxImage($this->content));
                 $this->content->addClass("image");
                 break;
             case "caption":
