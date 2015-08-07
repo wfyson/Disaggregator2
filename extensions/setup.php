@@ -22,9 +22,12 @@ $loader->load(array(
     'bootstrap/modal.class.php',
     'bootstrap/panel.class.php',
     'bootstrap/progress.class.php',
+    'bootstrap/select.class.php',
+    'bootstrap/table.class.php',
     
     'documents/documentBrowser.class.php',
 	
+    'components/componentBrowser.class.php',
     'components/components.class.php',
     'components/descriptorBrowser.class.php',
     'components/descriptorCreator.class.php',
@@ -39,7 +42,7 @@ $loader->load(array(
     'disaggregator/stages/builderStage.class.php',
     'disaggregator/stages/textStage.class.php',
     'disaggregator/stages/fileStage.class.php',
-    'disaggregator/stages/compoundStage.class.php',
+    'disaggregator/stages/componentStage.class.php',
     
     'register/register.class.php',
     

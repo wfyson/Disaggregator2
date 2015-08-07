@@ -1,6 +1,6 @@
 <?php
 
-class TextStage extends BuilderStage
+class TextStage extends BuilderStage implements DisaggregatorStage
 {  
         
     public function __construct(Component $component, Field $field)
@@ -31,10 +31,8 @@ class TextStage extends BuilderStage
     }
     
     public function setValue($value)
-    {
-        error_log("setting the value");
-        $this->txt_input->setValue($value);
-        
+    {        
+        $this->txt_input->setValue($value);        
     }
         
     public function isComplete()
@@ -42,11 +40,9 @@ class TextStage extends BuilderStage
         
         $this->fieldValue->Value = $this->txt_input->getValue();
         $value = $this->fieldValue->Value;
-        error_log("$value");
         //if a value has been set, save the field        
-        if(isset($value))
+        if($value != "")
         {
-            error_log("yeah yeah");
             $this->fieldValue->save();
         }
         return true;

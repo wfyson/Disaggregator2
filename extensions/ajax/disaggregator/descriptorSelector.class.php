@@ -23,7 +23,7 @@ class DescriptorSelector extends tauAjaxXmlTag
         $this->addChild($this->descriptorSelect = new tauAjaxXmlTag("div"));
         $this->descriptorSelect->addClass("col-md-4");
         
-        $this->descriptorSelect->addChild(new tauAjaxHeading(2, "Select a compound"));
+        $this->descriptorSelect->addChild(new tauAjaxHeading(2, "Select a component"));
         
         $this->descriptorSelect->addChild($this->descriptorList = new DescriptorList());        
         $model = DisaggregatorModel::get();

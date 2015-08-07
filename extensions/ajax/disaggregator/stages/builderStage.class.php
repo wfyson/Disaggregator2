@@ -1,5 +1,11 @@
 <?php
 
+interface DisaggregatorStage
+{
+    public function newFieldValue();
+    public function setValue($value);    
+}
+
 abstract class BuilderStage extends tauAjaxXmlTag implements tauAjaxPage
 {
     protected $component;

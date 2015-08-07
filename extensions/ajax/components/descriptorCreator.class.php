@@ -27,7 +27,7 @@ class DescriptorCreator extends tauAjaxXmlTag
                 $this->editor->ignore($f, false);
             }                   
             $this->editor->show($this->descriptor);   
-            
+                                    
             //add field modal
             $this->editor->addChild($this->fieldModal = new BootstrapModal("add_field", "Add Field", "Add Field", "Save"));
             $this->fieldModal->addBody($this->fieldCreator = new FieldCreator());
@@ -42,13 +42,45 @@ class DescriptorCreator extends tauAjaxXmlTag
             
             //add a field viewer     
             $this->addChild($this->fieldViewer = new tauAjaxXmlTag('div'));
+            
+            //preview field select
+            $this->fieldViewer->addChild(new tauAjaxLabel($this->select_preview = new BootstrapSelect(), "Preview Field"));
+            $this->fieldViewer->addChild($this->select_preview);            
+            
+            //set the options
+            $textFields = $this->descriptor->getTextFields();
+            $i = $textFields->getIterator();
+            while ($i->hasNext())
+            {
+                $tf = $i->next();
+                $this->select_preview->addOption($tf->Name, $tf->FieldID);
+            }
+            $this->select_preview->addOption("None", null);
+            
+            //set the initial value
+            if($this->descriptor->PreviewID != null)
+            {
+                $this->select_preview->setValue($this->descriptor->PreviewID);
+            }
+            else
+            {             
+                $this->select_preview->setValue(null);
+            }
+            $this->select_preview->attachEvent("onchange", $this, "e_preview_select");          
+            
+            //field list
             $this->fieldViewer->addChild(new tauAjaxLabel($this->fieldList = new FieldList($this->descriptor, true), "Fields"));
             $this->fieldViewer->addChild($this->fieldList); 
             $this->fieldViewer->addClass("col-md-4 col-md-offset-2");
         }
         
-        public function e_saved(tauAjaxEvent $e)
+        public function e_preview_select(tauAjaxEvent $e)
         {
+            $this->descriptor->PreviewID = $e->getParam('value');
+        }
+        
+        public function e_saved(tauAjaxEvent $e)
+        {            
             //first delete descriptorfields
             $this->descriptor->deleteDescriptorFields();
             

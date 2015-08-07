@@ -37,20 +37,7 @@
 /*
     Documents
 */
-.DocumentList
-{
-	list-style-type: none;
-	padding: 0;
-}
 
-.DocumentListItem
-{
-	width: 100%;
-	border: 2px solid navy;
-
-	margin-top: 10px;
-	margin-bottom: 10px;
-}
 
 /*
     Components
@@ -140,6 +127,11 @@
      width: 80%;
  }
  
+ .FinalStage a
+ {
+     float: right;
+ }
+ 
  .DocumentViewer
  {
      margin-top: 10px;  
@@ -152,6 +144,11 @@
  {
      font-weight: bold;
      text-align: center;
+ }
+ 
+ .DocumentViewer img
+ {
+     width: 100%;
  }
  
  #highlighter

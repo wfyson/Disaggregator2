@@ -7,29 +7,29 @@ class DocumentBrowser extends tauAjaxXmlTag
 
 	public function __construct(DisaggregatorPerson $person)
 	{
-		parent::__construct('div');
+            parent::__construct('div');
 
-		$this->person = $person;
+            $this->person = $person;
 
-		$this->addChild(new tauAjaxHeading(2, 'My Documents'));
+            $this->addChild(new tauAjaxHeading(2, 'My Documents'));
 			
-		$this->attachEvent('init', $this, 'e_init');
-		$this->attachEvent('refresh', $this, 'e_refresh');
+            $this->attachEvent('init', $this, 'e_init');
+            $this->attachEvent('refresh', $this, 'e_refresh');
 	}
 
 	public function e_init(tauAjaxEvent $e=null)
 	{	
-		$this->addChild($this->up = new TauAjaxUpload(4096, 'Upload Document'));
-		$this->up->attachEvent('uploadcomplete', $this, 'e_uploaded');
+            $this->addChild($this->up = new TauAjaxUpload(4096, 'Upload Document'));
+            $this->up->attachEvent('uploadcomplete', $this, 'e_uploaded');
 
-		$this->addChild($this->documentList = new DocumentList());
+            $this->addChild($this->documentList = new DocumentList());
 
-		$this->triggerEvent('refresh');
+            $this->triggerEvent('refresh');
 		
-		//styling for the button
-		$this->up->runJS("
-			$('button').addClass('btn btn-primary');
-		");
+            //styling for the button
+            $this->up->runJS("
+		$('button').addClass('btn btn-primary');
+            ");
 	}
 
 	public function e_uploaded(tauAjaxEvent $e)
@@ -62,11 +62,11 @@ class DocumentBrowser extends tauAjaxXmlTag
 
 }
 
-class DocumentList extends tauAjaxList
+class DocumentList extends BootstrapTable
 {
 	public function showDocuments(ADROSet $documents)
 	{
-		$this->setData('');		
+		$this->body->setData('');		
 
 		$i = $documents->getIterator();
 		while($i->hasNext())
@@ -78,25 +78,61 @@ class DocumentList extends tauAjaxList
 
 	public function addDoc(Document $doc)
 	{
-		return $this->addChild(new DocumentListItem($doc));
+		return $this->body->addChild(new DocumentRow($doc));
 	}
 	
 }
 
-class DocumentListItem extends tauAjaxListItem
+class DocumentRow extends tauAjaxXmlTag
 {
-
 	private $document;
 
 	public function __construct(Document $document)
 	{
-		parent::__construct();
+            parent::__construct("tr");
 
-		$this->document = $document;
-
-		$this->addChild(new tauAjaxHeading(3, $document->Name));	
-
+            $this->document = $document;
+                  
+            //name
+            $this->addChild($this->cell_name = new tauAjaxXmlTag("td"));
+            $this->cell_name->addChild(new tauAjaxHeading(4, $document->Name));	                
+                
+            //components
+            $this->addChild($this->cell_components = new tauAjaxXmlTag("td"));
+            $this->cell_components->addChild($this->btn_components = new BootstrapButton("Components ", "btn-primary"));
+                
+            $components = $this->document->getcomponents();
+            if($components->count() == 0)
+            {
+                $this->btn_components->addClass("disabled");
+            }
+            else
+            {
+                $this->btn_components->addChild(new BootstrapBadge($components->count()));
+            }
+                
+            //disaggregator
+            $this->addChild($this->cell_disaggregator = new tauAjaxXmlTag("td"));
+            $this->cell_disaggregator->addChild($this->btn_disaggregator = new BootstrapSplitButton("Disaggregate", "btn-primary"));                
+            $this->btn_disaggregator->btn->attachEvent("onclick", $this, "e_disaggregate");    
+            
+            $model = DisaggregatorModel::get();
+            $descriptors = $model->descriptor->getRecords();
+            $i = $descriptors->getIterator();
+            while($i->hasNext())
+            {
+                $descriptor = $i->next();
+                $this->btn_disaggregator->addItem(new tauAjaxLink($descriptor->Name, "./?f=disaggregator&document=" . $this->document->DocumentID . "&descriptor=$descriptor->DescriptorID"));
+            }
 	}
+        
+        public function e_disaggregate(tauAjaxEvent $e)
+        {
+            $this->runJS(
+                "
+                    window.location.href = './?f=disaggregator&document=" . $this->document->DocumentID . "';
+                ");
+        }
 
 }
 

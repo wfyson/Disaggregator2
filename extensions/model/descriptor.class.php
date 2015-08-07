@@ -13,5 +13,21 @@ class Descriptor extends adro
             $df->delete();
         }              
     }        
+    
+    public function getTextFields()
+    {
+        $model = DisaggregatorModel::get();
+        $query = new ADROQuery($model);
+        $query->addTable($model->getTable('field'));
+        $query->addTable($model->getTable('descriptorfield'));
+        $query->addRestriction(new adroQueryEq($query, 'field.Type', 'Text'));        
+	$query->addRestriction(new adroQueryEq($query, 'descriptorfield.DescriptorID', $this->DescriptorID));        
+ 
+        return $query->run();
+        
+    }
+    
+    
+    
 }
 

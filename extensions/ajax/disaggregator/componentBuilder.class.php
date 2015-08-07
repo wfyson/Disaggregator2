@@ -19,8 +19,7 @@ class ComponentBuilder extends tauAjaxPager
         $this->person = $person;
         $this->document = $document;
         $this->descriptor = $descriptor;
-        
-        
+                
         if(isset($component))
         {
             $this->component = $component;
@@ -61,7 +60,6 @@ class ComponentBuilder extends tauAjaxPager
         
         $this->addChild($this->progress = new BootstrapProgress(100 / count($this->pages)));
 
-        
         $this->attachEvent("progress", $this, "e_progress");
     }    
     
@@ -76,7 +74,7 @@ class ComponentBuilder extends tauAjaxPager
                 $this->addPage(new FileStage($component, $field));
                 break;
             case "Component":
-                $this->addPage(new CompoundStage($component, $field));
+                $this->addPage(new ComponentStage($component, $field));
                 break;
         }
     }
@@ -108,15 +106,28 @@ class FinalStage extends tauAjaxBasicPage
     
     public function trigger()
     {  
+        $this->triggerEvent('progress', array("field"=>$this->field));
+        
         $this->setData("");
         
         $this->addChild(new tauAjaxHeading(3, "Thank you for recording a " . $this->descriptor->Name . "!"));
         
-        //all we do here is check to see if everything is present
+        //all we do here is check to see if everything is present        
+        $complete = $this->component->isComplete();
+
+        if($complete === true)
+        {
+            $this->addChild(new tauAjaxParagraph("This component can now be published...somehow!"));
+        }
+        else
+        {
+            //if it isn't then we prompt the user to go back and check more stuff
+            $this->addChild(new tauAjaxParagraph("The following mandatory fields still need some information: " . implode(", ", $complete)));
+        }
         
-        //if it isn't then we prompt the user to go back and check more stuff
+        $this->addChild($this->btn_homepage = new tauAjaxLink("Back to My Documents", "/"));               
+        $this->btn_homepage->addClass("btn btn-success");
         
-        //but they can move on if they wish - everything is saved as you go through the workflow
               
     }
     
