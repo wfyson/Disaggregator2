@@ -9,8 +9,9 @@ class ComponentStage extends BuilderStage implements DisaggregatorStage
         $model = DisaggregatorModel::get();
         $this->descriptor = $model->descriptor->getRecordByPK($field->DescriptorType);
         
-        $this->addChild(new tauAjaxHeading(4, "Select a " . $this->descriptor->Name));
-        $this->addChild($this->component_input = new tauAjaxSpan());
+        $this->addChild(new tauAjaxHeading(4, $this->field->Name));
+        $this->addChild(new tauAjaxLabel($this->component_input = new tauAjaxSpan(), "Select a " . $this->descriptor->Name . ":"));
+        $this->addChild($this->component_input);
         $this->component_input->addClass("TauAjaxReadOnlyInput form-control");
         
         //set or create a fieldvalue as appropriate

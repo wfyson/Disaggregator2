@@ -93,9 +93,8 @@ class ComponentViewer extends tauAjaxXmlTag
     }    
     
     public function showComponent(Component $component)
-    {
-        error_log("showing component $component->ComponentID");
-        
+    {      
+        $model = DisaggregatorModel::get();
         $this->component = $component;
         $this->setData("");    
         
@@ -125,10 +124,19 @@ class ComponentViewer extends tauAjaxXmlTag
                     $this->field_value->addClass("TauAjaxReadOnlyInput form-control");
                     break;
                 case "File":                
-                    
+                    $this->addChild(new tauAjaxLabel($this->field_value = new tauAjaxSpan($value), $field->Name));
+                    $this->addChild($this->field_value);
+                    $this->field_value->addClass("TauAjaxReadOnlyInput form-control");
                     break;
                 case "Component":
-                    
+                    if($value != "N/A")
+                    {                        
+                        $componentValue = $model->component->getRecordByPK($value);                    
+                        $value = $componentValue->getPreviewText();
+                    }
+                    $this->addChild(new tauAjaxLabel($this->field_value = new tauAjaxSpan($value), $field->Name));
+                    $this->addChild($this->field_value);
+                    $this->field_value->addClass("TauAjaxReadOnlyInput form-control");
                     break;
             }
         }

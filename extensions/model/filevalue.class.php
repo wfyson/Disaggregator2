@@ -2,7 +2,7 @@
 
 class FileValue extends adro 
 {
-    public static function createFromUpload(iotaStorePage $file, $description, Component $component, Field $field)
+    public static function createFromUpload(iotaStorePage $file, $description, FileValue $filevalue)
     {
         $path = $file->getDriver()->getFilesystemPath();
 
@@ -17,13 +17,10 @@ class FileValue extends adro
         $file->move($fullpath);
 
         // Create the document record
-        $rec = $field->getModel()->filevalue->getNew();
-        $rec->ComponentID = $component->ComponentID;
-        $rec->FieldID = $field->FieldID;
-        $rec->Name = $description;
-        $rec->Value = $aname;
+        $filevalue->Name = $description;
+        $filevalue->Value = $aname;
 
-        return $rec;
+        return $filevalue;
     }
     
     public static function getExtension($filename)

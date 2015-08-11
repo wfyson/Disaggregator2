@@ -8,7 +8,9 @@ class TextStage extends BuilderStage implements DisaggregatorStage
         parent::__construct($component, $field);
         
         //create the interface
-        $this->addChild(new tauAjaxLabel($this->txt_input = new tauAjaxTextInput(), "$field->Name: "));
+        $this->addChild(new tauAjaxHeading(4, $this->field->Name));
+        
+        $this->addChild(new tauAjaxLabel($this->txt_input = new tauAjaxTextInput(), "Select Text: "));
         $this->addChild($this->txt_input);
         
         //set or create a fieldvalue as appropriate

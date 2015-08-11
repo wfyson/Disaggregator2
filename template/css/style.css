@@ -115,6 +115,15 @@
      float: left;
  }
  
+ .BuilderStage
+ {
+     position: relative;
+     margin-top: -34px;
+     top: 34px;
+     margin-left: 10%;
+     width: 80%;
+ }
+ 
  .BuilderStage .tauAjaxLabel
  {
      display: inline-block;
@@ -123,8 +132,30 @@
  
  .TextStage .tauAjaxTextInput
  {
-     display: inline-block;
      width: 80%;
+     display: inline-block;     
+ }
+ 
+ 
+ .FileStage .TauAjaxUpload
+ {
+     margin-top: -20px;
+     display: inline-block;
+ }
+ 
+ .FileStage .tauAjaxSpan
+ {
+     display: inline-block;
+     width: 70%;
+     margin-left: 5px;
+     vertical-align: bottom;
+ }
+ 
+ .ComponentStage .tauAjaxSpan
+ {
+     display: inline-block;
+     width: 70%;
+     vertical-align: middle;
  }
  
  .FinalStage a
@@ -159,4 +190,10 @@
      height: 40px;
      
      background: url('../tick.png');
+ }
+ 
+ .ComponentList
+ {
+     height: 400px;
+     overflow-y: auto;
  }
