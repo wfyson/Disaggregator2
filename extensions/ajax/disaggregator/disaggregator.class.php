@@ -7,13 +7,14 @@ class DisaggregatorUI extends tauAjaxXmlTag
     private $document;
     private $descriptor;
 
-    public function __construct(DisaggregatorPerson $person, Document $document=null, Descriptor $descriptor=null)
+    public function __construct(DisaggregatorPerson $person, Document $document=null, Descriptor $descriptor=null, Component $component=null)
     {
 	parent::__construct('div');
 
         $this->person = $person;
         $this->document = $document;
         $this->descriptor = $descriptor;
+        $this->component = $component;
 
         $this->attachEvent('init', $this, 'e_init');   
         $this->attachEvent('document_select', $this, 'e_document_select');
@@ -31,7 +32,7 @@ class DisaggregatorUI extends tauAjaxXmlTag
         //do we have a document?
         if(!isset($this->document))
         {
-            $this->addChild($this->documentSelector = new DocumentSelector($this->person));
+            $this->addChild($this->documentSelector = new DocumentSelector($this->person, true));
             return;
         }
         
@@ -43,7 +44,7 @@ class DisaggregatorUI extends tauAjaxXmlTag
         }
             
         //yes we have everything
-        $this->addChild($this->componentBuilder = new ComponentBuilder($this->person, $this->document, $this->descriptor));
+        $this->addChild($this->componentBuilder = new ComponentBuilder($this->person, $this->document, $this->descriptor, $this->component));
         $this->addChild($this->documentViewer = new DocumentViewer($this->person, $this->document));   
         
         $this->addChild($this->componentBrowser = new ComponentBrowser($this->person));
@@ -72,7 +73,8 @@ class DisaggregatorUI extends tauAjaxXmlTag
         $this->documentViewer->addClass("hide");
         $this->componentBrowser->removeClass("hide");
         
-        $this->componentBrowser->showComponents($e->getParam('descriptor'));
+        //only show complete components
+        $this->componentBrowser->showComponents($e->getParam('descriptor'), true);
     }
 }
 

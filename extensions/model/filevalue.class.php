@@ -1,6 +1,6 @@
 <?php
 
-class FileValue extends adro 
+class FileValue extends adro implements FieldValue
 {
     public static function createFromUpload(iotaStorePage $file, $description, FileValue $filevalue)
     {
@@ -27,5 +27,10 @@ class FileValue extends adro
     {
         return strtolower(array_pop(explode('.', $filename)));
     } 
+    
+    public function validate()
+    {
+        return true;
+    }
 }
 

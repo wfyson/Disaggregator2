@@ -19,7 +19,7 @@ class DocumentBrowser extends tauAjaxXmlTag
 
 	public function e_init(tauAjaxEvent $e=null)
 	{	
-            $this->addChild($this->up = new TauAjaxUpload(4096, 'Upload Document'));
+            $this->addChild($this->up = new TauAjaxUpload(4096, 'Upload Document', ''));
             $this->up->attachEvent('uploadcomplete', $this, 'e_uploaded');
 
             $this->addChild($this->documentList = new DocumentList());
@@ -97,18 +97,32 @@ class DocumentRow extends tauAjaxXmlTag
             $this->addChild($this->cell_name = new tauAjaxXmlTag("td"));
             $this->cell_name->addChild(new tauAjaxHeading(4, $document->Name));	                
                 
-            //components
-            $this->addChild($this->cell_components = new tauAjaxXmlTag("td"));
-            $this->cell_components->addChild($this->btn_components = new BootstrapButton("Components ", "btn-primary"));
+            //incomplete components
+            $this->addChild($this->cell_incomplete = new tauAjaxXmlTag("td"));
+            $this->cell_incomplete->addChild($this->btn_incomplete = new BootstrapLinkButton("Progress ", "?f=overview&document=$document->DocumentID", "btn-warning"));
                 
-            $components = $this->document->getcomponents();
-            if($components->count() == 0)
+            $incomplete = $this->document->getIncompleteComponents();
+            if(count($incomplete) == 0)
+            {
+                $this->btn_incomplete->addClass("disabled");
+            }
+            else
+            {
+                $this->btn_incomplete->addChild(new BootstrapBadge(count($incomplete)));
+            }
+            
+            //complete components
+            $this->addChild($this->cell_components = new tauAjaxXmlTag("td"));
+            $this->cell_components->addChild($this->btn_components = new BootstrapLinkButton("Components ", "/", "btn-primary"));
+                
+            $components = $this->document->getCompleteComponents();
+            if(count($components) == 0)
             {
                 $this->btn_components->addClass("disabled");
             }
             else
             {
-                $this->btn_components->addChild(new BootstrapBadge($components->count()));
+                $this->btn_components->addChild(new BootstrapBadge(count($components)));
             }
                 
             //disaggregator
@@ -124,7 +138,7 @@ class DocumentRow extends tauAjaxXmlTag
                 $descriptor = $i->next();
                 $this->btn_disaggregator->addItem(new tauAjaxLink($descriptor->Name, "./?f=disaggregator&document=" . $this->document->DocumentID . "&descriptor=$descriptor->DescriptorID"));
             }
-	}
+	}                
         
         public function e_disaggregate(tauAjaxEvent $e)
         {

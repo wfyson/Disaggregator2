@@ -25,6 +25,14 @@ catch(iotaException $e)
 
 $model = DisaggregatorModel::get();
 
+//try and get a component if one has been specified
+if(isset($_GET['component']))
+{
+    $component = $model->component->getRecordByPK($_GET['component']) ? $model->component->getRecordByPK($_GET['component']) : null;
+    $document = $component->getDocument();
+    $descriptor = $component->getDescriptor();
+}
+
 //try and get a document if one is present
 if(isset($_GET['document']))
 {
@@ -34,7 +42,7 @@ elseif(isset($_GET['url']))
 {
     //try and get document from a URL
 }
-else
+elseif(!isset($document))
 {
     $document = null;
 }
@@ -44,12 +52,12 @@ if(isset($_GET['descriptor']))
 {
     $descriptor = $model->descriptor->getRecordByPK($_GET['descriptor']) ? $model->descriptor->getRecordByPK($_GET['descriptor']) : null;
 }
-else
+elseif(!isset($descriptor))
 {
     $descriptor = null;
 }
 
-$disaggregatorUI = new DisaggregatorUI($user, $document, $descriptor);
+$disaggregatorUI = new DisaggregatorUI($user, $document, $descriptor, $component);
 
 tauAjaxServerHandler::initElement($disaggregatorUI, 'disaggregator.ajax.php');	
 

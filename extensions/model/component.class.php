@@ -3,13 +3,19 @@
 class Component extends adro 
 {
     //get all the components described by the given descriptor
-    public static function getComponents(Descriptor $descriptor)
+    public static function getComponents(Descriptor $descriptor, $complete = false)
     {
         $model = DisaggregatorModel::get();
         $query = new ADROQuery($model);
         $query->addTable($model->getTable('component'));
         $query->addRestriction(new adroQueryEq($query, 'component.DescriptorID', $descriptor->DescriptorID));
-        return $query->run();        
+        $components = $query->run();        
+        
+        if($complete)
+        {                        
+            return self::getComplete($components);
+        }
+        return $components->toArray();
     }
     
     public function getFieldValue(Field $field)
@@ -36,10 +42,8 @@ class Component extends adro
                 break;
         }
         $fieldValues = $query->run();
-        
-        $count = $fieldValues->count();
-                
-        if($fieldValues->count() > 0)
+    
+        if($fieldValues->count() > 0 && $fieldValues->get(0)->validate())
         {
             return $fieldValues->get(0);           
         }
@@ -52,6 +56,11 @@ class Component extends adro
     public function getDescriptor()
     {
         return $this->getdescriptors()->get(0);        
+    }
+    
+    public function getDocument()
+    {
+        return $this->getdocuments()->get(0);
     }
     
     public function isComplete()
@@ -100,6 +109,36 @@ class Component extends adro
         }
         return "$descriptor->Name $this->ComponentID";
         
-    }        
+    }     
+    
+    public static function getComplete(ADROSet $components)
+    {                
+        $completeComponents = array();
+        $i = $components->getIterator();
+        while($i->hasNext())
+        {
+            $c = $i->next();
+            if($c->isComplete() === true)
+            {
+                $completeComponents[] = $c;
+            }                
+        }
+        return $completeComponents;
+    }
+    
+    public static function getIncomplete(ADROSet $components)
+    {                
+        $incompleteComponents = array();
+        $i = $components->getIterator();
+        while($i->hasNext())
+        {
+            $c = $i->next();
+            if($c->isComplete() !== true)
+            {
+                $incompleteComponents[] = $c;
+            }                
+        }
+        return $incompleteComponents;
+    }
 }
 

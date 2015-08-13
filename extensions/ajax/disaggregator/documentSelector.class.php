@@ -5,18 +5,28 @@ class DocumentSelector extends tauAjaxXmlTag
     private $person;
     private $selected;
     
-    public function __construct(DisaggregatorPerson $person)
+    public function __construct(DisaggregatorPerson $person, $importer=false)
     {
 	parent::__construct('div');       
         
         $this->person = $person;
+        $this->importer = $importer;
 
         $this->init();                        
     }
         
     public function init()
     {    
-        $this->addChild(new BootstrapAlert("No document has been select! Please select or import a document.", "alert-danger"));
+        if($this->importer)
+        {
+            $alert = "No document has been select! Please select or import a document.";
+        }
+        else
+        {
+            $alert = "No document has been select!";
+        }
+        
+        $this->addChild(new BootstrapAlert($alert, "alert-danger"));
         
         $this->addChild($this->interface = new tauAjaxXmlTag('div'));
         
@@ -31,17 +41,20 @@ class DocumentSelector extends tauAjaxXmlTag
         $this->documentList->showDocuments($documents);
         $this->attachEvent('select_document', $this, 'e_existing');
         
-        //upload a document
-        $this->interface->addChild($this->importDocument = new tauAjaxXmlTag('div'));
-        $this->importDocument->addClass("col-md-5 col-md-offset-2");
+        if($this->importer)
+        {
+            //upload a document
+            $this->interface->addChild($this->importDocument = new tauAjaxXmlTag('div'));
+            $this->importDocument->addClass("col-md-5 col-md-offset-2");
         
-        $this->importDocument->addChild(new tauAjaxHeading(2, "Import a document"));
-        
+            $this->importDocument->addChild(new tauAjaxHeading(2, "Import a document"));
+        }
         //select a document  
         $this->addChild($this->controls = new tauAjaxXmlTag('div'));
         $this->controls->addClass("col-md-12");
         $this->controls->addChild($this->btn_select = new BootstrapButton("Select", "btn-primary"));
         $this->btn_select->attachEvent("onclick", $this, "e_select");
+        
     }            
     
     public function e_existing(tauAjaxEvent $e)

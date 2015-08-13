@@ -11,7 +11,7 @@ class ComponentBrowser extends tauAjaxXmlTag
                 $this->person = $person;			
 	}
 
-        public function showComponents(Descriptor $descriptor)
+        public function showComponents(Descriptor $descriptor, $complete=false)
         {   
             $this->setData("");
             $this->descriptor = $descriptor;
@@ -21,8 +21,8 @@ class ComponentBrowser extends tauAjaxXmlTag
             $this->components->addClass("col-md-5"); 
             $this->components->addChild(new tauAjaxHeading(2, $this->descriptor->Name . "s"));
             $this->components->addChild($this->componentList = new ComponentList());
-                                                   
-            $this->componentList->showComponents($this->descriptor);
+                                            
+            $this->componentList->showComponents($this->descriptor, $complete);
                        
             //add a component viewer for more detail
             $this->addChild($this->componentViewer = new ComponentViewer($this->person));
@@ -38,17 +38,17 @@ class ComponentBrowser extends tauAjaxXmlTag
 
 class ComponentList extends ListGroup
 {
-    public function showComponents(Descriptor $descriptor)
+    public function showComponents(Descriptor $descriptor, $complete=false)
     {
         $this->setData('');		
 
-        $components = Component::getComponents($descriptor);
-        $i = $components->getIterator();
-	while($i->hasNext())
-	{		
-            $component = $i->next();
+        $components = Component::getComponents($descriptor, $complete);
+        
+        foreach($components as $component)
+        {
             $this->addComponent($component);
-	}
+            
+        }        
     }
         
     public function addComponent(Component $component)

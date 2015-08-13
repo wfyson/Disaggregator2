@@ -14,7 +14,8 @@ $loader->load(array(
  
     'bootstrap/alert.class.php',
     'bootstrap/badge.class.php',
-    'bootstrap/button.class.php', 
+    'bootstrap/button.class.php',
+    'bootstrap/collapsible.class.php',
     'bootstrap/glyphicon.class.php',
     'bootstrap/header.class.php', 
     'bootstrap/jumbotron.class.php',
@@ -24,6 +25,7 @@ $loader->load(array(
     'bootstrap/progress.class.php',
     'bootstrap/select.class.php',
     'bootstrap/table.class.php',
+    'bootstrap/tabs.class.php',
     
     'documents/documentBrowser.class.php',
 	
@@ -43,6 +45,8 @@ $loader->load(array(
     'disaggregator/stages/textStage.class.php',
     'disaggregator/stages/fileStage.class.php',
     'disaggregator/stages/componentStage.class.php',
+    
+    'overview/overview.class.php',
     
     'register/register.class.php',
     

@@ -1,12 +1,5 @@
 <?php
 
-//iotaConf::getInstance()->setDefault('DataDir', 'sites/disaggregator/data/documents/');
-
-//iotaConf::getInstance()->alias('DocumentDir', 'DataDir');
-//iotaConf::getInstance()->setDefault('DataDir', 'site/documents/');
-
-
-
 class Document extends adro 
 {
     public static function createFromUpload(iotaStorePage $file, $description, DisaggregatorPerson $person)
@@ -50,5 +43,21 @@ class Document extends adro
     {
         //establish hw we need to read the document and return a list of viewable objects
         return WordReader::read($this);
+    }
+    
+    public function getCompleteComponents()
+    {                
+        $components = $this->getcomponents();        
+        $complete = Component::getComplete($components);   
+        
+        return $complete;
+    }
+    
+    public function getIncompleteComponents()
+    {                
+        $components = $this->getcomponents();        
+        $complete = Component::getIncomplete($components);           
+        
+        return $complete;
     }
 }

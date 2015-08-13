@@ -19,8 +19,7 @@ class Viewable extends tauAjaxXmlTag
     }
     
     public function init()
-    {
-        //error_log($this->style);
+    {        
         switch($this->style)
         {
             case "para":

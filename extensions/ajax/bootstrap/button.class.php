@@ -46,4 +46,16 @@ class BootstrapSplitButton extends tauAjaxXmlTag
     }            
 }
 
+class BootstrapLinkButton extends tauAjaxLink
+{
+    public function __construct($text, $href, $class=null)
+    {
+        parent::__construct($text, $href);		
+        $this->addClass("btn");
+              
+        if(isset($class))
+            $this->addClass($class);
+    }
+}
+
 ?>
