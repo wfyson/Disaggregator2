@@ -117,7 +117,7 @@ class WordReader
             }       
                                     
             //construct a viewable element
-            $results[] = new Viewable($content, $xpath, $style, $styleVal);
+            $results[] = new Viewable($content, $style, $styleVal, $xpath);
         }        
         return $results;
     }   

@@ -5,13 +5,18 @@ class DocumentOverviewUI extends tauAjaxXmlTag
 
     private $person;
     private $document;
+    private $tab;
 
-    public function __construct(DisaggregatorPerson $person, Document $document=null)
+    public function __construct(DisaggregatorPerson $person, Document $document=null, $tab=null)
     {
 	parent::__construct('div');
 
         $this->person = $person;
-        $this->document = $document;
+        $this->document = $document; 
+        $this->tab = $tab;
+        
+        if($tab == null)
+            $this->tab = false;       
 
         $this->attachEvent('init', $this, 'e_init');   
         $this->attachEvent('document_select', $this, 'e_document_select');        
@@ -43,13 +48,23 @@ class DocumentOverviewUI extends tauAjaxXmlTag
         //in progress components
         $progress = new BootstrapTabPane("Progress", "progress");
         $progress->addChild(new tauAjaxHeading(3, "Components in Progress"));
-        $progress->addChild(new ComponentLister($this->document->getIncompleteComponents(), "progress"));
+        $progress->addChild(new ComponentLister($this->document->getIncompleteComponents(), "progress", true));
         $this->tabs->addTab($progress);
         
-        //activate frist tab by default
-        $this->runJS("
-            $('#overview a:first').tab('show')
-        ");        
+        //activate given tab if appropriate  
+        if($this->tab !== false)
+        {
+            $this->runJS("
+                $('#overview a[href=\'#$this->tab\']').tab('show');
+            ");
+        }
+        else
+        {
+            $this->runJS("
+                console.log('we dont have a tab');
+                    $('#overview a:first').tab('show');
+            ");
+        }       
     }             
     
     public function e_document_select(tauAjaxEvent $e)
@@ -62,14 +77,15 @@ class DocumentOverviewUI extends tauAjaxXmlTag
 
 class ComponentLister extends tauAjaxXmlTag
 {
-    public function __construct($components, $id)
+    public function __construct($components, $id, $delete=null)
     {
         parent::__construct('div');
         
         $this->components = $components;   
-        $this->id = $id;
+        $this->id = $id;    
+        $this->delete = $delete;
         
-        $this->init();
+        $this->init();               
     }
     
     public function init()
@@ -98,25 +114,31 @@ class ComponentLister extends tauAjaxXmlTag
         {
             $descriptor = $model->descriptor->getRecordByPK($descriptorID);
             
-            $this->addChild($componentTitle = new BootstrapCollapsibleLink($this->id . "_" . $descriptorID, $descriptor->Name));
-            $componentTitle->addClass("h3");
+            $this->addChild($componentTitle = new BootstrapCollapsibleLink($this->id . "_" . $descriptorID, "$descriptor->Name "));
+            $componentTitle->addClass("h3 collapsed");
+            $componentTitle->addChild(new Glyphicon("menu-down"));
+            $componentTitle->addChild(new Glyphicon("menu-up"));
             
             $this->addChild($componentCollapse = new BootstrapCollapsible($this->id . "_" . $descriptorID));
             $componentCollapse->addChild($componentTable = new BootstrapTable());            
             foreach($components as $component)
             {
-                $componentTable->body->addChild(new ComponentRow($component));
+                $componentTable->body->addChild(new ComponentRow($component, $this->delete));
             }
         }
-    }
+    }    
 }
 
 class ComponentRow extends tauAjaxXmlTag
 {
-    public function __construct(Component $component)
+    private $component;
+    
+    public function __construct(Component $component, $delete=null)
     {
         parent::__construct("tr");
                   
+        $this->component = $component;
+        
         //name
         $this->addChild($this->cell_name = new tauAjaxXmlTag("td"));
         $this->cell_name->addChild(new tauAjaxHeading(4, $component->getPreviewText()));	                
@@ -124,7 +146,23 @@ class ComponentRow extends tauAjaxXmlTag
         //edit button
         $this->addChild($this->cell_disaggregator = new tauAjaxXmlTag("td"));
         $this->cell_disaggregator->addChild(new BootstrapLinkButton("Open in Disaggregator", "?f=disaggregator&component=$component->ComponentID", "btn-primary"));
-    }                                
+    
+        if($delete)
+        {
+            $this->addChild($this->cell_delete = new tauAjaxXmlTag("td"));
+            $this->cell_delete->addChild($this->btn_delete = new BootstrapButton("", "btn-danger"));
+            
+            $this->btn_delete->addChild(new Glyphicon("trash"));
+            $this->btn_delete->attachEvent("onclick", $this, "e_delete");
+        }        
+    }       
+    
+    public function e_delete(tauAjaxEvent $e)
+    {
+        $this->component->delete();
+        
+        //$this->triggerEvent("refresh");
+    }        
 }
 
 

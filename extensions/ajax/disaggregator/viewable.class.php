@@ -2,7 +2,7 @@
 
 class Viewable extends tauAjaxXmlTag
 {
-    public function __construct($content, $xpath, $style, $styleValue=null)
+    public function __construct($content, $style, $styleValue=null, $xpath=null)
     {        
         parent::__construct('div');
         
@@ -35,7 +35,12 @@ class Viewable extends tauAjaxXmlTag
             case "caption":
                 $this->addChild($this->content = new tauAjaxParagraph($this->content));
                 $this->content->addClass("caption");
-                break;            
+                break;  
+            case "page":
+                $this->addChild($this->content = new tauAjaxParagraph($this->content));
+                $this->content->addClass("page well");
+                
+                break;
         }
         $this->content->addClass("content");
     }        

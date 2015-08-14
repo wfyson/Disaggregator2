@@ -14,23 +14,20 @@ class DocumentViewer extends tauAjaxXmlTag
 	parent::__construct('div');
 
         $this->person = $person;
-        $this->document = $document;
-
+        $this->document = $document;      
+        
         $this->init();                        
     }
         
     public function init()
-    {                     
-        $viewables = $this->document->prepareForViewer();
-        
-        foreach($viewables as $viewable)
-        {
-            $this->addChild($viewable);
-        }
-        
+    {   
+        $this->addChild(new Loader());
+                                        
         $this->addChild($this->highlighter = new tauAjaxXmlTag('div'));
         $this->highlighter->setAttribute("id", "highlighter");  
         $this->attachEvent('update', $this, "e_update");
+        
+        $this->attachEvent('show_document', $this, 'e_show_document');
         
         $this->runJS('
             $(".content").mouseup(function(e)
@@ -76,14 +73,38 @@ class DocumentViewer extends tauAjaxXmlTag
                 return text;
             };
         ');
+        
+        $this->triggerDelayedEvent(10, "show_document");
     }
     
     public function e_update(tauAjaxEvent $e)
     {
         $this->triggerEvent("update_builder", array("value"=>$e->getParam("selection")));
     }
+    
+    public function e_show_document(tauAjaxEvent $e)
+    {                   
+        $viewables = $this->document->prepareForViewer();
+        
+        $this->setData('');
+        
+        foreach($viewables as $viewable)
+        {
+            $this->addChild($viewable);
+        }
+    }
+    
+    
 }
 
-
+class Loader extends tauAjaxXmlTag
+{
+    public function __construct()
+    {
+        parent::__construct('div');
+        
+        $this->addClass("hexdots-loader");
+    }
+}
 
 ?>

@@ -21,6 +21,7 @@
 	<!-- CSS -->	
  	<link rel="stylesheet" type="text/css" href="sites/Disaggregator2/template/css/bootstrap.min.css" />	 
 	<link rel="stylesheet" type="text/css" href="sites/Disaggregator2/template/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="sites/Disaggregator2/template/css/hexdots.css" />
 
 	<!-- JS -->
 	<script type="text/javascript" src="lib/tauAjax/tauAjax.lib.js"></script>

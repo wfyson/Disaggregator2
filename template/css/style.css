@@ -185,6 +185,21 @@
      width: 100%;
  }
  
+ .DocumentViewer .page
+ {
+     width: 90%;     
+     margin-left: auto;
+     margin-right:auto;
+ }
+ 
+ .DocumentViewer .Loader.hexdots-loader
+ {
+     display: block;
+     margin-top: 100px;
+     margin-left: auto;
+     margin-right:auto;
+ }
+ 
  #highlighter
  {
      position: absolute;
@@ -199,4 +214,37 @@
  {
      height: 400px;
      overflow-y: auto;
+ }
+ 
+ /*
+    Overview
+ */
+ .DocumentOverviewUI .h3
+ {
+     display: block;
+     width:80%;
+     padding-bottom: 5px;
+     border-bottom: 1px solid black;
+     border-bottom-style: inset;
+     cursor: pointer;
+ }
+ 
+ .DocumentOverviewUI .h3 .glyphicon
+ {
+     vertical-align: sub;
+ }
+ 
+ .DocumentOverviewUI .glyphicon-menu-down
+ {
+     display: none;
+ }
+ 
+ .DocumentOverviewUI .collapsed .glyphicon-menu-up
+ {
+     display: none;
+ }
+ 
+  .DocumentOverviewUI .collapsed .glyphicon-menu-down
+ {
+     display: inline-block;
  }

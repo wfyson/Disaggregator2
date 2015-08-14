@@ -41,8 +41,16 @@ class Document extends adro
     
     public function prepareForViewer()
     {
-        //establish hw we need to read the document and return a list of viewable objects
-        return WordReader::read($this);
+        //establish how we need to read the document and return a list of viewable objects
+        switch(Document::getExtension($this->Filepath))
+        {
+            case "docx": 
+                return WordReader::read($this);
+                break;
+            case "pdf":
+                return PDFReader::read($this);
+                break;
+        }        
     }
     
     public function getCompleteComponents()

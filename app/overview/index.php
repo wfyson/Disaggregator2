@@ -35,7 +35,17 @@ else
     $document = null;
 }
 
-$documentOverviewUI = new DocumentOverviewUI($user, $document);
+//and set a tab if appropriate
+if(isset($_GET['tab']))
+{
+    $tab = $_GET['tab'] ? $_GET['tab'] : null;
+}
+else
+{
+    $tab = null;
+}
+
+$documentOverviewUI = new DocumentOverviewUI($user, $document, $tab);
 
 tauAjaxServerHandler::initElement($documentOverviewUI, 'disaggregator.ajax.php');	
 

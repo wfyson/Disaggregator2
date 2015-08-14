@@ -55,7 +55,8 @@ $loader->load(array(
 ), dirname(__FILE__) . '/ajax/');
 
 $loader->load(array(
-        'readers/wordReader.class.php'
+        'readers/wordReader.class.php',
+        'readers/pdfReader.class.php'
 ), dirname(__FILE__));
 
 

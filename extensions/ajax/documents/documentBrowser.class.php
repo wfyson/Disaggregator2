@@ -99,7 +99,7 @@ class DocumentRow extends tauAjaxXmlTag
                 
             //incomplete components
             $this->addChild($this->cell_incomplete = new tauAjaxXmlTag("td"));
-            $this->cell_incomplete->addChild($this->btn_incomplete = new BootstrapLinkButton("Progress ", "?f=overview&document=$document->DocumentID", "btn-warning"));
+            $this->cell_incomplete->addChild($this->btn_incomplete = new BootstrapLinkButton("Progress ", "?f=overview&document=$document->DocumentID&tab=progress", "btn-warning"));
                 
             $incomplete = $this->document->getIncompleteComponents();
             if(count($incomplete) == 0)
@@ -113,7 +113,7 @@ class DocumentRow extends tauAjaxXmlTag
             
             //complete components
             $this->addChild($this->cell_components = new tauAjaxXmlTag("td"));
-            $this->cell_components->addChild($this->btn_components = new BootstrapLinkButton("Components ", "/", "btn-primary"));
+            $this->cell_components->addChild($this->btn_components = new BootstrapLinkButton("Components ", "?f=overview&document=$document->DocumentID&tab=complete", "btn-primary"));
                 
             $components = $this->document->getCompleteComponents();
             if(count($components) == 0)
