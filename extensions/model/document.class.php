@@ -8,7 +8,6 @@ class Document extends adro
 
         $ext = self::getExtension(basename($path));
 
-
         // Lookup the location of the store and build a name for the new file
         $aspath = 'site/documents';
         $aname = 'd_' . $person->UserID . '_' . uniqid() . '.' . $ext;
@@ -67,5 +66,27 @@ class Document extends adro
         $complete = Component::getIncomplete($components);           
         
         return $complete;
+    }
+    
+    public function getPlainText()
+    {
+        //derive plain text path
+        $documentDir = "sites/Disaggregator2/data/documents/";
+        $textPath = $documentDir . substr($this->Filepath, 0, strpos($this->Filepath, ".")) . ".txt";
+        
+        if (!file_exists($textPath)) //then write it...
+        {
+            $viewables = $this->prepareForViewer();
+            $plainText = array();
+            foreach($viewables as $viewable)
+            {
+                if(in_array($viewable->getStyle(), array("para", "page")))
+                {
+                    $plainText[] = $viewable->getContent();
+                }
+            }            
+            file_put_contents($textPath, $plainText);
+	}
+        return $textPath;
     }
 }

@@ -22,8 +22,8 @@ class DocumentBrowser extends tauAjaxXmlTag
             $this->addChild($this->up = new TauAjaxUpload(4096, 'Upload Document', ''));
             $this->up->attachEvent('uploadcomplete', $this, 'e_uploaded');
 
-            $this->addChild($this->documentList = new DocumentList());
-
+            $this->addChild($this->documentList = new DocumentList());                                    
+            
             $this->triggerEvent('refresh');
 		
             //styling for the button
@@ -113,7 +113,7 @@ class DocumentRow extends tauAjaxXmlTag
             
             //complete components
             $this->addChild($this->cell_components = new tauAjaxXmlTag("td"));
-            $this->cell_components->addChild($this->btn_components = new BootstrapLinkButton("Components ", "?f=overview&document=$document->DocumentID&tab=complete", "btn-primary"));
+            $this->cell_components->addChild($this->btn_components = new BootstrapLinkButton("Components ", "?f=overview&document=$document->DocumentID&tab=complete", "btn-success"));
                 
             $components = $this->document->getCompleteComponents();
             if(count($components) == 0)
@@ -138,6 +138,18 @@ class DocumentRow extends tauAjaxXmlTag
                 $descriptor = $i->next();
                 $this->btn_disaggregator->addItem(new tauAjaxLink($descriptor->Name, "./?f=disaggregator&document=" . $this->document->DocumentID . "&descriptor=$descriptor->DescriptorID"));
             }
+            
+            //scanner
+            $this->addChild($this->cell_scanner = new tauAjaxXmlTag("td"));            
+            $this->cell_scanner->addChild($this->btn_scanner = new BootstrapSplitButton("Scanner", "btn-primary"));                
+            $this->btn_scanner->btn->attachEvent("onclick", $this, "e_scanner");    
+
+            $i = $descriptors->getIterator();
+            while($i->hasNext())
+            {
+                $descriptor = $i->next();
+                $this->btn_scanner->addItem(new tauAjaxLink($descriptor->Name, "./?f=scanner&document=" . $this->document->DocumentID . "&descriptor=$descriptor->DescriptorID"));
+            }
 	}                
         
         public function e_disaggregate(tauAjaxEvent $e)
@@ -145,6 +157,14 @@ class DocumentRow extends tauAjaxXmlTag
             $this->runJS(
                 "
                     window.location.href = './?f=disaggregator&document=" . $this->document->DocumentID . "';
+                ");
+        }
+        
+        public function e_scanner(tauAjaxEvent $e)
+        {            
+            $this->runJS(
+                "
+                    window.location.href = './?f=scanner&document=" . $this->document->DocumentID . "';
                 ");
         }
 

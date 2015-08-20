@@ -23,27 +23,37 @@ class Viewable extends tauAjaxXmlTag
         switch($this->style)
         {
             case "para":
-                $this->addChild($this->content = new tauAjaxParagraph($this->content));
+                $this->addChild($this->contentView = new tauAjaxParagraph($this->content));
                 break;
             case "heading":
-                $this->addChild($this->content = new tauAjaxHeading($this->styleValue, $this->content));
+                $this->addChild($this->contentView = new tauAjaxHeading($this->styleValue, $this->content));
                 break;
              case "image":                      
-                $this->addChild($this->content = new tauAjaxImage($this->content));
-                $this->content->addClass("image");
+                $this->addChild($this->contentView = new tauAjaxImage($this->content));
+                $this->contentView->addClass("image");
                 break;
             case "caption":
-                $this->addChild($this->content = new tauAjaxParagraph($this->content));
-                $this->content->addClass("caption");
+                $this->addChild($this->contentView = new tauAjaxParagraph($this->content));
+                $this->contentView->addClass("caption");
                 break;  
             case "page":
-                $this->addChild($this->content = new tauAjaxParagraph($this->content));
-                $this->content->addClass("page well");
+                $this->addChild($this->contentView = new tauAjaxParagraph($this->content));
+                $this->contentView->addClass("page well");
                 
                 break;
         }
-        $this->content->addClass("content");
-    }        
+        $this->contentView->addClass("content");
+    }  
+    
+    public function getStyle()
+    {
+        return $this->style;
+    }
+    
+    public function getContent()
+    {
+        return $this->content;
+    }
 }
 
 ?>

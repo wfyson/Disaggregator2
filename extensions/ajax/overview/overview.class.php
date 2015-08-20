@@ -20,20 +20,21 @@ class DocumentOverviewUI extends tauAjaxXmlTag
 
         $this->attachEvent('init', $this, 'e_init');   
         $this->attachEvent('document_select', $this, 'e_document_select');        
-              
+        $this->attachEvent('refresh', $this, 'e_refresh');
     }
         
     public function e_init(tauAjaxEvent $e)
-    {      
+    {              
         $this->setData("");
-            
+                    
         //do we have a document?
         if(!isset($this->document))
         {
             $this->addChild($this->documentSelector = new DocumentSelector($this->person));
             return;
         }        
-            
+        $this->document->flushRelations();    
+        
         //yes we have everything
         $this->addChild(new tauAjaxHeading(2, $this->document->Name . " disaggregated"));
         
@@ -42,13 +43,13 @@ class DocumentOverviewUI extends tauAjaxXmlTag
         //complete components
         $complete = new BootstrapTabPane("Complete", "complete");
         $complete->addChild(new tauAjaxHeading(3, "Components"));
-        $complete->addChild(new ComponentLister($this->document->getCompleteComponents(), "complete"));
+        $complete->addChild($this->completeLister = new ComponentLister("complete"));
         $this->tabs->addTab($complete);
         
         //in progress components
         $progress = new BootstrapTabPane("Progress", "progress");
         $progress->addChild(new tauAjaxHeading(3, "Components in Progress"));
-        $progress->addChild(new ComponentLister($this->document->getIncompleteComponents(), "progress", true));
+        $progress->addChild($this->incompleteLister = new ComponentLister("progress", true));
         $this->tabs->addTab($progress);
         
         //activate given tab if appropriate  
@@ -61,11 +62,19 @@ class DocumentOverviewUI extends tauAjaxXmlTag
         else
         {
             $this->runJS("
-                console.log('we dont have a tab');
                     $('#overview a:first').tab('show');
             ");
-        }       
-    }             
+        }     
+        
+        $this->triggerEvent('refresh');
+    }     
+    
+    public function e_refresh(tauAjaxEvent $e)
+    {
+        $this->document->flushRelations();	
+	$this->completeLister->showComponents($this->document->getCompleteComponents());        
+        $this->incompleteLister->showComponents($this->document->getIncompleteComponents());        
+    }
     
     public function e_document_select(tauAjaxEvent $e)
     {
@@ -77,24 +86,25 @@ class DocumentOverviewUI extends tauAjaxXmlTag
 
 class ComponentLister extends tauAjaxXmlTag
 {
-    public function __construct($components, $id, $delete=null)
+    public function __construct($id, $delete=null)
     {
         parent::__construct('div');
-        
-        $this->components = $components;   
+         
         $this->id = $id;    
         $this->delete = $delete;
         
-        $this->init();               
+        $this->attachEvent("remove", $this, "e_remove");
     }
     
-    public function init()
+    public function showComponents($components)
     {
+        $this->setData("");
+        
         $model = DisaggregatorModel::get();
         
         //sort the components in to descriptor order
         $orderedComponents = array();
-        foreach($this->components as $component)
+        foreach($components as $component)
         {
             $descriptor = $component->getDescriptor();
             if(array_key_exists($descriptor->DescriptorID, $orderedComponents))
@@ -126,7 +136,12 @@ class ComponentLister extends tauAjaxXmlTag
                 $componentTable->body->addChild(new ComponentRow($component, $this->delete));
             }
         }
-    }    
+    }
+    
+    public function e_remove(tauAjaxEvent $e)
+    {
+        $this->deleteChild($e->getParam('component'));
+    }
 }
 
 class ComponentRow extends tauAjaxXmlTag
@@ -159,9 +174,9 @@ class ComponentRow extends tauAjaxXmlTag
     
     public function e_delete(tauAjaxEvent $e)
     {
-        $this->component->delete();
+        $this->component->delete();                
         
-        //$this->triggerEvent("refresh");
+        $this->triggerEvent("remove", array("component"=>$this));
     }        
 }
 

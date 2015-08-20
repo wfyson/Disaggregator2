@@ -23,8 +23,7 @@ class Descriptor extends adro
         $query->addRestriction(new adroQueryEq($query, 'field.Type', 'Text'));        
 	$query->addRestriction(new adroQueryEq($query, 'descriptorfield.DescriptorID', $this->DescriptorID));        
  
-        return $query->run();
-        
+        return $query->run();    
     }
     
     

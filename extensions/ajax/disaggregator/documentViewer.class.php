@@ -74,7 +74,7 @@ class DocumentViewer extends tauAjaxXmlTag
             };
         ');
         
-        $this->triggerDelayedEvent(10, "show_document");
+        $this->triggerDelayedEvent(0.5, "show_document");
     }
     
     public function e_update(tauAjaxEvent $e)

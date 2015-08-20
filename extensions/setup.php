@@ -46,17 +46,24 @@ $loader->load(array(
     'disaggregator/stages/fileStage.class.php',
     'disaggregator/stages/componentStage.class.php',
     
+    'scanners/scanner.class.php',
+    'scanners/scannerList.class.php',
+    
     'overview/overview.class.php',
     
     'register/register.class.php',
     
-    'profile/profile.class.php',    
+    'profile/profile.class.php',   
+
 
 ), dirname(__FILE__) . '/ajax/');
 
 $loader->load(array(
         'readers/wordReader.class.php',
-        'readers/pdfReader.class.php'
+        'readers/pdfReader.class.php',
+    
+        'scanners/scanner.interface.php',
+        'scanners/oscar.class.php'
 ), dirname(__FILE__));
 
 
