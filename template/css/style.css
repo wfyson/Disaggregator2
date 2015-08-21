@@ -259,3 +259,27 @@
      margin-left: auto;
      margin-right:auto;
  }
+ 
+ tr.ScannerResultRow td:first-child
+ {
+     width: 70%;
+ }
+ 
+ tr.ScannerResultRow td:first-child span
+ {
+     width: 700px;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     white-space: nowrap;
+ }
+ 
+ tr.ScannerResultRow .saved
+ {
+     cursor: default;
+ }
+ 
+  tr.ScannerResultRow .saved:hover
+ {
+     background-color: #5cb85c;
+     border-color: #4cae4c;
+ }

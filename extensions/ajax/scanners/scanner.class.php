@@ -21,6 +21,9 @@ class ScannerUI extends tauAjaxXmlTag
         
         $this->attachEvent('run_scan', $this, 'e_run_scan');
         $this->attachEvent('show_results', $this, 'e_show_results');
+        
+        $this->attachEvent('save', $this, 'e_save');
+        $this->attachEvent('remove', $this, 'e_remove');
     }
         
     public function e_init(tauAjaxEvent $e)
@@ -85,12 +88,38 @@ class ScannerUI extends tauAjaxXmlTag
             $resultsTable->body->addChild(new ScannerResultRow($result));
         }
     }
+    
+    public function e_remove(tauAjaxEvent $e)
+    {
+        $this->deleteChild($e->getParam('result'));
+    }
+    
+    public function e_save(tauAjaxEvent $e)
+    {
+        $model = DisaggregatorModel::get();
+        $scannerResult = $e->getParam('result');
+                 
+        //svae the component
+        $component = $model->component->getNew();
+        $component->DescriptorID = $this->descriptor->DescriptorID;
+        $component->DocumentID = $this->document->DocumentID; 
+        $component->Source = "scanner";
+        $component->save();        
+        
+        //now save the values
+        foreach($scannerResult as $fieldID => $value)
+        {
+            $field = $model->field->getRecordByPK($fieldID);
+            $field->saveFieldValue($value, $component->ComponentID);
+        }
+    }
 }
 
 //present a result from the scanner with an option to save or discard
 class ScannerResultRow extends tauAjaxXmlTag
 {
     private $scannerResult;
+    private $saved = false;
     
     public function __construct($scannerResult)
     {
@@ -103,13 +132,57 @@ class ScannerResultRow extends tauAjaxXmlTag
     
     public function init()
     {
+        //preview                
+        $model = DisaggregatorModel::get();
+        $preview = "";
+        $count = 0;
+        foreach($this->scannerResult as $fieldID => $value)
+        {
+            $field = $model->field->getRecordByPK($fieldID);
+            $preview .= "$field->Name: $value";
+            
+            $count++;
+            if($count < count($this->scannerResult))
+            {
+                $preview .= "; ";
+            }
+        }        
+        $this->addChild($this->cell_preview = new tauAjaxXmlTag("td"));
+        $this->cell_preview->addChild($this->span_preview = new tauAjaxSpan($preview ));
+        $this->span_preview->addClass("h4");
+        
+        //save button
         $this->addChild($this->cell_save = new tauAjaxXmlTag("td"));
         $this->cell_save->addChild($this->btn_save = new BootstrapButton("Save ", "btn-primary"));
         $this->btn_save->addChild(new Glyphicon("save"));
+        $this->btn_save->attachEvent("onclick", $this, "e_save");
         
+        //discard button        
         $this->addChild($this->cell_discard = new tauAjaxXmlTag("td"));
         $this->cell_discard->addChild($this->btn_discard = new BootstrapButton("Discard  ", "btn-danger"));
         $this->btn_discard->addChild(new Glyphicon("remove"));
+        $this->btn_discard->attachEvent("onclick", $this, "e_discard");
+    }
+    
+    public function e_save(tauAjaxEvent $e)
+    {
+        //save the component and any values we have for it
+        $this->triggerEvent("save", array("result" => $this->scannerResult));
+        
+        //adjust entry to indicate result is saved
+        $this->saved = true;
+        $this->deleteChild($this->cell_save);
+        $this->deleteChild($this->cell_discard);
+        
+        $this->addChild($this->cell_saved = new tauAjaxXmlTag("td"));
+        $this->cell_saved->addChild($this->btn_saved = new BootstrapButton("Saved ", "btn-success"));
+        $this->btn_saved->addChild(new Glyphicon("ok"));
+        $this->btn_saved->addClass("saved");
+    }
+    
+    public function e_discard(tauAjaxEvent $e)
+    {
+        $this->triggerEvent("remove", array("result" => $this));
     }
 }
 

@@ -19,6 +19,7 @@ $loader->load(array(
     'bootstrap/glyphicon.class.php',
     'bootstrap/header.class.php', 
     'bootstrap/jumbotron.class.php',
+    'bootstrap/label.class.php',
     'bootstrap/listGroup.class.php',
     'bootstrap/modal.class.php',
     'bootstrap/panel.class.php',

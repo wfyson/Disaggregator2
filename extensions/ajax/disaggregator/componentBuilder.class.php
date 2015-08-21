@@ -31,6 +31,7 @@ class ComponentBuilder extends tauAjaxPager
             $this->component = $model->component->getNew();
             $this->component->DescriptorID = $descriptor->DescriptorID;
             $this->component->DocumentID = $document->DocumentID; 
+            $component->Source = "disaggregator";
             $this->component->save();
         }            
         $this->init();                        
