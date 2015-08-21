@@ -13,7 +13,7 @@ class OscarCompounds implements DocumentScanner
     }
     
     public static function read(Document $document)
-    {                              
+    {   
         //requires plain text version of the document
         $plainText = $document->getPlainText();                   
         
@@ -44,10 +44,15 @@ class OscarCompounds implements DocumentScanner
         }
         
         //generate an associative array for each result
+        $names = array();
         foreach($output as $name)
         {   
-            $result = array($fieldID => $name);            
-            $results[] = $result;
+            if(!in_array(strtolower($name), $names))
+            {
+                $names[] = strtolower($name);
+                $result = array($fieldID => $name);            
+                $results[] = $result;
+            }            
         }
         
         return $results;

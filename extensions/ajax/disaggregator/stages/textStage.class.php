@@ -1,8 +1,7 @@
 <?php
 
 class TextStage extends BuilderStage implements DisaggregatorStage
-{  
-        
+{          
     public function __construct(Component $component, Field $field)
     {
         parent::__construct($component, $field);
@@ -13,14 +12,19 @@ class TextStage extends BuilderStage implements DisaggregatorStage
         $this->addChild(new tauAjaxLabel($this->txt_input = new tauAjaxTextInput(), "Select Text: "));
         $this->addChild($this->txt_input);
         
-        //set or create a fieldvalue as appropriate
-        if(!($this->fieldValue))
+        if($field->Multi)
         {
-            $this->newFieldValue();
+            $this->addScroller();
+        }
+        
+        //set or create a fieldvalue as appropriate
+        if(!($this->fieldValues[$this->record]))
+        {
+            $this->fieldValues[$this->record] = $this->newFieldValue();
         }
         else
         {
-            $this->setValue($this->fieldValue->Value);
+            $this->setValue($this->fieldValues[$this->record]->Value);
         }
     }
     
@@ -35,17 +39,26 @@ class TextStage extends BuilderStage implements DisaggregatorStage
     public function setValue($value)
     {        
         $this->txt_input->setValue($value);        
+    }        
+    
+    public function storeCurrentValue()
+    {
+        $this->fieldValues[$this->record]->Value = $this->txt_input->getValue();
     }
         
     public function isComplete()
-    {                           
+    {                               
+        //store whatever we have saved 
+        $this->storeCurrentValue();
         
-        $this->fieldValue->Value = $this->txt_input->getValue();
-        $value = $this->fieldValue->Value;
-        //if a value has been set, save the field        
-        if($value != "")
+        //save all of the recorded field 
+        foreach($this->fieldValues as $fieldValue)
         {
-            $this->fieldValue->save();
+            //if a value has been set, save the field        
+            if($fieldValue->Value  != "")
+            {
+                $fieldValue->save();
+            }
         }
         return true;
     }

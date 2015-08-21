@@ -58,4 +58,20 @@ class BootstrapLinkButton extends tauAjaxLink
     }
 }
 
+class BootstrapButtonGroupVertical extends tauAjaxXmlTag
+{
+    public function __construct()
+    {    
+        parent::__construct("div");
+        
+        $this->addClass("btn-group-vertical");
+        $this->setAttribute("role", "group");
+    }
+    
+    public function addButton(BootstrapButton $btn)
+    {
+        $this->addChild($btn);
+    }
+}
+
 ?>

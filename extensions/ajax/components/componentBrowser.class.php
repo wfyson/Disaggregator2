@@ -106,7 +106,7 @@ class ComponentViewer extends tauAjaxXmlTag
             $descriptorField = $i->next();
             $field = $descriptorField->getDisaggregatorField();
             
-            $fieldValue = $this->component->getFieldValue($field);
+            $fieldValue = $this->component->getFieldValues($field)[0];
             if($fieldValue)
             {
                 $value = $fieldValue->Value;

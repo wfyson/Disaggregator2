@@ -133,6 +133,11 @@
      margin-right: 5px;
  }
  
+ .BuilderStage .BootstrapButtonGroupVertical
+ {
+     margin-left: 5px;
+ }
+ 
  .TextStage .tauAjaxTextInput
  {
      width: 80%;

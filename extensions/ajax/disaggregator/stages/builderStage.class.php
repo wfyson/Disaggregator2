@@ -4,13 +4,15 @@ interface DisaggregatorStage
 {
     public function newFieldValue();
     public function setValue($value);    
+    public function storeCurrentValue();
 }
 
 abstract class BuilderStage extends tauAjaxXmlTag implements tauAjaxPage
 {
     protected $component;
     protected $field;
-    protected $fieldValue;
+    protected $fieldValues;
+    protected $record = 0;
 
     public function __construct(Component $component, Field $field)
     {
@@ -20,12 +22,12 @@ abstract class BuilderStage extends tauAjaxXmlTag implements tauAjaxPage
         $this->component = $component;
         $this->field = $field;
      
-        $this->fieldValue = $this->component->getFieldValue($field);        
+        $this->fieldValues = $this->component->getFieldValues($field);        
     }
     
-    public function getFieldValue()
+    public function getFieldValues()
     {
-        return $this->fieldValue;
+        return $this->fieldValues;
     }
     
     public function isComplete()
@@ -36,6 +38,46 @@ abstract class BuilderStage extends tauAjaxXmlTag implements tauAjaxPage
     public function trigger()
     {
         $this->triggerEvent('progress', array("field"=>$this->field));
+    }
+            
+    public function addScroller()
+    {
+        $this->addChild($this->scroller = new BootstrapButtonGroupVertical());
+        $this->scroller->addButton($this->btn_prev = new BootstrapButton("", "btn-primary btn-xs"));
+        $this->scroller->addButton($this->btn_next = new BootstrapButton("", "btn-primary btn-xs"));        
+        
+        $this->btn_prev->addChild(new Glyphicon("triangle-top"));
+        $this->btn_prev->addClass("disabled");
+        $this->btn_next->addChild(new Glyphicon("triangle-bottom"));
+        
+        $this->btn_prev->attachEvent("onclick", $this, "e_prev");
+        $this->btn_next->attachEvent("onclick", $this, "e_next");
+    }        
+    
+    public function e_prev(tauAjaxEvent $e)
+    {
+        if($this->record != 0)
+        {
+            $this->record--;
+            if($this->record == 0)
+            {
+                $this->btn_prev->addClass("disabled");
+            }
+        }
+    }
+    
+    public function e_next(tauAjaxEvent $e)
+    {
+        //allow user to go back
+        $this->btn_prev->removeClass("disabled");        
+        
+        //store the record we have before creating a new one
+        $this->storeCurrentValue();
+        
+        //next record
+        $this->record++;
+        
+        
     }
         
 }

@@ -18,7 +18,7 @@ class Component extends adro
         return $components->toArray();
     }
     
-    public function getFieldValue(Field $field)
+    public function getFieldValues(Field $field)
     {
         $model = DisaggregatorModel::get();
         $query = new ADROQuery($model);
@@ -41,11 +41,11 @@ class Component extends adro
                 $query->addRestriction(new adroQueryEq($query, 'componentvalue.FieldID', $field->FieldID));
                 break;
         }
-        $fieldValues = $query->run();
+        $fieldValues = $query->run()->toArray();
     
-        if($fieldValues->count() > 0 && $fieldValues->get(0)->validate())
+        if(count($fieldValues) > 0) // && $fieldValues->get(0)->validate())
         {
-            return $fieldValues->get(0);           
+            return $fieldValues;           
         }
         else
         {        
@@ -77,7 +77,7 @@ class Component extends adro
             $field = $descriptorField->getDisaggregatorField();            
             if($field->Mandatory)
             {                
-                if($this->getFieldValue($field) == false)
+                if($this->getFieldValues($field) == false)
                 {
                     $missing[] = $field->Name;
                 }
@@ -101,7 +101,7 @@ class Component extends adro
         {
             $model = DisaggregatorModel::get();
             $field = $model->field->getRecordByPK($descriptor->PreviewID);
-            $preview = $this->getFieldValue($field);
+            $preview = $this->getFieldValues($field)[0];
             if($preview !== false)
             {
                 return $preview->Value;
