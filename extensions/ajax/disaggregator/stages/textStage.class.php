@@ -15,25 +15,28 @@ class TextStage extends BuilderStage implements DisaggregatorStage
         if($field->Multi)
         {
             $this->addScroller();
-        }
+        }   
         
         //set or create a fieldvalue as appropriate
         if(!($this->fieldValues[$this->record]))
         {
+            $this->fieldValues = array();
             $this->fieldValues[$this->record] = $this->newFieldValue();
         }
         else
         {
-            $this->setValue($this->fieldValues[$this->record]->Value);
+            $this->setValue($this->fieldValues[$this->record]->getPreview());
         }
     }
     
     public function newFieldValue()
     {
         $model = DisaggregatorModel::get();
-        $this->fieldValue = $model->textvalue->getNew();
-        $this->fieldValue->ComponentID = $this->component->ComponentID;                 
-        $this->fieldValue->FieldID = $this->field->FieldID;                 
+        $fieldValue = $model->textvalue->getNew();
+        $fieldValue->ComponentID = $this->component->ComponentID;                 
+        $fieldValue->FieldID = $this->field->FieldID;                 
+        
+        return $fieldValue;
     }
     
     public function setValue($value)
@@ -42,7 +45,7 @@ class TextStage extends BuilderStage implements DisaggregatorStage
     }        
     
     public function storeCurrentValue()
-    {
+    {                        
         $this->fieldValues[$this->record]->Value = $this->txt_input->getValue();
     }
         
@@ -51,13 +54,18 @@ class TextStage extends BuilderStage implements DisaggregatorStage
         //store whatever we have saved 
         $this->storeCurrentValue();
         
-        //save all of the recorded field 
-        foreach($this->fieldValues as $fieldValue)
+        //save all of the recorded fields 
+        foreach($this->fieldValues as $record => $fieldValue)
         {
             //if a value has been set, save the field        
             if($fieldValue->Value  != "")
             {
                 $fieldValue->save();
+            }
+            else
+            {                                
+                $fieldValue->delete();
+                $this->fieldValues[$record] = $this->newFieldValue();
             }
         }
         return true;

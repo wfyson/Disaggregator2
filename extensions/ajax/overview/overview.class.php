@@ -155,7 +155,7 @@ class ComponentRow extends tauAjaxXmlTag
         $this->component = $component;
         
         //name
-        $this->addChild($this->cell_name = new tauAjaxXmlTag("td"));
+        $this->addChild($this->cell_name = new tauAjaxXmlTag("td"));        
         $this->cell_name->addChild($name = new tauAjaxHeading(4, $component->getPreviewText() . " "));
         if($component->Source == "scanner")
         {

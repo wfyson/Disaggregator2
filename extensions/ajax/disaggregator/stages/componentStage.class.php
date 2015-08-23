@@ -14,34 +14,68 @@ class ComponentStage extends BuilderStage implements DisaggregatorStage
         $this->addChild($this->component_input);
         $this->component_input->addClass("TauAjaxReadOnlyInput form-control");
         
-        //set or create a fieldvalue as appropriate
-        if(!($this->fieldValue))
+        $this->addChild($this->btn_delete = new BootstrapButton("", "btn-danger"));
+        $this->btn_delete->addChild(new Glyphicon("trash"));
+        $this->btn_delete->attachEvent("onclick", $this, "e_delete");
+        
+        if($field->Multi)
         {
-            $this->newFieldValue();
+            $this->addScroller();
+        }  
+        
+        //set or create a fieldvalue as appropriate
+        if(!($this->fieldValues[$this->record]))
+        {
+            $this->fieldValues = array();
+            $this->fieldValues[$this->record] = $this->newFieldValue();
         }
         else
         {
-            $this->setValue($this->fieldValue->Value);
-        }               
+            $this->setValue($this->fieldValues[$this->record]->Value);
+        }
     }
     
     public function newFieldValue()
     {
         $model = DisaggregatorModel::get();
-        $this->fieldValue = $model->componentvalue->getNew();
-        $this->fieldValue->ComponentID = $this->component->ComponentID;                 
-        $this->fieldValue->FieldID = $this->field->FieldID;                 
+        $fieldValue = $model->componentvalue->getNew();
+        $fieldValue->ComponentID = $this->component->ComponentID;                 
+        $fieldValue->FieldID = $this->field->FieldID;                 
+        
+        return $fieldValue;
     }
     
     public function setValue($value)
-    {
-        $this->fieldValue->Value = $value;
-        
+    {        
         $model = DisaggregatorModel::get();
-        $component = $model->component->getRecordByPK($value);
-        $this->component_input->setData($component->getPreviewText());
+        
+        if($value)
+        {
+            $component = $model->component->getRecordByPK($value);
+            $this->component_input->setData($component->getPreviewText());
+        }
+        else
+        {
+            $this->component_input->setData("");
+        }
+        
+        $this->fieldValues[$this->record]->Value = $value; 
     }
     
+    public function storeCurrentValue()
+    {
+        //do nothing?
+    }
+    
+    public function e_delete(tauAjaxEvent $e)
+    {
+        $fieldValue = $this->getCurrentRecord();
+        $fieldValue->delete();
+        
+        $this->fieldValues[$this->record] = $this->newFieldValue();
+        $this->component_input->setData("");
+    }
+
     public function trigger()
     {
         parent::trigger();
@@ -52,13 +86,15 @@ class ComponentStage extends BuilderStage implements DisaggregatorStage
     }
     
     public function isComplete()
-    {                                   
-        $value = $this->fieldValue->Value;
-        //if a value has been set, save the field        
-        if(isset($value))
-        {
-            $this->fieldValue->save();
-        }
+    {                                              
+        //save all of the recorded fields 
+        foreach($this->fieldValues as $record => $fieldValue)
+        {                       
+            if($fieldValue->Value)
+            {
+                $fieldValue->save();
+            }
+        }                         
         return true;
     }
 }

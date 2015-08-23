@@ -41,8 +41,8 @@ class Component extends adro
                 $query->addRestriction(new adroQueryEq($query, 'componentvalue.FieldID', $field->FieldID));
                 break;
         }
-        $fieldValues = $query->run()->toArray();
-    
+        $fieldValues = $query->run()->toArray();            
+        
         if(count($fieldValues) > 0) // && $fieldValues->get(0)->validate())
         {
             return $fieldValues;           
@@ -101,10 +101,11 @@ class Component extends adro
         {
             $model = DisaggregatorModel::get();
             $field = $model->field->getRecordByPK($descriptor->PreviewID);
-            $preview = $this->getFieldValues($field)[0];
+            $preview = $this->getFieldValues($field);
             if($preview !== false)
             {
-                return $preview->Value;
+                
+                return $preview[0]->Value;
             }            
         }
         return "$descriptor->Name $this->ComponentID";

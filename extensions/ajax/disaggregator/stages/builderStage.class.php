@@ -22,12 +22,18 @@ abstract class BuilderStage extends tauAjaxXmlTag implements tauAjaxPage
         $this->component = $component;
         $this->field = $field;
      
-        $this->fieldValues = $this->component->getFieldValues($field);        
+        $this->fieldValues = $this->component->getFieldValues($field);    
+                
     }
     
     public function getFieldValues()
     {
         return $this->fieldValues;
+    }
+    
+    public function getCurrentRecord()
+    {
+        return $this->fieldValues[$this->record];
     }
     
     public function isComplete()
@@ -52,10 +58,19 @@ abstract class BuilderStage extends tauAjaxXmlTag implements tauAjaxPage
         
         $this->btn_prev->attachEvent("onclick", $this, "e_prev");
         $this->btn_next->attachEvent("onclick", $this, "e_next");
+        
+        //indicator
+        $this->addChild($this->indicator = new tauAjaxSpan());
+        $this->indicator->addClass("indicator");
+        $this->attachEvent("update_indicator", $this, "e_update_indicator");
+        $this->triggerEvent("update_indicator");
     }        
     
     public function e_prev(tauAjaxEvent $e)
     {
+        //store any changes to the current record
+        $this->storeCurrentValue();
+        
         if($this->record != 0)
         {
             $this->record--;
@@ -63,6 +78,8 @@ abstract class BuilderStage extends tauAjaxXmlTag implements tauAjaxPage
             {
                 $this->btn_prev->addClass("disabled");
             }
+            $this->setValue($this->getCurrentRecord()->getPreview()); 
+            $this->triggerEvent("update_indicator");
         }
     }
     
@@ -76,8 +93,18 @@ abstract class BuilderStage extends tauAjaxXmlTag implements tauAjaxPage
         
         //next record
         $this->record++;
+        if($this->getCurrentRecord() == null)
+        {
+            $this->fieldValues[$this->record] = $this->newFieldValue();           
+        }
+        $this->setValue($this->getCurrentRecord()->getPreview());   
         
-        
+        $this->triggerEvent("update_indicator");
+    }
+    
+    public function e_update_indicator(tauAjaxEvent $e)
+    {        
+        $this->indicator->setData($this->record + 1 . "/" . count($this->fieldValues));
     }
         
 }

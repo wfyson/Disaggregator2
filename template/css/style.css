@@ -138,6 +138,12 @@
      margin-left: 5px;
  }
  
+ .BuilderStage .tauAjaxSpan.indicator
+ {
+     width: 20px;
+     margin-left: 5px;
+ }
+ 
  .TextStage .tauAjaxTextInput
  {
      width: 80%;
@@ -154,16 +160,18 @@
  .FileStage .tauAjaxSpan
  {
      display: inline-block;
-     width: 70%;
+     width: 50%;
      margin-left: 5px;
-     vertical-align: bottom;
+     margin-right: 5px;
+     vertical-align: middle;
  }
  
  .ComponentStage .tauAjaxSpan
  {
      display: inline-block;
-     width: 70%;
+     width: 60%;
      vertical-align: middle;
+     margin-right: 5px;
  }
  
  .FinalStage a

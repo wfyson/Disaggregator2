@@ -13,5 +13,10 @@ class TextValue extends adro implements FieldValue
             return true;
         }
     }
+    
+    public function getPreview()
+    {
+        return $this->Value;
+    }
 }
 

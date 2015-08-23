@@ -32,5 +32,10 @@ class FileValue extends adro implements FieldValue
     {
         return true;
     }
+    
+    public function getPreview()
+    {
+        return $this->Name;
+    }
 }
 

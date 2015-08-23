@@ -15,29 +15,46 @@ class FileStage extends BuilderStage implements DisaggregatorStage
             
         $this->addChild($this->txt_input = new tauAjaxSpan()); 
         $this->txt_input->addClass(" TauAjaxReadOnlyInput form-control");
-           
-        //set or create a fieldvalue as appropriate
-        if(!($this->fieldValue))
+        
+        $this->addChild($this->btn_delete = new BootstrapButton("", "btn-danger"));
+        $this->btn_delete->addChild(new Glyphicon("trash"));
+        $this->btn_delete->attachEvent("onclick", $this, "e_delete");
+        
+        if($field->Multi)
         {
-            $this->newFieldValue();
+            $this->addScroller();
+        }  
+        
+        //set or create a fieldvalue as appropriate
+        if(!($this->fieldValues[$this->record]))
+        {
+            $this->fieldValues = array();
+            $this->fieldValues[$this->record] = $this->newFieldValue();
         }
         else
         {
-            $this->setValue($this->fieldValue->Name);
+            $this->setValue($this->fieldValues[$this->record]->getPreview());
         }
     }
         
     public function newFieldValue()
     {
         $model = DisaggregatorModel::get();
-        $this->fieldValue = $model->filevalue->getNew();
-        $this->fieldValue->ComponentID = $this->component->ComponentID;                 
-        $this->fieldValue->FieldID = $this->field->FieldID;                 
+        $fieldValue = $model->filevalue->getNew();
+        $fieldValue->ComponentID = $this->component->ComponentID;                 
+        $fieldValue->FieldID = $this->field->FieldID;                 
+        
+        return $fieldValue;
     }
         
     public function setValue($value)
     {        
         $this->txt_input->setData($value);        
+    }
+    
+    public function storeCurrentValue()
+    {    
+        //not necessary here as we store on upload
     }
         
     public function e_uploaded(tauAjaxEvent $e)
@@ -53,19 +70,33 @@ class FileStage extends BuilderStage implements DisaggregatorStage
         
 	$e->disableBubble();
         
-	$this->fieldValue = FileValue::createFromUpload($file,  $name, $this->fieldValue);        	       
+	$this->fieldValue = FileValue::createFromUpload($file,  $name, $this->fieldValues[$this->record]);        	       
         $this->setValue($this->fieldValue->Name);
         
 	// Add the attachment as a parameter on the event and re-trigger it
         $this->triggerEvent('uploadcomplete', array('file'=>$file, 'name'=>$name, 'upload'=>$upload));
     }
     
+    public function e_delete()
+    {
+        $fieldValue = $this->getCurrentRecord();
+        $fieldValue->delete();
+        
+        $this->fieldValues[$this->record] = $this->newFieldValue();
+        
+        $this->setValue("");
+    }
+    
     public function isComplete()
     {                                           
-        //if a value has been set, save the field        
-        if(($this->fieldValue->Value != "") && ($this->fieldValue->Name != ""))
+        //save all of the recorded fields 
+        foreach($this->fieldValues as $record => $fieldValue)
         {
-            $this->fieldValue->save();
+            //if a value has been set, save the field        
+            if(($fieldValue->Value != "") && ($fieldValue->Name != ""))
+            {
+                $fieldValue->save();
+            }
         }
         return true;
     }
