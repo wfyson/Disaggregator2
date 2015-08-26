@@ -48,14 +48,17 @@ class DisaggregatorModel extends ADROModel
                 $this->registerClass($this->field, 'Field');
                 $this->registerClass($this->descriptorfield, 'DescriptorField');
                 $this->registerClass($this->contributor, 'Contributor');
-                $this->registerClass($this->component, 'Component');
-                $this->registerClass($this->componentcontributor, 'ComponentContributor');
+                $this->registerClass($this->component, 'Component');                
                 
                 $this->registerClass($this->filevalue, 'FileValue');
                 $this->registerClass($this->textvalue, 'TextValue');
                 $this->registerClass($this->componentvalue, 'ComponentValue');
+                $this->registerClass($this->contributorvalue, 'ContributorValue');
                 
                 $this->registerClass($this->scanner, 'Scanner');
+                
+                $this->addRelation('person.UserID', 'contributor.ContributorID');
+                $this->addRelation('contributor.ContributorID', 'person.UserID');
                 
 		$this->addRelation('person.UserID', 'document.UserID');
 		$this->addRelation('document.UserID', 'person.UserID');
@@ -63,12 +66,7 @@ class DisaggregatorModel extends ADROModel
                 $this->addRelation('descriptor.DescriptorID', 'descriptorfield.DescriptorID');
                 $this->addRelation('descriptorfield.DescriptorID', 'descriptor.DescriptorID');
                 $this->addRelation('field.FieldID', 'descriptorfield.FieldID');
-                $this->addRelation('descriptorfield.FieldID', 'field.FieldID');
-                
-                $this->addRelation('componentcontributor.ContributorID', 'contributor.ContributorID');
-                $this->addRelation('contributor.ContributorID', 'componentcontributor.ContributorID');
-                $this->addRelation('componentcontributor.ComponentID', 'component.ComponentID');
-                $this->addRelation('component.ComponentID', 'componentcontributor.ComponentID');
+                $this->addRelation('descriptorfield.FieldID', 'field.FieldID');                                
                 
                 $this->addRelation('filevalue.ComponentID', 'component.ComponentID');
                 $this->addRelation('filevalue.FieldID', 'field.FieldID');
@@ -79,6 +77,10 @@ class DisaggregatorModel extends ADROModel
                 $this->addRelation('componentvalue.ComponentID', 'component.ComponentID');
                 $this->addRelation('componentvalue.FieldID', 'field.FieldID');
                 $this->addRelation('componentvalue.Value', 'component.ComponentID');
+                
+                $this->addRelation('contributorvalue.ComponentID', 'component.ComponentID');
+                $this->addRelation('contributorvalue.FieldID', 'field.FieldID');
+                $this->addRelation('contributorvalue.Value', 'contributor.ContributorID');
                 
                 $this->addRelation('component.DocumentID', 'document.DocumentID');
                 $this->addRelation('document.DocumentID', 'component.DocumentID');

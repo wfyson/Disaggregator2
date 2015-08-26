@@ -77,6 +77,9 @@ class ComponentBuilder extends tauAjaxPager
             case "Component":
                 $this->addPage(new ComponentStage($component, $field));
                 break;
+            case "Contributor":
+                $this->addPage(new ContributorStage($component, $field));
+                break;
         }
     }
     

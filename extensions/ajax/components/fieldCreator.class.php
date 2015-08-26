@@ -29,6 +29,7 @@ class FieldCreator extends tauAjaxXmlTag
         $this->select_type->addOption("Text");
         $this->select_type->addOption("File");
         $this->select_type->addOption("Component");
+        $this->select_type->addOption("Contributor");
         $this->select_type->attachEvent("onchange", $this, "e_select_type");
         
         $this->type->addChild($this->subtype = new tauAjaxXmlTag('div'));

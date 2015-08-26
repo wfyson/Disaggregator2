@@ -46,6 +46,7 @@ $loader->load(array(
     'disaggregator/stages/textStage.class.php',
     'disaggregator/stages/fileStage.class.php',
     'disaggregator/stages/componentStage.class.php',
+    'disaggregator/stages/contributorStage.class.php',
     
     'scanners/scanner.class.php',
     'scanners/scannerList.class.php',

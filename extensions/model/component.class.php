@@ -40,6 +40,11 @@ class Component extends adro
                 $query->addRestriction(new adroQueryEq($query, 'componentvalue.ComponentID', $this->ComponentID));
                 $query->addRestriction(new adroQueryEq($query, 'componentvalue.FieldID', $field->FieldID));
                 break;
+            case "Contributor":
+                $query->addTable($model->getTable('contributorvalue'));
+                $query->addRestriction(new adroQueryEq($query, 'contributorvalue.ComponentID', $this->ComponentID));
+                $query->addRestriction(new adroQueryEq($query, 'contributorvalue.FieldID', $field->FieldID));
+                break;
         }
         $fieldValues = $query->run()->toArray();            
         

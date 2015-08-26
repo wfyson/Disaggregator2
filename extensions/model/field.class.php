@@ -31,6 +31,9 @@ class Field extends adro
             case "Component":
                 $fieldValue = $model->componentvalue->getNew();                
                 break;            
+            case "Contributor":
+                $fieldValue = $model->contributorvalue->getNew();                
+                break;     
         }
         
         $fieldValue->ComponentID = $componentID;
