@@ -48,8 +48,8 @@ class ContributorStage extends BuilderStage implements DisaggregatorStage
         
         if($value)
         {
-            $component = $model->contributor->getRecordByPK($value);
-            $this->contributor_input->setData($component->getName());
+            $contributor = $model->contributor->getRecordByPK($value);
+            $this->contributor_input->setData($contributor->getName());
         }
         else
         {

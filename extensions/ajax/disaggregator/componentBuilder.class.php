@@ -31,7 +31,7 @@ class ComponentBuilder extends tauAjaxPager
             $this->component = $model->component->getNew();
             $this->component->DescriptorID = $descriptor->DescriptorID;
             $this->component->DocumentID = $document->DocumentID; 
-            $component->Source = "disaggregator";
+            $this->component->Source = "disaggregator";
             $this->component->save();
         }            
         $this->init();                        
@@ -111,6 +111,7 @@ class FinalStage extends tauAjaxBasicPage
     public function trigger()
     {  
         $this->triggerEvent('progress', array("field"=>$this->field));
+        $this->triggerEvent('show_finished');
         
         $this->setData("");
         

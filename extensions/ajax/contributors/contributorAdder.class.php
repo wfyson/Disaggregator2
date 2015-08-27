@@ -67,11 +67,18 @@ class ContributorAdder extends tauAjaxXmlTag
             }  
             
             if($this->orcid->getValue() != null)
-                $contributor->Orcid = $this->family->getValue();
-            
-            //TODO: check if contributor with given orcid already exists before saving...
-            $contributor->save();
-            
+            {
+                $existingContributor = Contributor::getContributorByOrcid($this->orcid->getValue());
+                if($existingContributor)
+                {
+                    $this->triggerEvent("update_builder", array("value"=> $existingContributor->ContributorID));
+                    $this->triggerEvent("update_browser", array("selected"=>$existingContributor->ContributorID));
+                    return;
+                }
+                $contributor->Orcid = $this->orcid->getValue();
+            }            
+                        
+            $contributor->save();            
             $this->triggerEvent("update_builder", array("value"=> $contributor->ContributorID));
             $this->triggerEvent("update_browser", array("selected"=>$contributor->ContributorID));
         }
