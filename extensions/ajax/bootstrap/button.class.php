@@ -9,7 +9,7 @@ class BootstrapButton extends tauAjaxXmlTag
             $this->setData($text);
                 
             if(isset($class))
-                $this->addClass($class);
+                $this->addClass($class);            
 	}
 }
 

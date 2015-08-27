@@ -42,45 +42,42 @@ class RegisterForm extends tauAjaxXmlTag
             $this->addClass('col-md-6');
             
             //given name input
-            $this->registerForm->addChild(new tauAjaxLabel($this->given = new tauAjaxTextInput(), "Given Name"));
+            $this->registerForm->addChild(new tauAjaxLabel($this->given = new BootstrapTextInput(), "Given Name"));
             $this->registerForm->addChild($this->given); 
             $this->given->setValue($this->contributor->GivenName);
             
             //family name input
-            $this->registerForm->addChild(new tauAjaxLabel($this->family = new tauAjaxTextInput(), "Family Name"));
+            $this->registerForm->addChild(new tauAjaxLabel($this->family = new BootstrapTextInput(), "Family Name"));
             $this->registerForm->addChild($this->family);
             $this->family->setValue($this->contributor->FamilyName);
             
             //username input
             if($this->person->isNew())
             {
-                $this->registerForm->addChild(new tauAjaxLabel($this->username = new tauAjaxTextInput(), "Username"));
+                $this->registerForm->addChild(new tauAjaxLabel($this->username = new BootstrapTextInput(), "Username"));
                 $this->registerForm->addChild($this->username);
             }
             
             //email input
-            $this->registerForm->addChild(new tauAjaxLabel($this->email = new tauAjaxTextInput(), "Email"));
+            $this->registerForm->addChild(new tauAjaxLabel($this->email = new BootstrapTextInput(), "Email"));
             $this->registerForm->addChild($this->email);
             $this->email->setValue($this->person->Email);
+            
+            //orcid input
+            $this->registerForm->addChild(new tauAjaxLabel($this->orcid = new BootstrapTextInput(), "ORCID"));
+            $this->registerForm->addChild($this->orcid);
+            $this->orcid->setValue($this->contributor->Orcid);
                         
             //password input
             if($this->person->isNew())
             {
-                $this->registerForm->addChild(new tauAjaxLabel($this->password = new tauAjaxPasswordInput(), "Password"));
+                $this->registerForm->addChild(new tauAjaxLabel($this->password = new BootstrapPasswordInput(), "Password"));
                 $this->registerForm->addChild($this->password);
             }
             
             //save button
             $this->addChild($this->btn_save = new BootstrapButton("Save", "btn-primary"));
             $this->btn_save->attachEvent("onclick", $this, "e_save");
-            
-            //styling for the editor
-            $this->runJS("                
-                $('.tauAjaxTextInput').addClass('form-control');
-                $('.tauAjaxPasswordInput').addClass('form-control');
-                $('.tauAjaxSelect').addClass('form-control');                 
-                $('button').addClass('btn btn-primary');
-            ");
         }                
         
         public function e_save(tauAjaxEvent $e)
@@ -97,6 +94,7 @@ class RegisterForm extends tauAjaxXmlTag
             //and then try and create a contributor            
             $this->contributor->GivenName = $this->given->getValue();
             $this->contributor->FamilyName = $this->family->getValue();
+            $this->contributor->Orcid = $this->orcid->getValue();
             $this->contributor->UserID = $this->person->UserID;
             
             $this->contributor->save();

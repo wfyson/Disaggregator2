@@ -18,6 +18,7 @@ $loader->load(array(
     'bootstrap/collapsible.class.php',
     'bootstrap/glyphicon.class.php',
     'bootstrap/header.class.php', 
+    'bootstrap/input.class.php', 
     'bootstrap/jumbotron.class.php',
     'bootstrap/label.class.php',
     'bootstrap/listGroup.class.php',
@@ -48,6 +49,9 @@ $loader->load(array(
     'disaggregator/stages/componentStage.class.php',
     'disaggregator/stages/contributorStage.class.php',
     
+    'contributors/contributorBrowser.class.php',
+    'contributors/contributorAdder.class.php',
+    
     'scanners/scanner.class.php',
     'scanners/scannerList.class.php',
     
@@ -61,11 +65,14 @@ $loader->load(array(
 ), dirname(__FILE__) . '/ajax/');
 
 $loader->load(array(
-        'readers/wordReader.class.php',
-        'readers/pdfReader.class.php',
+    'readers/wordReader.class.php',
+    'readers/pdfReader.class.php',
     
-        'scanners/scanner.interface.php',
-        'scanners/oscar.class.php'
+    'scanners/scanner.interface.php',
+    'scanners/oscar.class.php',
+    
+    'orcid/curl.class.php',
+    'orcid/orcid.class.php'
 ), dirname(__FILE__));
 
 

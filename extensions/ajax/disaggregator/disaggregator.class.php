@@ -22,7 +22,10 @@ class DisaggregatorUI extends tauAjaxXmlTag
         
         $this->attachEvent('update_builder', $this, 'e_update_builder');
         
+        $this->attachEvent('show_document', $this, 'e_show_document');
         $this->attachEvent('show_components', $this, 'e_show_components');
+        $this->attachEvent('show_contributors', $this, 'e_show_contributors');
+
     }
         
     public function e_init(tauAjaxEvent $e)
@@ -49,6 +52,9 @@ class DisaggregatorUI extends tauAjaxXmlTag
         
         $this->addChild($this->componentBrowser = new ComponentBrowser($this->person));
         $this->componentBrowser->addClass("hide");
+        
+        $this->addChild($this->contributorBrowser = new ContributorBrowser($this->person));
+        $this->contributorBrowser->addClass("hide");
     }             
     
     public function e_document_select(tauAjaxEvent $e)
@@ -68,13 +74,31 @@ class DisaggregatorUI extends tauAjaxXmlTag
         $this->componentBuilder->setValue($e->getParam("value"));
     }
     
+    public function e_show_document(tauAjaxEvent $e)
+    {
+        $this->componentBrowser->addClass("hide");
+        $this->contributorBrowser->addClass("hide");
+        $this->documentViewer->removeClass("hide");        
+    }
+    
     public function e_show_components(tauAjaxEvent $e)
     {
         $this->documentViewer->addClass("hide");
+        $this->contributorBrowser->addClass("hide");
         $this->componentBrowser->removeClass("hide");
         
         //only show complete components
         $this->componentBrowser->showComponents($e->getParam('descriptor'), true);
+    }
+    
+    public function e_show_contributors(tauAjaxEvent $e)
+    {
+        $this->documentViewer->addClass("hide");
+        $this->componentBrowser->addClass("hide");
+        $this->contributorBrowser->removeClass("hide");
+        
+        //only show complete components
+        $this->contributorBrowser->showContributors();
     }
 }
 

@@ -44,6 +44,8 @@ abstract class BuilderStage extends tauAjaxXmlTag implements tauAjaxPage
     public function trigger()
     {
         $this->triggerEvent('progress', array("field"=>$this->field));
+        
+        $this->triggerEvent('show_document');
     }
             
     public function addScroller()

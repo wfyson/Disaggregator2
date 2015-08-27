@@ -49,7 +49,7 @@ class ContributorStage extends BuilderStage implements DisaggregatorStage
         if($value)
         {
             $component = $model->contributor->getRecordByPK($value);
-            $this->contributor_input->setData($component->getPreviewText());
+            $this->contributor_input->setData($component->getName());
         }
         else
         {
@@ -78,8 +78,7 @@ class ContributorStage extends BuilderStage implements DisaggregatorStage
         parent::trigger();
         
         //hide document viewer and show a list of relevant contirbutors instead        
-        $this->triggerEvent("show_contributors", array("descriptor"=>$this->descriptor));            
-        
+        $this->triggerEvent("show_contributors");                    
     }
     
     public function isComplete()
