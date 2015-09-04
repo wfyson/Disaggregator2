@@ -49,6 +49,9 @@ $loader->load(array(
     'disaggregator/stages/componentStage.class.php',
     'disaggregator/stages/contributorStage.class.php',
     
+    'redactor/redactor.class.php',
+    'redactor/redactorViewer.class.php',
+    
     'contributors/contributorBrowser.class.php',
     'contributors/contributorAdder.class.php',
     

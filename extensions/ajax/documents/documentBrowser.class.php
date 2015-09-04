@@ -95,8 +95,9 @@ class DocumentRow extends tauAjaxXmlTag
                   
             //name
             $this->addChild($this->cell_name = new tauAjaxXmlTag("td"));
-            $this->cell_name->addChild(new tauAjaxHeading(4, $document->Name));	                
-                
+            $this->cell_name->addChild($this->span_name = new tauAjaxSpan($document->Name));
+            $this->span_name->addClass("h4");
+            
             //incomplete components
             $this->addChild($this->cell_incomplete = new tauAjaxXmlTag("td"));
             $this->cell_incomplete->addChild($this->btn_incomplete = new BootstrapLinkButton("Progress ", "?f=overview&document=$document->DocumentID&tab=progress", "btn-warning"));
@@ -150,6 +151,10 @@ class DocumentRow extends tauAjaxXmlTag
                 $descriptor = $i->next();
                 $this->btn_scanner->addItem(new tauAjaxLink($descriptor->Name, "./?f=scanner&document=" . $this->document->DocumentID . "&descriptor=$descriptor->DescriptorID"));
             }
+            
+            //redactor
+            $this->addChild($this->cell_redactor = new tauAjaxXmlTag("td"));
+            $this->cell_redactor->addChild($this->btn_redactor = new BootstrapLinkButton("Redactor ", "?f=redactor&document=$document->DocumentID", "btn-primary"));
 	}                
         
         public function e_disaggregate(tauAjaxEvent $e)

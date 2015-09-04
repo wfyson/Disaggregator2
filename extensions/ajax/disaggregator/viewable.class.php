@@ -54,6 +54,11 @@ class Viewable extends tauAjaxXmlTag
     {
         return $this->content;
     }
+    
+    public function initRedact()
+    {
+        
+    }
 }
 
 ?>
