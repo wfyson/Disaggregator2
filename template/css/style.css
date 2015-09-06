@@ -200,6 +200,7 @@ tr.DocumentRow td:first-child span
  .DocumentViewer
  {
      margin-top: 10px;  
+     padding-right: 10px;
      
      height: 490px;
      overflow-y: auto;
@@ -313,4 +314,23 @@ tr.DocumentRow td:first-child span
  {
      background-color: #5cb85c;
      border-color: #4cae4c;
+ }
+ 
+ /*
+  * Redactor
+  */
+ .RedactorViewer .Viewable textarea
+ {
+     width: 100%;
+     height: 100%;
+ }
+ 
+ .Viewable.redacting
+ {
+     margin-bottom: 5px;
+ }
+ 
+ .RedactorViewer .Viewable .label
+ {
+     
  }

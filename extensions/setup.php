@@ -51,6 +51,7 @@ $loader->load(array(
     
     'redactor/redactor.class.php',
     'redactor/redactorViewer.class.php',
+    'redactor/redactorControls.class.php',
     
     'contributors/contributorBrowser.class.php',
     'contributors/contributorAdder.class.php',
@@ -75,7 +76,9 @@ $loader->load(array(
     'scanners/oscar.class.php',
     
     'orcid/curl.class.php',
-    'orcid/orcid.class.php'
+    'orcid/orcid.class.php',
+    
+    'writers/wordWriter.class.php'
 ), dirname(__FILE__));
 
 

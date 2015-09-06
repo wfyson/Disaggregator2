@@ -4,29 +4,20 @@
  * Display a document to be redacted
  */
 class RedactorViewer extends DocumentViewer
-{
-
-    private $person;
-    private $document;
-
-    public function __construct(DisaggregatorPerson $person, Document $document=null)
+{        
+    public function __construct(DisaggregatorPerson $person, Document $document)
     {
-	parent::__construct('div');
-
-        $this->person = $person;
-        $this->document = $document;      
+        parent::__construct($person, $document);
         
-        $this->init();                        
+        $this->addClass("DocumentViewer");
+                        
+        $this->attachEvent("onclick", $this, "e_stop_redacting");
     }
-        
-    public function init()
-    {   
-        $this->addChild(new Loader());                                                
-        
-        $this->attachEvent('show_document', $this, 'e_show_document');                
-        
-        $this->triggerDelayedEvent(0.5, "show_document");
-    }    
+   
+    public function e_stop_redacting(tauAjaxEvent $e)
+    {
+        $this->triggerEvent("stop_redacting");
+    }
     
     public function e_show_document(tauAjaxEvent $e)
     {                   
@@ -42,8 +33,13 @@ class RedactorViewer extends DocumentViewer
         foreach($viewables as $viewable)
         {
             $this->addChild($viewable);
+            $viewable->initRedact();
         }        
     }
+    
+    
+    
+    
 }
 
 ?>

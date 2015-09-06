@@ -53,6 +53,30 @@ class WordReader
         return $text;
     }   
         
+    public static function getDocumentXML(Document $document)
+    {
+        $root = $_SERVER['DOCUMENT_ROOT'];
+        $documentDir = "sites/Disaggregator2/data/documents/";
+
+        $zip = zip_open($root . $documentDir . $document->Filepath);               
+        $zipEntry = zip_read($zip);        
+        while ($zipEntry != false)
+        {          
+            $entryName = zip_entry_name($zipEntry);
+            
+            //for document content
+            if (strpos($entryName, 'word/document.xml') !== FALSE)
+            {
+                $doc = zip_entry_read($zipEntry, zip_entry_filesize($zipEntry));
+                $xml = simplexml_load_string($doc);
+                return $xml;
+            }            
+            $zipEntry = zip_read($zip);
+        }      
+        
+        
+    }
+    
     public static function readText($zipEntry, $imageDir, $relList)
     {
         $results = array();
@@ -104,7 +128,7 @@ class WordReader
             {
                 //get the path for the pe
                 $peNode = dom_import_simplexml($pe);
-                $pePath = $peNode->getNodePath();                
+                $pePath = $peNode->getNodePath();  
                 if(strpos($pePath, "w:t") !== false) //we have a text
                 {                  
                     $content = $content . $pe;

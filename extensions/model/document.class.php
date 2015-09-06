@@ -89,4 +89,14 @@ class Document extends adro
 	}
         return $textPath;
     }
+    
+    public function canBeRedacted()
+    {
+        if(self::getExtension($this->Filepath) == "docx")
+        {
+            return true;
+        }
+        else
+            return false;
+    }
 }

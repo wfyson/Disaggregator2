@@ -154,7 +154,10 @@ class DocumentRow extends tauAjaxXmlTag
             
             //redactor
             $this->addChild($this->cell_redactor = new tauAjaxXmlTag("td"));
-            $this->cell_redactor->addChild($this->btn_redactor = new BootstrapLinkButton("Redactor ", "?f=redactor&document=$document->DocumentID", "btn-primary"));
+            if($this->document->canBeRedacted())
+            {
+                $this->cell_redactor->addChild($this->btn_redactor = new BootstrapLinkButton("Redactor ", "?f=redactor&document=$document->DocumentID", "btn-primary"));
+            }
 	}                
         
         public function e_disaggregate(tauAjaxEvent $e)

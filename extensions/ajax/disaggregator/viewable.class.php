@@ -1,6 +1,6 @@
 <?php
 
-class Viewable extends tauAjaxXmlTag
+ class Viewable extends tauAjaxXmlTag
 {
     public function __construct($content, $style, $styleValue=null, $xpath=null)
     {        
@@ -20,6 +20,15 @@ class Viewable extends tauAjaxXmlTag
     
     public function init()
     {        
+        $this->setData("");
+        
+        $this->setAttribute("path", $this->xpath);
+        
+        if($this->redacted)
+        {
+            $this->addChild(new BootstrapLabel("redacted", "danger"));            
+        }
+        
         switch($this->style)
         {
             case "para":
@@ -57,7 +66,70 @@ class Viewable extends tauAjaxXmlTag
     
     public function initRedact()
     {
+        $this->attachEvent("onclick", $this, "e_start_redact");
+    }
+
+    public function e_start_redact(tauAjaxEvent $e)
+    {
+        $e->disableBubble();
         
+        if(!$this->redacting)
+            $this->triggerEvent("start_redacting", array("viewable"=>$this));
+    }
+    
+    public function start_redacting()
+    {   
+        //store the fact we are redacting this viewable        
+        $this->redacting = true;
+        $this->addClass("redacting");
+        
+        switch($this->style)
+        {
+            case "para":
+                $this->paraRedacting();
+            case "heading":
+                $this->paraRedacting();
+        }
+    }
+    
+    public function stop_redacting()
+    {
+        if($this->redacting)
+        {
+            //no longer redacting
+            $this->redacting = false;
+            $this->removeClass("redacting");
+            
+            //get the new contents
+            $newContent = $this->textArea->getValue();
+            
+            //if different, store new content
+            if($newContent != $this->content)
+            {
+                $this->content = $newContent;
+                $this->redacted = true;
+            }
+            
+            $this->init();
+        }
+    }
+    
+    //set the viewable up for redacting paragraphs
+    public function paraRedacting()
+    {
+        //keep the height of the previously displayed paragraph
+        $this->runJS("
+            var height = $(_target).height();
+            $(_target).css('height', height+10);
+        ");
+        
+        //remove the inital contents and replace 
+        $this->setData("");
+        
+        //replace with an editable version
+        $this->addChild($this->textArea = new tauAjaxTextarea());
+        
+        $this->textArea->setValue($this->content);
     }
 }
 

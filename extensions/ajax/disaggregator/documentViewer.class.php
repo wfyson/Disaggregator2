@@ -6,13 +6,13 @@
 class DocumentViewer extends tauAjaxXmlTag
 {
 
-    private $person;
-    private $document;
+    protected $person;
+    protected $document;
 
     public function __construct(DisaggregatorPerson $person, Document $document=null)
     {
 	parent::__construct('div');
-
+        
         $this->person = $person;
         $this->document = $document;      
         
@@ -28,6 +28,12 @@ class DocumentViewer extends tauAjaxXmlTag
         $this->attachEvent('show_document', $this, 'e_show_document');                
         
         $this->triggerDelayedEvent(0.5, "show_document");
+        
+        //set the height to fill the screen
+        $this->runJS("
+            var height = $(window).innerHeight();
+            $(_target).css('height', height-195);
+        ");
     }
     
     public function e_update(tauAjaxEvent $e)

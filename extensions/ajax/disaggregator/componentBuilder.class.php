@@ -130,10 +130,7 @@ class FinalStage extends tauAjaxBasicPage
             $this->addChild(new tauAjaxParagraph("The following mandatory fields still need some information: " . implode(", ", $complete)));
         }
         
-        $this->addChild($this->btn_homepage = new tauAjaxLink("Back to My Documents", "/"));               
-        $this->btn_homepage->addClass("btn btn-success");
-        
-              
+        $this->addChild(new BootstrapLinkButton("Back to My Documents", "/", "btn-success"));        
     }
     
 }
