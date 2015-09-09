@@ -52,6 +52,11 @@ tr.DocumentRow td:first-child span
     display: block;
 }
 
+tr.DocumentRow td:first-child span .glyphicon
+{
+    display: inline-block;
+}
+
 /*
     Components
 */
@@ -325,12 +330,15 @@ tr.DocumentRow td:first-child span
      height: 100%;
  }
  
+ .RedactorViewer .Viewable.redacted
+ {
+    border-left: 5px solid #ce4844;
+    border-radius: 3px;
+    padding-left: 3px;
+    margin-bottom: 5px;
+ }
+ 
  .Viewable.redacting
  {
      margin-bottom: 5px;
- }
- 
- .RedactorViewer .Viewable .label
- {
-     
  }

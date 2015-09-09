@@ -65,6 +65,9 @@
                             
 			<?php if($loggedin){ ?>
 			<li>
+                            <a href="?f=portfolio"><span class="glyphicon glyphicon-book"></span> Portfolio</a>
+                        </li>                        
+                        <li>
                             <a href="?f=profile"><span class="glyphicon glyphicon-user"></span> Profile</a>
                         </li>
                         <li>

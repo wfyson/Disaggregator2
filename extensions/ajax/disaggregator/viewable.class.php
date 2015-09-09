@@ -26,7 +26,7 @@
         
         if($this->redacted)
         {
-            $this->addChild(new BootstrapLabel("redacted", "danger"));            
+            $thing = $this->addClass("redacted");
         }
         
         switch($this->style)
@@ -88,6 +88,8 @@
             case "para":
                 $this->paraRedacting();
             case "heading":
+                $this->paraRedacting();
+            case "caption":
                 $this->paraRedacting();
         }
     }

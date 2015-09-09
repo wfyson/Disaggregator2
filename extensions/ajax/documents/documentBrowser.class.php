@@ -95,9 +95,13 @@ class DocumentRow extends tauAjaxXmlTag
                   
             //name
             $this->addChild($this->cell_name = new tauAjaxXmlTag("td"));
-            $this->cell_name->addChild($this->span_name = new tauAjaxSpan($document->Name));
+            $this->cell_name->addChild($this->span_name = new tauAjaxSpan("$document->Name "));
             $this->span_name->addClass("h4");
-            
+            if($this->document->Security == "User" || $this->document->Security == "Contributors")
+                $this->span_name->addChild(new Glyphicon("lock"));
+            else
+                $this->span_name->addChild(new Glyphicon("eye-open"));
+                                   
             //incomplete components
             $this->addChild($this->cell_incomplete = new tauAjaxXmlTag("td"));
             $this->cell_incomplete->addChild($this->btn_incomplete = new BootstrapLinkButton("Progress ", "?f=overview&document=$document->DocumentID&tab=progress", "btn-warning"));
