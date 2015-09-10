@@ -20,7 +20,7 @@ class DocumentOverviewUI extends tauAjaxXmlTag
 
         $this->attachEvent('init', $this, 'e_init');   
         $this->attachEvent('document_select', $this, 'e_document_select');        
-        $this->attachEvent('refresh', $this, 'e_refresh');
+//        $this->attachEvent('refresh', $this, 'e_refresh');
     }
         
     public function e_init(tauAjaxEvent $e)

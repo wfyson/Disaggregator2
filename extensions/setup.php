@@ -64,6 +64,10 @@ $loader->load(array(
     'register/register.class.php',
     
     'profile/profile.class.php',   
+    
+    'portfolio/portfolio.class.php',
+    'portfolio/documentPortfolio.class.php',
+    'portfolio/contributionPortfolio.class.php',
 
 
 ), dirname(__FILE__) . '/ajax/');

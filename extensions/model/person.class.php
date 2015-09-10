@@ -46,14 +46,16 @@ class DisaggregatorPerson extends adro implements tauUser
 		}
 	}
 
-	public function getdocuments($reverse = false)
+	public function getdocuments($reverse = false, $security = false)
 	{
 		$model = DisaggregatorModel::get();
 		$query = new ADROQuery($model);
                 $query->addTable($model->getTable('document'));
 		$query->addRestriction(new adroQueryEq($query, 'document.UserID', $this->UserID));
+                if($security)
+                    $query->addRestriction(new adroQueryEq($query, 'document.Security', $security));
 		if(!$reverse)
-			$query->setOrder('document.DocumentID DESC');
+                    $query->setOrder('document.DocumentID DESC');
 		return $query->run();	
 	}
         

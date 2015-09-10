@@ -38,6 +38,12 @@ class Document extends adro
         return iotaPath::makePath('?f=documents', $this->Filepath);
     }
     
+    public function getDownloadPath()
+    {
+        $conf = iotaConf::getInstance();
+        return iotaPath::makePath($this->Filepath);
+    }
+    
     public function prepareForViewer()
     {
         //establish how we need to read the document and return a list of viewable objects

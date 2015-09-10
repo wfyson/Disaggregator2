@@ -79,8 +79,7 @@ class DocumentList extends BootstrapTable
 	public function addDoc(Document $doc)
 	{
 		return $this->body->addChild(new DocumentRow($doc));
-	}
-	
+	}	
 }
 
 class DocumentRow extends tauAjaxXmlTag
