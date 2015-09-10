@@ -17,7 +17,16 @@ class ProfileUI extends tauAjaxXmlTag
         
         public function e_init(tauAjaxEvent $e)
         {          
-            $this->addChild($this->registerForm = new RegisterForm($this->person));           
+            $this->addChild($this->registerForm = new RegisterForm($this->person)); 
+            
+            $this->addChild($this->right = new tauAjaxXmlTag('div'));
+            $this->right->addClass("col-md-5 col-md-offset-1");
+            
+            $this->right->addChild(new tauAjaxLabel($this->input_portfolio = new BootstrapTextInput(), "Portfolio"));
+            $this->input_portfolio->setValue($this->person->getPortfolioLink());
+            $this->input_portfolio->addClass("portfolio_link");
+            $this->input_portfolio->setAttribute("readonly", "readonly");
+            $this->right->addChild($this->input_portfolio);
         }                               
 
 }

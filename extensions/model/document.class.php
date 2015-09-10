@@ -105,4 +105,14 @@ class Document extends adro
         else
             return false;
     }
+    
+    public function changeSecurity()
+    {
+        if($this->Security == "User")
+            $this->Security = "Public";
+        elseif($this->Security == "Public")
+            $this->Security = "User";
+        
+        $this->save();
+    }
 }

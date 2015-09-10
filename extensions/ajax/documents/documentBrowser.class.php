@@ -11,7 +11,7 @@ class DocumentBrowser extends tauAjaxXmlTag
 
             $this->person = $person;
 
-            $this->addChild(new tauAjaxHeading(2, 'My Documents'));
+            $this->addChild(new BootstrapHeader('My Documents'));
 			
             $this->attachEvent('init', $this, 'e_init');
             $this->attachEvent('refresh', $this, 'e_refresh');
@@ -34,18 +34,18 @@ class DocumentBrowser extends tauAjaxXmlTag
 
 	public function e_uploaded(tauAjaxEvent $e)
     	{
-        	// We catch the event that we throw - It needs to be ignored!
+                // We catch the event that we throw - It needs to be ignored!
 	        if($e->getParam('attachment') !== false)
 		{						
 			return;
-		}        
-
+		}    
+                
 	        $file = $e->getParam('file');
 	        $name = $e->getParam('name');
         
 	        $e->disableBubble();
         
-	        $att = Document::createFromUpload($file,  $name, $this->person);        	       
+                $att = Document::createFromUpload($file,  $name, $this->person);        	       
         
 	        // Add the attachment as a parameter on the event and re-trigger it
 	        $this->triggerEvent('uploadcomplete', array('file'=>$file, 'name'=>$name, 'attachment'=>$att));
@@ -54,6 +54,7 @@ class DocumentBrowser extends tauAjaxXmlTag
 	
 	public function e_refresh(tauAjaxEvent $e)
 	{
+            error_log("refreshing");
 		$this->person->flushRelations();
 		$documents = $this->person->getdocuments();	
 		$this->documentList->showDocuments($documents);
@@ -91,19 +92,27 @@ class DocumentRow extends tauAjaxXmlTag
             parent::__construct("tr");
 
             $this->document = $document;
-                  
+            
+            $this->init();
+        }
+         
+        public function init()
+        {
+            $this->setData("");
+            
             //name
             $this->addChild($this->cell_name = new tauAjaxXmlTag("td"));
-            $this->cell_name->addChild($this->span_name = new tauAjaxSpan("$document->Name "));
+            $this->cell_name->addChild($this->span_name = new tauAjaxSpan($this->document->Name . " "));
             $this->span_name->addClass("h4");
             if($this->document->Security == "User" || $this->document->Security == "Contributors")
-                $this->span_name->addChild(new Glyphicon("lock"));
+                $this->cell_name->addChild($this->security = new Glyphicon("lock"));
             else
-                $this->span_name->addChild(new Glyphicon("eye-open"));
+                $this->cell_name->addChild($this->security = new Glyphicon("eye-open"));
+            $this->security->attachEvent("onclick", $this, "e_security");
                                    
             //incomplete components
             $this->addChild($this->cell_incomplete = new tauAjaxXmlTag("td"));
-            $this->cell_incomplete->addChild($this->btn_incomplete = new BootstrapLinkButton("Progress ", "?f=overview&document=$document->DocumentID&tab=progress", "btn-warning"));
+            $this->cell_incomplete->addChild($this->btn_incomplete = new BootstrapLinkButton("Progress ", "?f=overview&document=" . $this->document->DocumentID . "&tab=progress", "btn-warning"));
                 
             $incomplete = $this->document->getIncompleteComponents();
             if(count($incomplete) == 0)
@@ -117,7 +126,7 @@ class DocumentRow extends tauAjaxXmlTag
             
             //complete components
             $this->addChild($this->cell_components = new tauAjaxXmlTag("td"));
-            $this->cell_components->addChild($this->btn_components = new BootstrapLinkButton("Components ", "?f=overview&document=$document->DocumentID&tab=complete", "btn-success"));
+            $this->cell_components->addChild($this->btn_components = new BootstrapLinkButton("Components ", "?f=overview&document=" . $this->document->DocumentID . "&tab=complete", "btn-success"));
                 
             $components = $this->document->getCompleteComponents();
             if(count($components) == 0)
@@ -159,7 +168,7 @@ class DocumentRow extends tauAjaxXmlTag
             $this->addChild($this->cell_redactor = new tauAjaxXmlTag("td"));
             if($this->document->canBeRedacted())
             {
-                $this->cell_redactor->addChild($this->btn_redactor = new BootstrapLinkButton("Redactor ", "?f=redactor&document=$document->DocumentID", "btn-primary"));
+                $this->cell_redactor->addChild($this->btn_redactor = new BootstrapLinkButton("Redactor ", "?f=redactor&document=" . $this->document->DocumentID, "btn-primary"));
             }
 	}                
         
@@ -177,6 +186,12 @@ class DocumentRow extends tauAjaxXmlTag
                 "
                     window.location.href = './?f=scanner&document=" . $this->document->DocumentID . "';
                 ");
+        }
+        
+        public function e_security(tauAjaxEvent $e)
+        {
+            $this->document->changeSecurity();
+            $this->init();
         }
 
 }

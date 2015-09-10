@@ -11,7 +11,8 @@ class PortfolioUI extends tauAjaxXmlTag
 
         if($contributor != null)
         {
-            $this->addChild($this->header = new BootstrapHeader($contributor->getName() . "'s Portfolio"));
+            $this->addChild($this->header = new BootstrapHeader($contributor->getName() . "'s Portfolio",
+                    $contributor->Orcid));
 
             $this->contributor = $contributor;
 
@@ -36,9 +37,9 @@ class PortfolioUI extends tauAjaxXmlTag
         $this->tabs->addTab($documents);
         
         //contributions tab
-        $contributions = new BootstrapTabPane("Contibutions", "contributions");
+        $contributions = new BootstrapTabPane("Contributions", "contributions");
         $contributions->addChild(new tauAjaxHeading(3, "Contributions"));
-        $contributions->addChild($this->contributionPortfolio = new ContributionPortfolio());
+        $contributions->addChild($this->contributionPortfolio = new ContributionPortfolio($this->contributor));
         $this->tabs->addTab($contributions);
         
         $this->runJS("
@@ -50,9 +51,24 @@ class PortfolioUI extends tauAjaxXmlTag
     
     public function e_refresh(tauAjaxEvent $e)
     {
-	$this->documentPortfolio->showDocuments($this->contributor->getDocuments());                
-    }
+        if($this->contributor->getDocuments())
+            $this->documentPortfolio->showDocuments($this->contributor->getDocuments());
+        else
+        {
+            $this->documentPortfolio->body->addChild(new EmptyRow("documents"));
+        }        
+        $this->contributionPortfolio->showContributions($this->contributor->getComponents());    
+    }       
+}
 
+class EmptyRow extends tauAjaxXmlTag
+{
+    public function __construct($name)
+    {
+        parent::__construct("tr");        
+        $this->addChild($this->cell_no = new tauAjaxXmlTag("td"));        
+        $this->cell_no->addChild(new tauAjaxHeading(4, "No $name to show."));
+    }
 }
 
 ?>

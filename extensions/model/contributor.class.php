@@ -27,7 +27,7 @@ class Contributor extends adro
         return $contributors->get(0);
     }
     
-    public function getDocuments($security = "User")
+    public function getDocuments($security = "Public")
     {
         $model = DisaggregatorModel::get();
         $person = $model->person->getRecordByPK($this->UserID);
@@ -35,12 +35,31 @@ class Contributor extends adro
         if($person)
         {
             $documents = $person->getDocuments(false, $security);
-            return $documents;
+            if($documents->count() > 0)            
+                return $documents;
+            else
+                return false;
         }
         else
         {
             return false;
         }
+    }
+    
+    public function getComponents()
+    {
+        $model = DisaggregatorModel::get();
+        $results = array();
+        
+        $cvs = $this->getcontributorvalues();
+        $cvi = $cvs->getIterator();
+        while($cvi->hasNext())
+        {
+            $cv = $cvi->next();
+            $component = $model->component->getRecordByPK($cv->ComponentID);
+            $results[] = $component;
+        }
+        return $results;
     }
 
 }

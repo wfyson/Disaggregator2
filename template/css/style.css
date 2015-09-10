@@ -32,30 +32,60 @@
     margin-top: 10px;
 }
 
-
-
 /*
     Documents
 */
+.DocumentBrowser .TauAjaxUpload
+{
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.DocumentBrowser .progress
+{
+    background-color: #337ab7;
+}
+
+.DocumentBrowser .upload_progress
+{
+    display: none;
+}
+
 .DocumentList
 {
     margin-top: 5px;
 }
 
 
-tr.DocumentRow td:first-child span
+tr.DocumentRow td:first-child span:first-child
 {   
-    width: 330px;
+    max-width: 310px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    display: block;
+    display: inline-block;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 5px;
 }
 
-tr.DocumentRow td:first-child span .glyphicon
+tr.DocumentRow td:first-child .glyphicon
 {
     display: inline-block;
+    cursor: pointer;
+    vertical-align: top;
 }
+
+tr.DocumentRow td:first-child .glyphicon-lock
+{
+    color: #ce4844;
+}
+
+tr.DocumentRow td:first-child .glyphicon-eye-open
+{
+    color: #3c763d;
+}
+
 
 /*
     Components

@@ -146,5 +146,20 @@ class Component extends adro
         }
         return $incompleteComponents;
     }
+    
+    public function getContributorRoles(Contributor $contributor)
+    {
+        $model = DisaggregatorModel::get();
+        
+        $fields = $model->sqlRawQuery("SELECT * FROM field INNER JOIN contributorvalue ON contributorvalue.FieldID=field.FieldID WHERE contributorvalue.FieldID = field.FieldID  AND  (contributorvalue.Value='$contributor->ContributorID' AND contributorvalue.ComponentID='$this->ComponentID');");
+
+        $roles = array();
+        foreach($fields as $field)
+        {
+            $roles[] = $field['Name'];
+        }
+        
+        return $roles;
+    }
 }
 
