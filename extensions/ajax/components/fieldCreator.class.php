@@ -182,12 +182,12 @@ class FieldListItem extends tauAjaxListItem
         $type = $field->getTypeName();        
         $this->details->addChild(new tauAjaxSpan("$field->Name ($type)"));
         
-        //delete button
+        //delete button - this would be problematic if components existed using these fields...
         if($editable)
         {
-            $this->addChild($this->btn_delete = new BootstrapButton("", "btn-danger"));
-            $this->btn_delete->addChild(new Glyphicon("trash"));
-            $this->btn_delete->attachEvent("onclick", $this, "e_delete");
+            //$this->addChild($this->btn_delete = new BootstrapButton("", "btn-danger"));
+            //$this->btn_delete->addChild(new Glyphicon("trash"));
+            //$this->btn_delete->attachEvent("onclick", $this, "e_delete");
         }
     }
     

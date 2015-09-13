@@ -37,5 +37,19 @@ class FileValue extends adro implements FieldValue
     {
         return $this->Name;
     }
+    
+    public function delete()
+    {
+        //first delete the file...
+        $root = $_SERVER['DOCUMENT_ROOT'];
+        $fileDir = "sites/Disaggregator2/data/files/";
+        $path = $root . $fileDir . $this->Value;
+        
+        error_log("deleting....$path");
+        
+        unlink($path);
+        
+        parent::delete();
+    }
 }
 

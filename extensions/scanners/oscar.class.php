@@ -20,7 +20,7 @@ class OscarCompounds implements DocumentScanner
         //get java path
         $javaDir = "sites/Disaggregator2/java/";
         
-        //run the java
+        //run the java        
         exec('java -cp ' . $javaDir . '/oscar:' . $javaDir . '/oscar/* OscarFile "' . $plainText . '"', $output);
         
         //prepare the results

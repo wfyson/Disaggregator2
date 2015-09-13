@@ -161,5 +161,33 @@ class Component extends adro
         
         return $roles;
     }
+    
+    public function delete()
+    {
+        //delete all associated values
+        $textvalues = $this->gettextvalues();
+        $this->deleteValues($textvalues);
+        
+        $componentvalues = $this->getcomponentvalues();
+        $this->deleteValues($componentvalues);
+                
+        $filevalues = $this->getfilevalues();
+        $this->deleteValues($filevalues);
+        
+        $contributorvalues = $this->getcontributorvalues();
+        $this->deleteValues($contributorvalues);
+        
+        parent::delete();
+    }
+    
+    public function deleteValues(ADROSet $values)
+    {
+        $iterator = $values->getIterator();
+        while($iterator->hasNext())
+        {
+            $v = $iterator->next();
+            $v->delete();
+        }        
+    }
 }
 

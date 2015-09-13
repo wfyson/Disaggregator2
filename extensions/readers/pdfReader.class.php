@@ -4,7 +4,7 @@
  * Reads a given pdf file, extracting the text so that we might 
  * disaggregate content from it.
  */
-
+/*
 require $_SERVER['DOCUMENT_ROOT'] . 'sites/Disaggregator2/vendor/autoload.php';
 
 class PDFReader
@@ -47,6 +47,32 @@ class PDFReader
     }   
     
 
+}
+*/
+
+class PDFReader
+{    
+    public static function read(Document $document)
+    {         
+        //get java path
+        $javaDir = "sites/Disaggregator2/java";
+        
+        //get the path to the PDF
+        $root = $_SERVER['DOCUMENT_ROOT'];
+        $documentDir = "sites/Disaggregator2/data/documents/";                       
+        $path = $root . $documentDir . $document->Filepath;
+        
+        //now get the text
+        exec('java -cp ' . $javaDir . '/pdfbox:' . $javaDir . '/pdfbox/* PDFReader "' . $path . '"', $output);
+        
+        foreach($output as $page)
+        {
+            $results[] = new Viewable($page, "page");
+        }
+        
+        return $results;
+        
+    } 
 }
 
 ?>

@@ -38,7 +38,7 @@ class ContributorBrowser extends tauAjaxXmlTag
 
 class ContributorList extends ListGroup
 {
-    public function showContributors($selected)
+    public function showContributors($selected=NULL)
     {
         $this->setData('');		
 
@@ -66,6 +66,12 @@ class ContributorListItem extends ListGroupItem
     public function __construct(Contributor $contributor)
     {
         parent::__construct($contributor->getName());
+        
+        if($contributor->Orcid != "")
+        {
+            $this->addChild($this->orcid = new tauAjaxSpan(" $contributor->Orcid"));
+            $this->orcid->addClass("orcid");
+        }
         
         $this->contributor = $contributor;
         
