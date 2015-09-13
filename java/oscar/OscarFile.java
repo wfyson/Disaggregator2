@@ -16,19 +16,22 @@ public class OscarFile
 	{
 		//read string from file
 		try{
-			List<String> lines = Files.readAllLines(Paths.get(path), Charset.forName("UTF-8"));		
-
 			Oscar oscar = new Oscar();
-			List<ResolvedNamedEntity> entities = oscar.findAndResolveNamedEntities(lines.get(0));
-			for (ResolvedNamedEntity ne : entities)
+
+			List<String> lines = Files.readAllLines(Paths.get(path), Charset.forName("UTF-8"));		
+			for (String line : lines)
 			{
-				//System.out.println(ne.getSurface());	
-				ChemicalStructure stdInchi = ne.getFirstChemicalStructure(FormatType.STD_INCHI);
-				if(stdInchi != null)
+				List<ResolvedNamedEntity> entities = oscar.findAndResolveNamedEntities(line);
+				for (ResolvedNamedEntity ne : entities)
 				{
-					System.out.println(ne.getSurface());
-				}
-			}
+					//System.out.println(ne.getSurface());	
+					ChemicalStructure stdInchi = ne.getFirstChemicalStructure(FormatType.STD_INCHI);
+					if(stdInchi != null)
+					{
+						System.out.println(ne.getSurface());
+					}
+				}	
+			}					
 		} catch (IOException e){
 			e.printStackTrace();
 		}

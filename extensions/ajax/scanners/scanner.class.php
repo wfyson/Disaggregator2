@@ -178,6 +178,8 @@ class ScannerResultRow extends tauAjaxXmlTag
         $this->cell_saved->addChild($this->btn_saved = new BootstrapButton("Saved ", "btn-success"));
         $this->btn_saved->addChild(new Glyphicon("ok"));
         $this->btn_saved->addClass("saved");
+        
+        $this->addChild($this->cell_discard = new tauAjaxXmlTag("td"));
     }
     
     public function e_discard(tauAjaxEvent $e)

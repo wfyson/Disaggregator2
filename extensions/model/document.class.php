@@ -88,7 +88,7 @@ class Document extends adro
             {
                 if(in_array($viewable->getStyle(), array("para", "page")))
                 {
-                    $plainText[] = $viewable->getContent();
+                    $plainText[] = $viewable->getContent() . PHP_EOL;
                 }
             }            
             file_put_contents($textPath, $plainText);
