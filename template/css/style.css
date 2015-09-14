@@ -59,7 +59,7 @@
 
 tr.DocumentRow td:first-child span:first-child
 {   
-    max-width: 310px;
+    max-width: 289px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
