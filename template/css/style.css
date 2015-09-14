@@ -87,6 +87,10 @@ tr.DocumentRow td:first-child .glyphicon-eye-open
     color: #3c763d;
 }
 
+tr.DocumentRow td:first-child .glyphicon-cog
+{
+    margin-left: 3px;
+}
 
 /*
     Components
@@ -383,4 +387,12 @@ tr.DocumentRow td:first-child .glyphicon-eye-open
  .Viewable.redacting
  {
      margin-bottom: 5px;
+ }
+ 
+ /*
+    Document Editing
+ */
+ .DocumentUI .TauAjaxADRORecord .btn
+ {
+     margin-top: 5px;
  }

@@ -30,6 +30,7 @@ $loader->load(array(
     'bootstrap/tabs.class.php',
     
     'documents/documentBrowser.class.php',
+    'documents/document.class.php',
 	
     'components/componentBrowser.class.php',
     'components/components.class.php',

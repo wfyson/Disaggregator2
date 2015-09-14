@@ -109,7 +109,10 @@ class DocumentRow extends tauAjaxXmlTag
             else
                 $this->cell_name->addChild($this->security = new Glyphicon("eye-open"));
             $this->security->attachEvent("onclick", $this, "e_security");
-                                   
+                
+            $this->cell_name->addChild($this->security_link = new tauAjaxLink("", "/?f=document&document=" . $this->document->DocumentID));
+            $this->security_link->addChild($this->security = new Glyphicon("cog"));
+            
             //incomplete components
             $this->addChild($this->cell_incomplete = new tauAjaxXmlTag("td"));
             $this->cell_incomplete->addChild($this->btn_incomplete = new BootstrapLinkButton("Progress ", "?f=overview&document=" . $this->document->DocumentID . "&tab=progress", "btn-warning"));
