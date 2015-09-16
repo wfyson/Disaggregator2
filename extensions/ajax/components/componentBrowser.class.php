@@ -25,7 +25,7 @@ class ComponentBrowser extends tauAjaxXmlTag
             $this->componentList->showComponents($this->descriptor, $complete);
                        
             //add a component viewer for more detail
-            $this->addChild($this->componentViewer = new ComponentViewer($this->person));
+            $this->addChild($this->componentViewer = new ComponentViewer());
             $this->componentViewer->addClass("col-md-5 col-md-offset-2");
             $this->attachEvent("show_component", $this, "e_show_component");
         }
@@ -83,13 +83,10 @@ class ComponentListItem extends ListGroupItem
 class ComponentViewer extends tauAjaxXmlTag        
 {
     private $component;
-    private $person;
     
-    public function __construct(DisaggregatorPerson $person)
+    public function __construct()
     {
-        parent::__construct('div');
-        
-        $this->person = $person;
+        parent::__construct('div');        
     }    
     
     public function showComponent(Component $component)

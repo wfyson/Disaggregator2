@@ -63,7 +63,7 @@ class ContributionPortfolioRow extends tauAjaxXmlTag
 
         //view button
         $this->addChild($this->cell_view = new tauAjaxXmlTag("td"));
-        $this->cell_view->addChild(new BootstrapLinkButton("View", "", 'btn-primary'));
+        $this->cell_view->addChild(new BootstrapLinkButton("View", "/?f=component&component=" . $this->component->ComponentID, 'btn-primary'));
     }
 
 }

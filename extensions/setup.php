@@ -37,6 +37,7 @@ $loader->load(array(
     'components/descriptorBrowser.class.php',
     'components/descriptorCreator.class.php',
     'components/fieldCreator.class.php',
+    'components/componentPage.class.php',
     
     'disaggregator/disaggregator.class.php',
     'disaggregator/documentSelector.class.php',

@@ -26,7 +26,7 @@
         
         if($this->redacted)
         {
-            $thing = $this->addClass("redacted");
+            $this->addClass("redacted");
         }
         
         switch($this->style)

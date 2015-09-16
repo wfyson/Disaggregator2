@@ -59,16 +59,16 @@
                         <a class="navbar-brand" href="/">Disaggregator</a>
                     </div>
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="?f=components"><span class="glyphicon glyphicon-cog"></span> Components</a>
-                        </li>
-                            
+                                                   
 			<?php if($loggedin){ ?>
 			<li>
                             <a href="?f=portfolio"><span class="glyphicon glyphicon-book"></span> Portfolio</a>
                         </li>                        
                         <li>
                             <a href="?f=profile"><span class="glyphicon glyphicon-user"></span> Profile</a>
+                        </li>
+                        <li>
+                            <a href="?f=components"><span class="glyphicon glyphicon-cog"></span> Components</a>
                         </li>
                         <li>
 			    <a id="logout" href="?f=logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
