@@ -64,11 +64,30 @@
         return $this->content;
     }
     
+    //activate special on click disaggregator functionality
+    public function initDisaggregator()
+    {
+        $this->attachEvent("onclick", $this, "e_disaggregate");
+    }
+    
+    public function e_disaggregate()
+    {
+        if($this->style == "image")
+        {
+            //copy image to file
+            $value = $this->copyImage();                        
+            
+            $this->triggerEvent("update_builder", array(value=>$value));
+        }
+    }
+    
+    //activate special on click redactor functionality
     public function initRedact()
     {
         $this->attachEvent("onclick", $this, "e_start_redact");
     }
 
+    //redactorUI handles the redacting process
     public function e_start_redact(tauAjaxEvent $e)
     {
         $e->disableBubble();
@@ -77,6 +96,25 @@
             $this->triggerEvent("start_redacting", array("viewable"=>$this));
     }
     
+    //when selecting an image from a document, we need a copy of this to store elsewhere for the component   
+    public function copyImage()
+    {        
+        $end = strrpos($this->content, "/");
+        $difference = 0 - (strlen($this->content) - $end);        
+        $start = strrpos($this->content, "/", $difference-1);        
+        $image = str_replace("/", "_", substr($this->content, $start+1));                        
+                
+        //derive path
+        $root = $_SERVER['DOCUMENT_ROOT'];
+        $imageDir = "sites/Disaggregator2/data/files/";
+        $path = $root . $imageDir . $image;
+        
+        copy($this->content, $path);
+        
+        return $image;                
+    }
+    
+    //alter viewable accordingly so we can redact
     public function start_redacting()
     {   
         //store the fact we are redacting this viewable        
@@ -94,6 +132,7 @@
         }
     }
     
+    //save changes and restore original state of viewable
     public function stop_redacting()
     {
         if($this->redacting)

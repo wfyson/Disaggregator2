@@ -59,7 +59,7 @@ class DisaggregatorPerson extends adro implements tauUser
         if(!$reverse)
             $query->setOrder('document.DocumentID DESC');
         return $query->run();
-    }
+    }    
 
     public function getContributor()
     {

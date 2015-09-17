@@ -1,7 +1,7 @@
 <?php
 
 class Contributor extends adro 
-{
+{   
     public function getName()
     {
         return "$this->GivenName $this->FamilyName";
@@ -27,7 +27,7 @@ class Contributor extends adro
         return $contributors->get(0);
     }
     
-    public function getDocuments($security = "Public")
+    public function getDocuments($security = false)
     {
         $model = DisaggregatorModel::get();
         $person = $model->person->getRecordByPK($this->UserID);
@@ -35,7 +35,7 @@ class Contributor extends adro
         if($person)
         {
             $documents = $person->getDocuments(false, $security);
-            if($documents->count() > 0)            
+            if($documents->count() > 0)
                 return $documents;
             else
                 return false;
@@ -44,7 +44,7 @@ class Contributor extends adro
         {
             return false;
         }
-    }
+    }       
     
     public function getComponents()
     {
@@ -60,6 +60,26 @@ class Contributor extends adro
             $results[] = $component;
         }
         return $results;
+    }
+    
+    public function getUserComponents()
+    {                
+        $documents = $this->getDocuments();
+        if($documents)
+        {            
+            $components = [];            
+            $i = $documents->getIterator();
+            while($i->hasNext())
+            {		
+		$doc = $i->next();
+                $components = array_merge($components, $doc->getCompleteComponents());                                
+            }
+            return $components;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

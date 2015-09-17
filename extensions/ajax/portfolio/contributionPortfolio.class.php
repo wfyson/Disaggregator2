@@ -57,8 +57,11 @@ class ContributionPortfolioRow extends tauAjaxXmlTag
         //name and roles
         $this->addChild($this->cell_name = new tauAjaxXmlTag("td"));
         $roles = $this->component->getContributorRoles($this->contributor);
-        $this->cell_name->addChild($this->span_name = new tauAjaxSpan($this->component->getPreviewText()
-                . " (" . implode(", ", $roles) . ")"));
+        
+        $entry = $this->component->getPreviewText();
+        if($roles)
+            $entry .= " (" . implode(", ", $roles) . ")";
+        $this->cell_name->addChild($this->span_name = new tauAjaxSpan($entry));
         $this->span_name->addClass("h4");
 
         //view button

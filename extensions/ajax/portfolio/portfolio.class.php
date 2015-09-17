@@ -37,6 +37,12 @@ class PortfolioUI extends tauAjaxXmlTag
         $this->tabs->addTab($documents);
         
         //contributions tab
+        $components = new BootstrapTabPane("Components", "components");
+        $components->addChild(new tauAjaxHeading(3, "Components"));
+        $components->addChild($this->componentPortfolio = new ContributionPortfolio($this->contributor));
+        $this->tabs->addTab($components);
+        
+        //contributions tab
         $contributions = new BootstrapTabPane("Contributions", "contributions");
         $contributions->addChild(new tauAjaxHeading(3, "Contributions"));
         $contributions->addChild($this->contributionPortfolio = new ContributionPortfolio($this->contributor));
@@ -52,11 +58,16 @@ class PortfolioUI extends tauAjaxXmlTag
     public function e_refresh(tauAjaxEvent $e)
     {
         if($this->contributor->getDocuments())
-            $this->documentPortfolio->showDocuments($this->contributor->getDocuments());
+            $this->documentPortfolio->showDocuments($this->contributor->getDocuments("Public"));
         else
         {
             $this->documentPortfolio->body->addChild(new EmptyRow("documents"));
         }        
+        
+        //components user has disaggregated
+        $this->componentPortfolio->showContributions($this->contributor->getUserComponents()); 
+        
+        //contributions
         $this->contributionPortfolio->showContributions($this->contributor->getComponents());    
     }       
 }

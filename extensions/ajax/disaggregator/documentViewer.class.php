@@ -55,6 +55,7 @@ class DocumentViewer extends tauAjaxXmlTag
         foreach($viewables as $viewable)
         {
             $this->addChild($viewable);
+            $viewable->initDisaggregator();
         }
         
         //javascript for the highlight selector

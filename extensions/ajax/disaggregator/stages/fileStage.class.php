@@ -2,6 +2,8 @@
 
 class FileStage extends BuilderStage implements DisaggregatorStage
 {
+    private $value;
+    
     public function __construct(Component $component, Field $field)
     {
         parent::__construct($component, $field);     
@@ -48,13 +50,20 @@ class FileStage extends BuilderStage implements DisaggregatorStage
     }
         
     public function setValue($value)
-    {        
-        $this->txt_input->setData($value);        
+    {                    
+        $this->txt_input->setData($value);     
+        $this->value = $value;
     }
     
     public function storeCurrentValue()
     {    
-        //not necessary here as we store on upload
+        $root = $_SERVER['DOCUMENT_ROOT'];
+        $fileDir = "sites/Disaggregator2/data/files/";
+        if(file_exists($root . $fileDir . $value))
+        {
+            $this->fieldValues[$this->record]->Name = $this->value;
+            $this->fieldValues[$this->record]->Value = $this->value;            
+        }
     }
         
     public function e_uploaded(tauAjaxEvent $e)
