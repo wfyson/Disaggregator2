@@ -88,11 +88,6 @@ class Contributor extends adro
             }
             return $components;
         }
-        else
-        {
-            return false;
-        }
     }
-
 }
 
