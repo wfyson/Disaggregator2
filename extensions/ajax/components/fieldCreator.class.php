@@ -58,6 +58,8 @@ class FieldCreator extends tauAjaxXmlTag
     
     public function getField()
     {
+	$this->field = DisaggregatorModel::get()->field->getNew();
+
         $this->field->Name = $this->txt_name->getValue();
         $this->field->Type = $this->select_type->getValue();
         $this->field->Mandatory = $this->check_mandatory->getValue();
@@ -87,7 +89,7 @@ class FieldCreator extends tauAjaxXmlTag
 class FieldList extends ListGroup
 {
     private $descriptor;
-    private $fields = array();
+    private $fields = array();   
 
     public function __construct(Descriptor $descriptor, $editable=false)
     {
@@ -123,11 +125,18 @@ class FieldList extends ListGroup
         {
             $this->setData("");
         }
-        
+
         //add new field item
         $fieldItem = new FieldListItem($field, $editable);
         $this->fields[] = $fieldItem;
         $this->addChild($fieldItem);
+
+	//error_log("and now for the list of fields");
+	//foreach($this->disaggregatorFields as $thing)
+	//{
+	//	error_log("next is......$thing->Name");
+	//}
+
     }       
     
     public function removeField(FieldListItem $item)
@@ -150,7 +159,7 @@ class FieldList extends ListGroup
     
     public function getFields()
     {
-        $returnFields = array();
+	$returnFields = array();
         foreach($this->fields as $fieldItem)
         {
             $returnFields[] = $fieldItem->getField();
