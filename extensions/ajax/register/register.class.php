@@ -29,32 +29,39 @@ class RegisterForm extends tauAjaxXmlTag
             {
                 $this->person = $person;
                 $this->contributor = $person->getcontributor();
+                $this->registering = false;
             }
             else
-                $this->person = DisaggregatorModel::get()->person->getNew(); 
-            
+            {
+                $this->person = DisaggregatorModel::get()->person->getNew();
+                $this->contributor = DisaggregatorModel::get()->contributor->getNew();
+                $this->registering = true;
+            }
+                
             $this->init();
 	}
         
         public function init()
         {          
+            $this->setData("");
+            $this->addChild($this->alertDiv = new tauAjaxXmlTag('div'));
             $this->addChild($this->registerForm = new tauAjaxXmlTag('div'));
             $this->addClass('col-md-6');
             
             //given name input
-            $this->registerForm->addChild(new tauAjaxLabel($this->given = new BootstrapTextInput(), "Given Name"));
+            $this->registerForm->addChild(new tauAjaxLabel($this->given = new BootstrapTextInput(), "Given Name*"));
             $this->registerForm->addChild($this->given); 
             $this->given->setValue($this->contributor->GivenName);
             
             //family name input
-            $this->registerForm->addChild(new tauAjaxLabel($this->family = new BootstrapTextInput(), "Family Name"));
+            $this->registerForm->addChild(new tauAjaxLabel($this->family = new BootstrapTextInput(), "Family Name*"));
             $this->registerForm->addChild($this->family);
             $this->family->setValue($this->contributor->FamilyName);
             
             //username input
             if($this->person->isNew())
             {
-                $this->registerForm->addChild(new tauAjaxLabel($this->username = new BootstrapTextInput(), "Username"));
+                $this->registerForm->addChild(new tauAjaxLabel($this->username = new BootstrapTextInput(), "Username*"));
                 $this->registerForm->addChild($this->username);
             }
             
@@ -71,7 +78,7 @@ class RegisterForm extends tauAjaxXmlTag
             //password input
             if($this->person->isNew())
             {
-                $this->registerForm->addChild(new tauAjaxLabel($this->password = new BootstrapPasswordInput(), "Password"));
+                $this->registerForm->addChild(new tauAjaxLabel($this->password = new BootstrapPasswordInput(), "Password*"));
                 $this->registerForm->addChild($this->password);
             }
             
@@ -82,10 +89,36 @@ class RegisterForm extends tauAjaxXmlTag
         
         public function e_save(tauAjaxEvent $e)
         {            
+            $missingFields = array();
+            if($this->given->getValue() == "")
+            {
+                $missingFields[] = "given name";
+            }
+            if($this->family->getValue() == "")
+            {
+                $missingFields[] = "family name";
+            }
+            if($this->username->getValue() == "")
+            {
+                $missingFields[] = "username";
+            }
+            if($this->password->getValue() == "")
+            {
+                $missingFields[] = "password";
+            }
+            if(count($missingFields) > 0)
+                return $this->throwError("Missing fields: " . implode(", ", $missingFields));
+            
+            //check username is unique
+            if(!DisaggregatorPerson::isUsernameUnique($this->username->getValue()))
+            {
+                return $this->throwError("Username unavailable. Please choose a new username.");
+            }
+            
             if($this->person->isNew())
             {
                 $this->person->Username = $this->username->getValue();
-                $this->person->Password = $this->person->hash($this->password->getValue());
+                $this->person->Password = $this->person->hash($this->password->getValue());              
             }
             
             $this->person->Email = $this->email->getValue();
@@ -98,6 +131,22 @@ class RegisterForm extends tauAjaxXmlTag
             $this->contributor->UserID = $this->person->UserID;
             
             $this->contributor->save();
+            
+            if($this->registering)
+            {
+                $this->showAlert(new BootstrapAlert("Thank you for registering! Now you can <a href='/'>log in</a>.", "alert-success"));
+            }
+        }
+        
+        public function throwError($error)
+        {
+            $this->showAlert(new BootstrapAlert($error, "alert-danger"));
+        }
+        
+        public function showAlert(BootstrapAlert $alert)
+        {
+            $this->alertDiv->setData("");
+            $this->alertDiv->addChild($alert);                    
         }
 
 }

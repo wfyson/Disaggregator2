@@ -22,6 +22,22 @@ class DisaggregatorPerson extends adro implements tauUser
         return $users->get(0);
     }
 
+    public static function isUsernameUnique($username)
+    {    
+        $model = DisaggregatorModel::get();
+        $query = new ADROQuery($model);
+        $users = $query->addTable($model->getTable('person'))->run();                        
+        $usernames = $users->arrayOf('Username');
+        if(in_array($username, $usernames))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    
     public function getUserID()
     {
         
