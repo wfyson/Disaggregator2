@@ -2,6 +2,14 @@
 
 class DocumentPortfolio extends DocumentList
 {
+    public function showDocuments(\ADROSet $documents)
+    {
+        if($documents->count() > 0)            
+            parent::showDocuments($documents);
+        else
+            $this->body->addChild(new EmptyRow("documents"));
+    }
+    
     public function addDoc(\Document $doc)
     {
         return $this->body->addChild(new DocumentPortfolioRow($doc));

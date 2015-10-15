@@ -27,18 +27,13 @@ class Contributor extends adro
         return $contributors->get(0);
     }
     
-    public function getDocuments($security = false)
+    public function getPerson()
     {
         $model = DisaggregatorModel::get();
         $person = $model->person->getRecordByPK($this->UserID);
-        
         if($person)
         {
-            $documents = $person->getDocuments(false, $security);
-            if($documents->count() > 0)
-                return $documents;
-            else
-                return false;
+            return $person;                    
         }
         else
         {

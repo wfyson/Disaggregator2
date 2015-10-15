@@ -57,8 +57,9 @@ class PortfolioUI extends tauAjaxXmlTag
     
     public function e_refresh(tauAjaxEvent $e)
     {
-        if($this->contributor->getDocuments())
-            $this->documentPortfolio->showDocuments($this->contributor->getDocuments("Public"));
+        $person = $this->contributor->getPerson();
+        if($person)           
+            $this->documentPortfolio->showDocuments($person->getDocuments(false, "Public"));
         else
         {
             $this->documentPortfolio->body->addChild(new EmptyRow("documents"));
