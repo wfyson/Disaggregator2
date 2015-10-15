@@ -57,6 +57,23 @@ class Contributor extends adro
         return $results;
     }
     
+    public function getDocuments($security = false)
+    {
+        $person = $this->getPerson();        
+        if($person)
+        {
+            $documents = $person->getDocuments(false, $security);
+            if($documents->count() > 0)
+                return $documents;
+            else
+                return false;
+        }
+        else
+        {
+            return false;
+        }
+    }      
+    
     public function getUserComponents()
     {                
         $documents = $this->getDocuments();
