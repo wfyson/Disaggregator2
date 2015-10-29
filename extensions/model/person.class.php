@@ -90,7 +90,7 @@ class DisaggregatorPerson extends adro implements tauUser
     public function getPortfolioLink()
     {
         $contributor = $this->getContributor();
-        return iotaPath::makePath('www.disaggregator.com/?f=portfolio&contributor='. $contributor->ContributorID);
+        return iotaPath::makePath($_SERVER['SERVER_NAME'] . '/?f=portfolio&contributor='. $contributor->ContributorID);
     }
 
 }
