@@ -52,6 +52,9 @@ class Document extends adro
             case "docx": 
                 return WordReader::read($this);
                 break;
+            case "pptx":
+                return PowerpointReader::read($this);
+                break;
             case "pdf":
                 return PDFReader::read($this);
                 break;

@@ -47,8 +47,11 @@
                 break;  
             case "page":
                 $this->addChild($this->contentView = new tauAjaxParagraph($this->content));
-                $this->contentView->addClass("page well");
-                
+                $this->contentView->addClass("page well");                
+                break;
+            case "slide":
+                $this->addChild($this->contentView = new tauAjaxParagraph($this->content));
+                $this->contentView->addClass("slide h4");                
                 break;
         }
         $this->contentView->addClass("content");

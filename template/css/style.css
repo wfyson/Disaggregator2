@@ -275,6 +275,11 @@ tr.DocumentRow td:first-child .glyphicon-cog
      margin-right:auto;
  }
  
+ .DocumentViewer .slide
+ {
+     border-bottom: 1px solid #eee;
+ }
+ 
  .DocumentViewer .Loader.hexdots-loader
  {
      display: block;

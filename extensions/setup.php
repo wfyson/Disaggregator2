@@ -75,7 +75,9 @@ $loader->load(array(
 ), dirname(__FILE__) . '/ajax/');
 
 $loader->load(array(
+    'readers/openXMLReader.class.php',
     'readers/wordReader.class.php',
+    'readers/powerpointReader.class.php',
     'readers/pdfReader.class.php',
     
     'scanners/scanner.interface.php',
