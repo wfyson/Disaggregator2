@@ -110,8 +110,11 @@ class DocumentRow extends tauAjaxXmlTag
                 $this->cell_name->addChild($this->security = new Glyphicon("eye-open"));
             $this->security->attachEvent("onclick", $this, "e_security");
                 
-            $this->cell_name->addChild($this->security_link = new tauAjaxLink("", "/document&document=" . $this->document->DocumentID));
-            $this->security_link->addChild($this->security = new Glyphicon("cog"));
+            $this->cell_name->addChild($this->edit_link = new tauAjaxLink("", "/document&document=" . $this->document->DocumentID));
+            $this->edit_link->addChild($this->edit = new Glyphicon("cog"));
+            
+            $this->cell_name->addChild($this->download_link = new tauAjaxLink("", "/documents/" . $this->document->Filepath));
+            $this->download_link->addChild($this->download = new Glyphicon("download-alt"));
             
             //incomplete components
             $this->addChild($this->cell_incomplete = new tauAjaxXmlTag("td"));
