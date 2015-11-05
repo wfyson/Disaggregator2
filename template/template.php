@@ -19,14 +19,14 @@
 	<meta name="robots" content="index, follow" />
 	
 	<!-- CSS -->	
- 	<link rel="stylesheet" type="text/css" href="sites/Disaggregator2/template/css/bootstrap.min.css" />	 
-	<link rel="stylesheet" type="text/css" href="sites/Disaggregator2/template/css/style.css" />
-        <link rel="stylesheet" type="text/css" href="sites/Disaggregator2/template/css/hexdots.css" />
+ 	<link rel="stylesheet" type="text/css" href="/sites/Disaggregator2/template/css/bootstrap.min.css" />	 
+	<link rel="stylesheet" type="text/css" href="/sites/Disaggregator2/template/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="/sites/Disaggregator2/template/css/hexdots.css" />
 
 	<!-- JS -->
-	<script type="text/javascript" src="lib/tauAjax/tauAjax.lib.js"></script>
+	<script type="text/javascript" src="/lib/tauAjax/tauAjax.lib.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>	
-        <script type="text/javascript" src="sites/Disaggregator2/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/sites/Disaggregator2/js/bootstrap.min.js"></script>
 </head>
 <body>
 <?php 
@@ -62,16 +62,16 @@
                                                    
 			<?php if($loggedin){ ?>
 			<li>
-                            <a href="?f=portfolio"><span class="glyphicon glyphicon-book"></span> Portfolio</a>
+                            <a href="/portfolio"><span class="glyphicon glyphicon-book"></span> Portfolio</a>
                         </li>                        
                         <li>
-                            <a href="?f=profile"><span class="glyphicon glyphicon-user"></span> Profile</a>
+                            <a href="/profile"><span class="glyphicon glyphicon-user"></span> Profile</a>
                         </li>
                         <li>
-                            <a href="?f=components"><span class="glyphicon glyphicon-cog"></span> Components</a>
+                            <a href="/components"><span class="glyphicon glyphicon-cog"></span> Components</a>
                         </li>
                         <li>
-			    <a id="logout" href="?f=logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+			    <a id="logout" href="/logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
 			</li>
 			<?php } ?>
 		    </ul>

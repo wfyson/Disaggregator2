@@ -35,7 +35,7 @@ class Document extends adro
     public function getFullPath()
     {
         $conf = iotaConf::getInstance();
-        return iotaPath::makePath('?f=documents', $this->Filepath);
+        return iotaPath::makePath('/documents', $this->Filepath);
     }
     
     public function getDownloadPath()

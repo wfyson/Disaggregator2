@@ -110,12 +110,12 @@ class DocumentRow extends tauAjaxXmlTag
                 $this->cell_name->addChild($this->security = new Glyphicon("eye-open"));
             $this->security->attachEvent("onclick", $this, "e_security");
                 
-            $this->cell_name->addChild($this->security_link = new tauAjaxLink("", "/?f=document&document=" . $this->document->DocumentID));
+            $this->cell_name->addChild($this->security_link = new tauAjaxLink("", "/document&document=" . $this->document->DocumentID));
             $this->security_link->addChild($this->security = new Glyphicon("cog"));
             
             //incomplete components
             $this->addChild($this->cell_incomplete = new tauAjaxXmlTag("td"));
-            $this->cell_incomplete->addChild($this->btn_incomplete = new BootstrapLinkButton("Progress ", "?f=overview&document=" . $this->document->DocumentID . "&tab=progress", "btn-warning"));
+            $this->cell_incomplete->addChild($this->btn_incomplete = new BootstrapLinkButton("Progress ", "/overview&document=" . $this->document->DocumentID . "&tab=progress", "btn-warning"));
                 
             $incomplete = $this->document->getIncompleteComponents();
             if(count($incomplete) == 0)
@@ -129,7 +129,7 @@ class DocumentRow extends tauAjaxXmlTag
             
             //complete components
             $this->addChild($this->cell_components = new tauAjaxXmlTag("td"));
-            $this->cell_components->addChild($this->btn_components = new BootstrapLinkButton("Components ", "?f=overview&document=" . $this->document->DocumentID . "&tab=complete", "btn-success"));
+            $this->cell_components->addChild($this->btn_components = new BootstrapLinkButton("Components ", "/overview&document=" . $this->document->DocumentID . "&tab=complete", "btn-success"));
                 
             $components = $this->document->getCompleteComponents();
             if(count($components) == 0)
@@ -140,38 +140,38 @@ class DocumentRow extends tauAjaxXmlTag
             {
                 $this->btn_components->addChild(new BootstrapBadge(count($components)));
             }
-                
-            //disaggregator
-            $this->addChild($this->cell_disaggregator = new tauAjaxXmlTag("td"));
-            $this->cell_disaggregator->addChild($this->btn_disaggregator = new BootstrapSplitButton("Disaggregate", "btn-primary"));                
-            $this->btn_disaggregator->btn->attachEvent("onclick", $this, "e_disaggregate");    
-            
-            $model = DisaggregatorModel::get();
-            $descriptors = $model->descriptor->getRecords();
-            $i = $descriptors->getIterator();
-            while($i->hasNext())
-            {
-                $descriptor = $i->next();
-                $this->btn_disaggregator->addItem(new tauAjaxLink($descriptor->Name, "./?f=disaggregator&document=" . $this->document->DocumentID . "&descriptor=$descriptor->DescriptorID"));
-            }
             
             //scanner
             $this->addChild($this->cell_scanner = new tauAjaxXmlTag("td"));            
             $this->cell_scanner->addChild($this->btn_scanner = new BootstrapSplitButton("Scanner", "btn-primary"));                
             $this->btn_scanner->btn->attachEvent("onclick", $this, "e_scanner");    
 
+            $model = DisaggregatorModel::get();
+            $descriptors = $model->descriptor->getRecords();
             $i = $descriptors->getIterator();
             while($i->hasNext())
             {
                 $descriptor = $i->next();
-                $this->btn_scanner->addItem(new tauAjaxLink($descriptor->Name, "./?f=scanner&document=" . $this->document->DocumentID . "&descriptor=$descriptor->DescriptorID"));
+                $this->btn_scanner->addItem(new tauAjaxLink($descriptor->Name, "./scanner&document=" . $this->document->DocumentID . "&descriptor=$descriptor->DescriptorID"));
             }
+                
+            //disaggregator
+            $this->addChild($this->cell_disaggregator = new tauAjaxXmlTag("td"));
+            $this->cell_disaggregator->addChild($this->btn_disaggregator = new BootstrapSplitButton("Disaggregate", "btn-primary"));                
+            $this->btn_disaggregator->btn->attachEvent("onclick", $this, "e_disaggregate");    
+                       
+            $i = $descriptors->getIterator();
+            while($i->hasNext())
+            {
+                $descriptor = $i->next();
+                $this->btn_disaggregator->addItem(new tauAjaxLink($descriptor->Name, "./disaggregator&document=" . $this->document->DocumentID . "&descriptor=$descriptor->DescriptorID"));
+            }                        
             
             //redactor
             $this->addChild($this->cell_redactor = new tauAjaxXmlTag("td"));
             if($this->document->canBeRedacted())
             {
-                $this->cell_redactor->addChild($this->btn_redactor = new BootstrapLinkButton("Redactor ", "?f=redactor&document=" . $this->document->DocumentID, "btn-primary"));
+                $this->cell_redactor->addChild($this->btn_redactor = new BootstrapLinkButton("Redactor ", "/redactor&document=" . $this->document->DocumentID, "btn-primary"));
             }
 	}                
         
@@ -179,7 +179,7 @@ class DocumentRow extends tauAjaxXmlTag
         {
             $this->runJS(
                 "
-                    window.location.href = './?f=disaggregator&document=" . $this->document->DocumentID . "';
+                    window.location.href = './disaggregator&document=" . $this->document->DocumentID . "';
                 ");
         }
         
@@ -187,7 +187,7 @@ class DocumentRow extends tauAjaxXmlTag
         {            
             $this->runJS(
                 "
-                    window.location.href = './?f=scanner&document=" . $this->document->DocumentID . "';
+                    window.location.href = './scanner&document=" . $this->document->DocumentID . "';
                 ");
         }
         

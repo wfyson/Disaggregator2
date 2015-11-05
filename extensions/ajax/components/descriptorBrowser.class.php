@@ -144,7 +144,7 @@ class DescriptorViewer extends tauAjaxXmlTag
         {
             $creator = $model->person->getRecordByPK($descriptor->UserID);
 	    $contributor = $creator->getContributor();
-	    $link = new tauAjaxLink($contributor->getName(), "/?f=portfolio&contributor=$contributor->ContributorID");
+	    $link = new tauAjaxLink($contributor->getName(), "/portfolio&contributor=$contributor->ContributorID");
             $this->addChild($linkSpan = new tauAjaxSpan("Created by "));
 	    $linkSpan->addChild($link);           
         }

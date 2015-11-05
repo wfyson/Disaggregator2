@@ -65,7 +65,7 @@ switch($reason)
 
         <div id="register">
             <h4>No account..?</h4> 
-            <a href="?f=register" class="btn btn-default">Register</a>            
+            <a href="/register" class="btn btn-default">Register</a>            
         </div>
 
     </div>

@@ -55,6 +55,7 @@ class DocumentOverviewUI extends tauAjaxXmlTag
         //activate given tab if appropriate  
         if($this->tab !== false)
         {
+            $this->tab = substr($this->tab, 0, -1); //remove trailing slash           
             $this->runJS("
                 $('#overview a[href=\'#$this->tab\']').tab('show');
             ");
@@ -164,7 +165,7 @@ class ComponentRow extends tauAjaxXmlTag
       
         //edit button
         $this->addChild($this->cell_disaggregator = new tauAjaxXmlTag("td"));
-        $this->cell_disaggregator->addChild(new BootstrapLinkButton("Open in Disaggregator", "?f=disaggregator&component=$component->ComponentID", "btn-primary"));
+        $this->cell_disaggregator->addChild(new BootstrapLinkButton("Open in Disaggregator", "/disaggregator&component=$component->ComponentID", "btn-primary"));
     
         if($delete)
         {
