@@ -38,7 +38,7 @@
                 $this->addChild($this->contentView = new tauAjaxHeading($this->styleValue, $this->content));
                 break;
              case "image":                      
-                $this->addChild($this->contentView = new tauAjaxImage($this->content));
+                $this->addChild($this->contentView = new tauAjaxImage("/" . $this->content));
                 $this->contentView->addClass("image");
                 break;
             case "caption":
