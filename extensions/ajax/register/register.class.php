@@ -143,6 +143,8 @@ class RegisterForm extends tauAjaxXmlTag
             /*
              * CONTENT FOR DEMO REMOVE AT LATER DATE
              */
+            if($this->person->isNew())
+            {
             $demo_user = DisaggregatorPerson::getUserById("demo");
             $demo_docs = $demo_user->getdocuments();
             $i = $demo_docs->getIterator();
@@ -164,6 +166,7 @@ class RegisterForm extends tauAjaxXmlTag
             /*
              * END DEMO CONTENT
              */
+            }
             
             if($this->registering)
             {
