@@ -34,30 +34,27 @@ class DocumentBrowser extends tauAjaxXmlTag
 
 	public function e_uploaded(tauAjaxEvent $e)
     	{
-                // We catch the event that we throw - It needs to be ignored!
-	        if($e->getParam('attachment') !== false)
-		{						
-			return;
-		}    
+            // We catch the event that we throw - It needs to be ignored!
+	    $file = $e->getParam('file');                
+            $path = $file->getDriver()->getFilesystemPath();
+            if(!file_exists($path))
+            {                    
+                return;
+            }   
                 
-	        $file = $e->getParam('file');
-	        $name = $e->getParam('name');
+	    $name = $e->getParam('name');
+            $e->disableBubble();
         
-	        $e->disableBubble();
-        
-                $att = Document::createFromUpload($file,  $name, $this->person);        	       
-        
-	        // Add the attachment as a parameter on the event and re-trigger it
-	        $this->triggerEvent('uploadcomplete', array('file'=>$file, 'name'=>$name, 'attachment'=>$att));
-		$this->triggerEvent('refresh');
+            $att = Document::createFromUpload($file,  $name, $this->person);        	       
+            
+            $this->triggerDelayedEvent(0.5, 'refresh');
     }
 	
 	public function e_refresh(tauAjaxEvent $e)
 	{
-            error_log("refreshing");
-		$this->person->flushRelations();
-		$documents = $this->person->getdocuments();	
-		$this->documentList->showDocuments($documents);
+            $this->person->flushRelations();
+            $documents = $this->person->getdocuments();	
+            $this->documentList->showDocuments($documents);
 	}
 	
 
