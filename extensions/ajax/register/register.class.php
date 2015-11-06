@@ -59,10 +59,12 @@ class RegisterForm extends tauAjaxXmlTag
             $this->family->setValue($this->contributor->FamilyName);
             
             //username input
-            if($this->person->isNew())
+            $this->registerForm->addChild(new tauAjaxLabel($this->username = new BootstrapTextInput(), "Username*"));
+            $this->registerForm->addChild($this->username);
+            if(!$this->person->isNew())
             {
-                $this->registerForm->addChild(new tauAjaxLabel($this->username = new BootstrapTextInput(), "Username*"));
-                $this->registerForm->addChild($this->username);
+                $this->username->setAttribute("readonly");
+                $this->username->setValue($this->person->Username);
             }
             
             //email input
@@ -102,17 +104,23 @@ class RegisterForm extends tauAjaxXmlTag
             {
                 $missingFields[] = "username";
             }
-            if($this->password->getValue() == "")
+            if($this->person->isNew())
             {
-                $missingFields[] = "password";
+                if($this->password->getValue() == "")
+                {
+                    $missingFields[] = "password";
+                }
             }
             if(count($missingFields) > 0)
                 return $this->throwError("Missing fields: " . implode(", ", $missingFields));
             
             //check username is unique
-            if(!DisaggregatorPerson::isUsernameUnique($this->username->getValue()))
+            if($this->person->isNew())
             {
-                return $this->throwError("Username unavailable. Please choose a new username.");
+                if(!DisaggregatorPerson::isUsernameUnique($this->username->getValue()))
+                {
+                    return $this->throwError("Username unavailable. Please choose a new username.");
+                }
             }
             
             if($this->person->isNew())
