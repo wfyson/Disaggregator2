@@ -132,6 +132,31 @@ class RegisterForm extends tauAjaxXmlTag
             
             $this->contributor->save();
             
+            /*
+             * CONTENT FOR DEMO REMOVE AT LATER DATE
+             */
+            $demo_user = DisaggregatorPerson::getUserById("demo");
+            $demo_docs = $demo_user->getdocuments();
+            $i = $demo_docs->getIterator();
+            while($i->hasNext())
+            {
+                $doc = $i->next();
+                
+                //create a new document entry
+                $new_doc = DisaggregatorModel::get()->document->getNew();
+                
+                $new_doc->Name = $doc->Name;
+                $new_doc->Filepath =$doc->Filepath;
+                $new_doc->UserID = $this->person->UserID;
+                $new_doc->Security = "User";
+                $new_doc->Source = "Demo";                
+                
+                $new_doc->save();
+            }
+            /*
+             * END DEMO CONTENT
+             */
+            
             if($this->registering)
             {
                 $this->showAlert(new BootstrapAlert("Thank you for registering! Now you can <a href='/'>log in</a>.", "alert-success"));
