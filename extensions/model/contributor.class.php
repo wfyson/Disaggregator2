@@ -73,7 +73,7 @@ class Contributor extends adro
             return false;
         }
     }      
-    
+        
     public function getUserComponents()
     {                
         $documents = $this->getDocuments();

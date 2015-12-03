@@ -155,13 +155,25 @@ class ComponentRow extends tauAjaxXmlTag
                   
         $this->component = $component;
         
+        $this->init();
+    }
+    
+    public function init()
+    {        
+        $this->setData();
+        
         //name
         $this->addChild($this->cell_name = new tauAjaxXmlTag("td"));        
-        $this->cell_name->addChild($name = new tauAjaxHeading(4, $component->getPreviewText() . " "));
-        if($component->Source == "scanner")
+        $this->cell_name->addChild($name = new tauAjaxHeading(4, $this->component->getPreviewText() . " "));
+        if($this->component->Source == "scanner")
         {
             $name->addChild(new BootstrapLabel("scanner", "info"));
         }
+        if($this->component->Security == "User" || $this->component->Security == "Contributors")
+                $this->cell_name->addChild($this->security = new Glyphicon("lock"));
+            else
+                $this->cell_name->addChild($this->security = new Glyphicon("eye-open"));
+        $this->security->attachEvent("onclick", $this, "e_security");
       
         //edit button
         $this->addChild($this->cell_disaggregator = new tauAjaxXmlTag("td"));
@@ -182,7 +194,13 @@ class ComponentRow extends tauAjaxXmlTag
         $this->component->delete();                
         
         $this->triggerEvent("remove", array("component"=>$this));
-    }        
+    }     
+    
+    public function e_security(tauAjaxEvent $e)
+        {
+            $this->component->changeSecurity();
+            $this->init();
+        }
 }
 
 

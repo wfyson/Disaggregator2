@@ -189,5 +189,15 @@ class Component extends adro
             $v->delete();
         }        
     }
+    
+    public function changeSecurity()
+    {
+        if($this->Security == "User")
+            $this->Security = "Public";
+        elseif($this->Security == "Public")
+            $this->Security = "User";
+        
+        $this->save();
+    }
 }
 

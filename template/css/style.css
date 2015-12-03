@@ -345,6 +345,30 @@ tr.DocumentRow td:first-child .glyphicon-download-alt
      display: inline-block;
  }
  
+ tr.ComponentRow td:first-child h4
+ {
+     display: inline-block;
+     margin-right: 5px;
+ }
+ 
+ tr.ComponentRow td:first-child .glyphicon
+{
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: top;
+    margin-top: 10px;
+}
+
+tr.ComponentRow td:first-child .glyphicon-lock
+{
+    color: #ce4844;
+}
+
+tr.ComponentRow td:first-child .glyphicon-eye-open
+{
+    color: #3c763d;
+}
+ 
  /*
   * Scanners
   */
