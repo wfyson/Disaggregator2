@@ -38,6 +38,7 @@ $loader->load(array(
     'components/descriptorCreator.class.php',
     'components/fieldCreator.class.php',
     'components/componentPage.class.php',
+    'components/namespace.class.php',
     
     'disaggregator/disaggregator.class.php',
     'disaggregator/documentSelector.class.php',

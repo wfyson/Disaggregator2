@@ -5,6 +5,27 @@ include_once("Graphite.php");
 
 class LinkedDataHelper
 {
+    public static function validateNS($uri)
+    {
+        $graph = new Graphite();
+        $triples = $graph->load($uri);
+        error_log($triples);
+        if($triples > 0)
+        {
+            //whilst we're here return a title if possible
+            $title = $graph->resource($uri)->get("dc:title")->toString();
+            error_log($title);
+            if($title)
+                return $title;
+            else
+                return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     public static function dumpNS($uri)
     {
         $graph = new Graphite();

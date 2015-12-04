@@ -2,6 +2,9 @@
 
 class BootstrapFormGroup extends tauAjaxXmlTag
 {
+    private $class;
+    private $glyph = false;
+    
     public function __construct($label, $input)
     {
         parent::__construct("div");
@@ -13,7 +16,30 @@ class BootstrapFormGroup extends tauAjaxXmlTag
         $label->addClass("control-label");
     }
     
+    public function addIcon($class, $icon)
+    {
+        $this->class = $class;
+        $this->addClass($class);
+        
+        if($this->glyph)
+        {
+            $this->deleteChild($this->glyph); //won't dele in the removeIcon function for some reason...
+        }
+        
+        $this->addChild($this->glyph = new Glyphicon($icon));
+        $this->glyph->addClass("form-control-feedback");
+    }
+    
+    public function removeIcon()
+    {        
+        $this->removeClass($this->class);
+        if($this->glyph)   
+        {
+            $this->glyph->addClass("hide");
+        }
+    }
 }
+
 
 class BootstrapTextInput extends tauAjaxTextInput
 {
