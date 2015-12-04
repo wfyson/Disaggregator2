@@ -168,6 +168,21 @@ CREATE TABLE `filevalue` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `namespace`
+--
+
+DROP TABLE IF EXISTS `namespace`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `namespace` (
+  `NamespaceID` int(11) NOT NULL AUTO_INCREMENT,
+  `NamespaceURI` varchar(2083) NOT NULL,
+  `Title` varchar(45) NOT NULL,
+  PRIMARY KEY (`NamespaceID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `person`
 --
 
@@ -239,4 +254,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-03 10:56:45
+-- Dump completed on 2015-12-04 13:08:30

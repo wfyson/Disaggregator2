@@ -57,6 +57,8 @@ class DisaggregatorModel extends ADROModel
                 
                 $this->registerClass($this->scanner, 'Scanner');
                 
+                $this->registerClass($this->namespace, 'DisaggregatorNamespace');
+                
                 $this->addRelation('person.UserID', 'contributor.ContributorID');
                 $this->addRelation('contributor.ContributorID', 'person.UserID');
                 

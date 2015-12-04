@@ -7,10 +7,11 @@ class DescriptorCreator extends tauAjaxXmlTag
 
 	public function __construct(DisaggregatorPerson $person)
 	{
-		parent::__construct('div');
+            parent::__construct('div');
                 
-                $this->person = $person;                                            
-	}
+            $this->person = $person;                                           
+        }
+    
 
         public function init($editable=array('Name', 'Description'))
         {
@@ -26,12 +27,15 @@ class DescriptorCreator extends tauAjaxXmlTag
             {
                 $this->editor->ignore($f, false);
             }                   
-            $this->editor->show($this->descriptor);   
-                                    
+            $this->editor->show($this->descriptor);                                                  
+            
             //add field modal
             $this->editor->addChild($this->fieldModal = new BootstrapModal("add_field", "Add Field", "Add Field", "Save"));
             $this->fieldModal->addBody($this->fieldCreator = new FieldCreator());
             $this->fieldModal->attachEvent("confirm", $this, "e_addField");
+            
+            //add namespace dropdown
+            $this->editor->addChild($this->namespaceSelector = new NamespaceSelector());
             
             //styling for the editor
             $this->editor->runJS("                
@@ -129,6 +133,72 @@ class DescriptorCreator extends tauAjaxXmlTag
                 $this->descriptor->UserID = $this->person->UserID;
             }
         }       
+}
+
+class NamespaceSelector extends tauAjaxXmlTag
+{
+    public function __construct()
+    {
+        parent::__construct('div');
+                                
+        $this->init();
+    }
+    
+    public function init()
+    {
+        //namespace select
+        $this->addChild($this->select_namespace = new BootstrapSelect());
+        
+        $model = DisaggregatorModel::get();
+        $namespaces = $model->namespace->getRecords();
+        
+        $i = $namespaces->getIterator();
+        while($i->hasNext())
+	{		
+            $ns = $i->next();
+            $this->select_namespace>addOption($ns->NamespaceURI);
+	}
+        
+        //new namespace button
+        $this->addChild($this->btn_new = new BootStrapButton("New Namespace", "btn-primary"));
+        $this->btn_new->attachEvent("onclick", $this, "e_new_namespace");
+    }
+    
+    public function e_new_namespace(tauAjaxEvent $e)
+    {
+        $this->addChild($this->new_ns = new NamespaceCreator());                
+    }    
+}
+    
+class NamespaceCreator extends tauAjaxXmlTag
+{
+    public function __construct()
+    {
+        parent::__construct('div');
+                                
+        $this->init();
+    }
+    
+    public function init()
+    {
+        $this->addChild($this->txt_uri = new BootstrapTextInput());
+        $this->txt_uri->attachEvent("ontype", $this, "e_uri");
+        
+        $this->addChild($this->txt_title = new BootstrapTextInput());
+        
+        $this->addChild($this->btn_save = new BootstrapButton("Save", "btn-success"));
+        $this->btn_save->attachEvent("onclick", $this, "e_save");               
+    }
+    
+    public function e_uri(tauAjaxEvent $e)
+    {
+        //try and load the graph - if success turn box green and show title if available
+    }
+    
+    public function e_save(tauAjaxEvent $e)
+    {
+        
+    }
 }
 
 ?>

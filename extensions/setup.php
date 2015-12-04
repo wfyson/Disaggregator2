@@ -86,7 +86,9 @@ $loader->load(array(
     'orcid/curl.class.php',
     'orcid/orcid.class.php',
     
-    'writers/wordWriter.class.php'
+    'writers/wordWriter.class.php',
+    
+    'linkeddata/linkedDataHelper.class.php'
 ), dirname(__FILE__));
 
 
