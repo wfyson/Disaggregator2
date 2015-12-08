@@ -18,12 +18,13 @@ class BootstrapFormGroup extends tauAjaxXmlTag
     
     public function addIcon($class, $icon)
     {
+        $this->removeClass($this->class);
         $this->class = $class;
-        $this->addClass($class);
+        $this->addClass("has-feedback " . $class);
         
         if($this->glyph)
         {
-            $this->deleteChild($this->glyph); //won't dele in the removeIcon function for some reason...
+            $this->deleteChild($this->glyph); //won't delete in the removeIcon function for some reason...
         }
         
         $this->addChild($this->glyph = new Glyphicon($icon));

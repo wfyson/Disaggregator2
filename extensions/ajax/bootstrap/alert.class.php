@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * $class = alert-success | alert-info | alert-warning | alert-danger
+ */
+
 class BootstrapAlert extends tauAjaxXmlTag
 {
 	public function __construct($text, $class=null)

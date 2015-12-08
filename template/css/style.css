@@ -149,6 +149,21 @@ tr.DocumentRow td:first-child .glyphicon-download-alt
     vertical-align: baseline;
 }
 
+.NamespaceSelector
+{
+    margin-top: 10px;
+}
+
+.NamespaceCreator
+{
+    margin-top: 10px;
+}
+
+.NamespaceSuccess
+{
+    margin-top: 10px;
+}
+
 /*
     Disaggregator
  */
