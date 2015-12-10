@@ -3,29 +3,38 @@
 class NamespaceSelector extends tauAjaxXmlTag
 {    
     private $new = false;
+    private $type;
     
-    public function __construct()
+    public function __construct($types)
     {
         parent::__construct('div');
                                 
+        $this->types = $types;
+        
         $this->init();
     }
     
     public function init()
     {
-        $this->setData();
+        $this->setData("");
         
         //namespace select
         $this->addChild($this->select_namespace_form_group = new BootstrapFormGroup(new tauAjaxLabel($this->select_namespace = new BootstrapSelect(), "Namespace"), $this->select_namespace));                                 
-        $model = DisaggregatorModel::get();
-        $namespaces = $model->namespace->getRecords();
         
+        $this->select_namespace->addOption("Choose a namespace...", null);
+        
+        $model = DisaggregatorModel::get();
+        $namespaces = $model->namespace->getRecords();       
         $i = $namespaces->getIterator();
         while($i->hasNext())
 	{		
             $ns = $i->next();
-            $this->select_namespace->addOption($ns->Title, $ns->NamespaceURI);
+            $this->select_namespace->addOption($ns->Title, $ns->NamespaceID);
 	}
+        $this->select_namespace->attachEvent("onchange", $this, "e_select_namespace");
+        
+        //URI select
+        $this->addChild($this->select_uri_form_group = new BootstrapFormGroup(new tauAjaxLabel($this->select_uri = new BootstrapSelect(), "$this->type"), $this->select_uri));                                 
         
         //new namespace button
         $this->addChild($this->btn_new = new BootStrapButton("New Namespace", "btn-primary"));
@@ -33,6 +42,29 @@ class NamespaceSelector extends tauAjaxXmlTag
         
         $this->attachEvent("hide_new_namespace", $this, "e_hide_new_namespace");
         $this->attachEvent("refresh", $this, "e_refresh");
+    }
+    
+    public function getNamespaceValue()
+    {
+        return $this->select_namespace->getValue();
+    }
+    
+    public function getSelection()
+    {
+        return $this->select_uri->getValue();
+    }
+    
+    public function setNamespaceValue($namespaceID)
+    {        
+        $this->select_namespace->setValue($namespaceID);
+    }
+    
+    public function setSelection($selection)
+    {
+        //first populate with options
+        $this->e_select_namespace();
+        
+        $this->select_uri->setValue($selection);
     }
     
     public function e_new_namespace(tauAjaxEvent $e)
@@ -66,6 +98,30 @@ class NamespaceSelector extends tauAjaxXmlTag
     public function e_refresh(tauAjaxEvent $e)
     {
         $this->init();
+    }
+    
+    public function e_select_namespace()
+    {
+        //reinitialise select
+        $this->deleteChild($this->select_uri);
+        $this->addChildAtPosition($this->select_uri = new BootstrapSelect(), 1);
+        
+        $model = DisaggregatorModel::get();
+        $namespace = $model->namespace->getRecordByPK($this->select_namespace->getValue());
+        
+        $results = LinkedDataHelper::getNamespaceTypes($namespace->NamespaceURI, $this->types);
+        
+        foreach($results as $resource => $label)
+        {
+            if($label == "")
+            {
+                $this->select_uri->addOption($resource);
+            }            
+            else
+            {
+                $this->select_uri->addOption($label, $resource);
+            }
+        }
     }
 }
     

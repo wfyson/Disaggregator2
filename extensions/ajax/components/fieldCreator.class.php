@@ -54,6 +54,9 @@ class FieldCreator extends tauAjaxXmlTag
         $this->addChild($this->multi = new tauAjaxXmlTag('div'));
         $this->multi->addChild(new tauAjaxLabel($this->check_multi = new tauAjaxCheckbox(), 'Multi'));  
         $this->multi->addChild($this->check_multi);
+        
+        //add namespace dropdown
+        $this->addChild($this->namespaceSelector = new NamespaceSelector(array("rdf:Property")));
     }  
     
     public function getField()
@@ -64,6 +67,13 @@ class FieldCreator extends tauAjaxXmlTag
         $this->field->Type = $this->select_type->getValue();
         $this->field->Mandatory = $this->check_mandatory->getValue();
         $this->field->Multi = $this->check_multi->getValue();
+        
+        //now save the namespace details
+        if($this->namespaceSelector->getNamespaceValue() != null)
+        {                
+            $this->field->NamespaceID = $this->namespaceSelector->getNamespaceValue();
+            $this->field->Property = $this->namespaceSelector->getSelection();            
+        }
         
         if($this->field->Type == "Component")
         {
@@ -130,13 +140,6 @@ class FieldList extends ListGroup
         $fieldItem = new FieldListItem($field, $editable);
         $this->fields[] = $fieldItem;
         $this->addChild($fieldItem);
-
-	//error_log("and now for the list of fields");
-	//foreach($this->disaggregatorFields as $thing)
-	//{
-	//	error_log("next is......$thing->Name");
-	//}
-
     }       
     
     public function removeField(FieldListItem $item)

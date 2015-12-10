@@ -94,8 +94,10 @@ CREATE TABLE `descriptor` (
   `Description` varchar(255) NOT NULL,
   `UserID` int(11) NOT NULL,
   `PreviewID` int(11) DEFAULT NULL,
+  `NamespaceID` int(11) DEFAULT NULL,
+  `Class` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`DescriptorID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,7 +112,7 @@ CREATE TABLE `descriptorfield` (
   `DescriptorID` int(11) NOT NULL,
   `FieldID` int(11) NOT NULL,
   PRIMARY KEY (`DescriptorFieldID`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,8 +148,10 @@ CREATE TABLE `field` (
   `Mandatory` tinyint(1) NOT NULL,
   `Multi` tinyint(1) NOT NULL,
   `DescriptorType` int(11) DEFAULT NULL,
+  `NamespaceID` int(11) DEFAULT NULL,
+  `Property` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`FieldID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,7 +183,7 @@ CREATE TABLE `namespace` (
   `NamespaceURI` varchar(2083) NOT NULL,
   `Title` varchar(45) NOT NULL,
   PRIMARY KEY (`NamespaceID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -254,4 +258,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-04 13:08:30
+-- Dump completed on 2015-12-10 17:43:10

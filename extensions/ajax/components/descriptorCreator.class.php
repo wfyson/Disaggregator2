@@ -9,6 +9,8 @@ class DescriptorCreator extends tauAjaxXmlTag
 	{
             parent::__construct('div');
                 
+            //LinkedDataHelper::dumpNS("http://www.rsc.org/ontologies/RXNO_OWL.owl#");
+            
             $this->person = $person;              
         }
     
@@ -35,7 +37,11 @@ class DescriptorCreator extends tauAjaxXmlTag
             $this->fieldModal->attachEvent("confirm", $this, "e_addField");
             
             //add namespace dropdown
-            $this->editor->addChild($this->namespaceSelector = new NamespaceSelector());
+            $this->editor->addChild($this->namespaceSelector = new NamespaceSelector(array("rdfs:Class", "owl:Class")));
+            
+            //set initial namespace selections
+            $this->namespaceSelector->setNamespaceValue($this->descriptor->NamespaceID);
+            $this->namespaceSelector->setSelection($this->descriptor->Class);
             
             //styling for the editor
             $this->editor->runJS("                
@@ -96,7 +102,7 @@ class DescriptorCreator extends tauAjaxXmlTag
             {
                 //create new descriptorfield entry
                 $descriptorfield = $model->descriptorfield->getNew();                
-                $descriptorfield->DescriptorID = $this->descriptor->DescriptorID;
+                $descriptorfield->DescriptorID = $this->descriptor->DescriptorID;                                
                 
                 //if field is new save it before adding to descriptorfield
                 if($field->isNew())
@@ -108,6 +114,14 @@ class DescriptorCreator extends tauAjaxXmlTag
                 $descriptorfield->save();
             }
                        
+            //now save the namespace details
+            if($this->namespaceSelector->getNamespaceValue() != null)
+            {                
+                $this->descriptor->NamespaceID = $this->namespaceSelector->getNamespaceValue();
+                $this->descriptor->Class = $this->namespaceSelector->getSelection();
+                $this->descriptor->save();
+            }
+            
             $name = $this->descriptor->Name;
             $alert = new BootstrapAlert("Saved component descriptor: $name", "alert-success");
             $this->triggerEvent("show_browser", array('alert'=>$alert));
