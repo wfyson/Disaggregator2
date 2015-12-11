@@ -36,38 +36,18 @@ class LinkedDataHelper
     public static function getNamespaceTypes($uri, $types)
     {
         $graph = new Graphite();
-        //$uri = "http://xmlns.com/foaf/0.1/";
-        //$uri = "http://id.southampton.ac.uk/";
-        //$uri = "http://purl.org/dc/elements/1.1/";
-        //$uri = "http://www.rsc.org/ontologies/RXNO_OWL.owl#";
         $graph->load($uri);
-        //print $graph->dump();
-            
-        //$resources = $graph->allOfType("rdf:Property");     
+              
         $results = [];
         foreach($types as $type)
-        {
-            $resources = $graph->allOfType($type);
+        {            
+            $resources = $graph->allOfType($type);         
             foreach($resources as $resource)
             {
                 $results[$resource->toString()] = $resource->getString( "rdfs:label" );
             }
         }                
         return $results;
-        
-        //print $resources->dump();
-            
-        ////print $graph->dump();
-        //print $graph->resource( "http://xmlns.com/foaf/0.1/" )->get( "rdfs:isDefinedBy" );
-            
-        //error_log("results...." . count($resource));
-           
-        //print($resource->dumpValue());
-                       
-        //print $graph->dump();
-        //$label_relations_list = $graph->labelRelations();
-        //print_r($label_relations_list);
-        //print $graph->resource( $uri )->all( "rdfs:isDefinedBy" )->sort( "rdfs:label" )->getString( "rdfs:label" )->join( ", " ).".\n";
     }     
 }
 

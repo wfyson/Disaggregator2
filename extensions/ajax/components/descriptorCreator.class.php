@@ -7,9 +7,7 @@ class DescriptorCreator extends tauAjaxXmlTag
 
 	public function __construct(DisaggregatorPerson $person)
 	{
-            parent::__construct('div');
-                
-            //LinkedDataHelper::dumpNS("http://www.rsc.org/ontologies/RXNO_OWL.owl#");
+            parent::__construct('div');                
             
             $this->person = $person;              
         }
@@ -81,7 +79,9 @@ class DescriptorCreator extends tauAjaxXmlTag
             //field list
             $this->fieldViewer->addChild(new tauAjaxLabel($this->fieldList = new FieldList($this->descriptor, true), "Fields"));
             $this->fieldViewer->addChild($this->fieldList); 
-            $this->fieldViewer->addClass("col-md-4 col-md-offset-2");
+            $this->fieldViewer->addClass("col-md-4 col-md-offset-2");   
+            
+            $this->attachEvent("refresh_namespace", $this, "e_refresh_namespace");
         }
         
         public function e_preview_select(tauAjaxEvent $e)
@@ -146,7 +146,13 @@ class DescriptorCreator extends tauAjaxXmlTag
                 $this->descriptor = DisaggregatorModel::get()->descriptor->getNew();                            
                 $this->descriptor->UserID = $this->person->UserID;
             }
-        }       
+        }   
+        
+    public function e_refresh_namespace()
+    {
+        $this->namespaceSelector->init();
+        $this->fieldCreator->refresh_namespace();
+    }
 }
 
 ?>

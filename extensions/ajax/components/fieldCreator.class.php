@@ -17,7 +17,7 @@ class FieldCreator extends tauAjaxXmlTag
     }    
     
     public function init($editable=array('Name', 'Type', 'Mandatory', 'Multi'))
-    {        
+    {                
         //name input
         $this->addChild(new tauAjaxLabel($this->txt_name = new tauAjaxTextInput(), 'Name'));
         $this->addChild($this->txt_name);        
@@ -56,7 +56,7 @@ class FieldCreator extends tauAjaxXmlTag
         $this->multi->addChild($this->check_multi);
         
         //add namespace dropdown
-        $this->addChild($this->namespaceSelector = new NamespaceSelector(array("rdf:Property")));
+        $this->addChild($this->namespaceSelector = new NamespaceSelector(array("rdf:Property")));        
     }  
     
     public function getField()
@@ -93,6 +93,11 @@ class FieldCreator extends tauAjaxXmlTag
         {
             $this->subtype->addClass("hide");
         }
+    }
+    
+    public function refresh_namespace()
+    {
+        $this->namespaceSelector->init();
     }
 }
 

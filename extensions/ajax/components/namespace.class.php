@@ -41,7 +41,6 @@ class NamespaceSelector extends tauAjaxXmlTag
         $this->btn_new->attachEvent("onclick", $this, "e_new_namespace");
         
         $this->attachEvent("hide_new_namespace", $this, "e_hide_new_namespace");
-        $this->attachEvent("refresh", $this, "e_refresh");
     }
     
     public function getNamespaceValue()
@@ -90,15 +89,10 @@ class NamespaceSelector extends tauAjaxXmlTag
         
         if($e->getParam("success"))
         {
-            $this->triggerEvent("refresh");
+            $this->triggerEvent("refresh_namespace");
             $this->addChild($this->new_ns = new BootstrapAlert("Namespace Saved!", "alert-success NamespaceSuccess"));            
         }
-    }
-    
-    public function e_refresh(tauAjaxEvent $e)
-    {
-        $this->init();
-    }
+    }    
     
     public function e_select_namespace()
     {
@@ -111,16 +105,23 @@ class NamespaceSelector extends tauAjaxXmlTag
         
         $results = LinkedDataHelper::getNamespaceTypes($namespace->NamespaceURI, $this->types);
         
-        foreach($results as $resource => $label)
+        if(count($results) > 0)
         {
-            if($label == "")
+            foreach($results as $resource => $label)
             {
-                $this->select_uri->addOption($resource);
-            }            
-            else
-            {
-                $this->select_uri->addOption($label, $resource);
+                if($label == "")
+                {
+                    $this->select_uri->addOption($resource);
+                }            
+                else
+                {
+                    $this->select_uri->addOption($label, $resource);
+                }
             }
+        }
+        else
+        {
+            $this->select_uri->addOption("No results...", NULL);
         }
     }
 }
