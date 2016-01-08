@@ -83,6 +83,7 @@ $loader->load(array(
     
     'scanners/scanner.interface.php',
     'scanners/oscar.class.php',
+    'scanners/chemtagger.class.php',
     
     'orcid/curl.class.php',
     'orcid/orcid.class.php',
