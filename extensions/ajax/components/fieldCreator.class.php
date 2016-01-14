@@ -56,7 +56,7 @@ class FieldCreator extends tauAjaxXmlTag
         $this->multi->addChild($this->check_multi);
         
         //add namespace dropdown
-        $this->addChild($this->namespaceSelector = new NamespaceSelector(array("rdf:Property")));        
+        $this->addChild($this->namespaceSelector = new NamespaceSelector(array("rdf:Property", "owl:AnnotationProperty", "owl:ObjectProperty")));        
     }  
     
     public function getField()
