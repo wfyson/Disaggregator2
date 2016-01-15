@@ -5,6 +5,10 @@ class NamespaceSelector extends tauAjaxXmlTag
     private $new = false;
     private $type;
     
+    private $helpText = "
+            <p>Select a namespace and an RDF property to help describe the component.</p>
+        ";
+    
     public function __construct($types)
     {
         parent::__construct('div');
@@ -19,7 +23,9 @@ class NamespaceSelector extends tauAjaxXmlTag
         $this->setData("");
         
         //namespace select
-        $this->addChild($this->select_namespace_form_group = new BootstrapFormGroup(new tauAjaxLabel($this->select_namespace = new BootstrapSelect(), "Namespace"), $this->select_namespace));                                 
+        $this->addChild($this->select_namespace_form_group = new BootstrapFormGroup($label = new tauAjaxLabel($this->select_namespace = new BootstrapSelect(), "Namespace"), $this->select_namespace));                                 
+        HelperUtil::addHelpGlyph($label, "right", $this->helpText);
+        HelperUtil::initHelpGlyph($this);
         
         $this->select_namespace->addOption("Choose a namespace...", null);
         
@@ -130,6 +136,10 @@ class NamespaceCreator extends tauAjaxXmlTag
 {
     private $validNamespace = false;
     
+    private $helpText = "
+        <p>Enter a URI for a Semantic Web namespace and a title to save a namespace for future use. </p>
+        ";
+    
     public function __construct()
     {
         parent::__construct('div');
@@ -139,6 +149,9 @@ class NamespaceCreator extends tauAjaxXmlTag
     
     public function init()
     {                
+        HelperUtil::addHelpGlyph($this, "right", $this->helpText);
+        HelperUtil::initHelpGlyph($this);
+        
         $this->addChild($this->uri_form_group = new BootstrapFormGroup(new tauAjaxLabel($this->txt_uri = new BootstrapTextInput(), "URI"), $this->txt_uri));
         $this->txt_uri->attachEvent("ontype", $this, "e_uri");
         

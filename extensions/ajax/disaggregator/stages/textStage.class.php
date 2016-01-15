@@ -2,6 +2,10 @@
 
 class TextStage extends BuilderStage implements DisaggregatorStage
 {          
+    private $helpText = "
+        <p>Highlight text and click the green tick to select it, or enter text into the text box on the left.</p>
+    ";
+    
     public function __construct(Component $component, Field $field)
     {
         parent::__construct($component, $field);
@@ -10,7 +14,7 @@ class TextStage extends BuilderStage implements DisaggregatorStage
         $this->addChild(new tauAjaxHeading(4, $this->field->Name));
         
         $this->addChild(new tauAjaxLabel($this->txt_input = new tauAjaxTextInput(), "Select Text: "));
-        $this->addChild($this->txt_input);
+        $this->addChild($this->txt_input);              
         
         if($field->Multi)
         {
@@ -27,6 +31,9 @@ class TextStage extends BuilderStage implements DisaggregatorStage
         {
             $this->setValue($this->fieldValues[$this->record]->getPreview());
         }
+        
+        HelperUtil::addHelpGlyph($this, "right", $this->helpText);
+        HelperUtil::initHelpGlyph($this);
     }
     
     public function newFieldValue()

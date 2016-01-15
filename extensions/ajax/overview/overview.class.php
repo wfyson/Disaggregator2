@@ -7,6 +7,12 @@ class DocumentOverviewUI extends tauAjaxXmlTag
     private $document;
     private $tab;
 
+    private $helpText = "
+        <p>The 'Complete' tab shows those components where all requried information has been added and will show on your portfolio if set to do so.</p>
+        <p>The 'Progress' tab shows components which still require some extra information. THese can be reopened in the document disaggregaation interface.</p>
+        <p>To control which components should appear in your portfolio, click the red padlock or green eye open to set visibility as private or public respectively.</p>
+    ";
+    
     public function __construct(DisaggregatorPerson $person, Document $document=null, $tab=null)
     {
 	parent::__construct('div');
@@ -36,7 +42,9 @@ class DocumentOverviewUI extends tauAjaxXmlTag
         $this->document->flushRelations();    
         
         //yes we have everything
-        $this->addChild(new tauAjaxHeading(2, $this->document->Name . " disaggregated"));
+        $this->addChild($heading = new BootstrapHeader($this->document->Name . " disaggregated"));
+        HelperUtil::addHelpGlyph($heading->getHeader(), "bottom", $this->helpText);
+        HelperUtil::initHelpGlyph($this);
         
         $this->addChild($this->tabs = new BootstrapTabs("overview"));
         

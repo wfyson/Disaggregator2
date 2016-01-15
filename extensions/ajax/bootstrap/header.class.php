@@ -15,6 +15,11 @@ class BootstrapHeader extends tauAjaxXmlTag
                     $this->subheading->setData($subheading);
                 }
 	}
+        
+        public function getHeader()
+        {
+            return $this->header;
+        }
 }
 
 ?>

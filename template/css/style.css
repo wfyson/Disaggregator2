@@ -25,6 +25,20 @@
 }
 
 /*
+    Help
+*/
+.help
+{
+    cursor: pointer;
+}
+
+h1 .help, h2 .help
+{
+    font-size: 20px;
+    float: right;
+}
+
+/*
     Register
 */
 .RegisterForm .btn
@@ -122,6 +136,16 @@ tr.DocumentRow td:first-child .glyphicon-download-alt
     width: 500px;
 }
 
+.FieldCreator input
+{
+    display: inline-block;
+}
+
+.FieldCreator .help
+{
+    margin-left: 5px;
+}
+
 .FieldCreator div
 {
     margin-top: 10px;
@@ -154,9 +178,19 @@ tr.DocumentRow td:first-child .glyphicon-download-alt
     margin-top: 10px;
 }
 
+.NamespaceSelector .help
+{
+    margin-left: 5px;
+}
+
 .NamespaceCreator
 {
     margin-top: 10px;
+}
+
+.NamespaceCreator .help
+{
+    float: right;
 }
 
 .NamespaceSuccess
@@ -195,6 +229,11 @@ tr.DocumentRow td:first-child .glyphicon-download-alt
      top: 34px;
      margin-left: 10%;
      width: 80%;
+ }
+ 
+ .BuilderStage .help
+ {
+     margin-left: 5px;
  }
  
  .BuilderStage .tauAjaxLabel

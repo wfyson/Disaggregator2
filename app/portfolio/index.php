@@ -10,6 +10,7 @@ catch(iotaException $e)
 }
 
 $model = DisaggregatorModel::get();
+$loggedIn = false;
 
 if(isset($_GET['contributor']))
 {
@@ -29,10 +30,11 @@ else
     if($user->UserID != null)
     {        
         $contributor = $user->getContributor();
+        $loggedIn = true;
     }
 }
 
-$portfolioUI = new PortfolioUI($contributor);
+$portfolioUI = new PortfolioUI($contributor, $loggedIn);
 
 tauAjaxServerHandler::initElement($portfolioUI, 'disaggregator.ajax.php');	
 

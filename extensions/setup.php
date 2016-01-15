@@ -18,6 +18,7 @@ $loader->load(array(
     'bootstrap/collapsible.class.php',
     'bootstrap/glyphicon.class.php',
     'bootstrap/header.class.php', 
+    'bootstrap/helperUtil.class.php',
     'bootstrap/input.class.php', 
     'bootstrap/jumbotron.class.php',
     'bootstrap/label.class.php',

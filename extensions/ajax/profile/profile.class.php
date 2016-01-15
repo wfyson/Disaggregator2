@@ -4,6 +4,11 @@ class ProfileUI extends tauAjaxXmlTag
 {
         private $person;
     
+        private $helpText = "
+            <p>Edit your personal details, including your email address and ORCID</p>
+            <p>Use the portfolio link to direct people to your portfolio where they can view the research outputs you've chosen to make available.</p>
+        ";
+        
 	public function __construct(DisaggregatorPerson $person)
 	{
             parent::__construct('div');
@@ -17,6 +22,9 @@ class ProfileUI extends tauAjaxXmlTag
         
         public function e_init(tauAjaxEvent $e)
         {          
+            HelperUtil::addHelpGlyph($this->header->getHeader(), "bottom", $this->helpText);
+            HelperUtil::initHelpGlyph($this);
+            
             $this->addChild($this->registerForm = new RegisterForm($this->person)); 
             
             $this->addChild($this->right = new tauAjaxXmlTag('div'));

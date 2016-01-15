@@ -2,6 +2,18 @@
 
 class FieldCreator extends tauAjaxXmlTag
 {    
+    private $nameHelp = "The name of the field.";
+    private $fieldHelp = "
+             <p>The type of the field.</p>
+             <p>A 'Text' field is for storing textual information.</p>
+             <p>A 'File' field allows the user to upload additional files.</p>
+             <p>A 'Component' field allows the user to select another previously disaggregated item.</p>
+             <p>A 'Contributor' field allows the user to reference another individual or organisation that has contributed towards the item.</p>
+        ";
+    private $requiredHelp = "Tick to set the field as mandatory.";
+    private $multiHelp = "Tick to allow multiple values to be stored for this field.";
+    
+    
     public function __construct(Field $field=null)
     {
         parent::__construct('div');
@@ -20,17 +32,20 @@ class FieldCreator extends tauAjaxXmlTag
     {                
         //name input
         $this->addChild(new tauAjaxLabel($this->txt_name = new tauAjaxTextInput(), 'Name'));
-        $this->addChild($this->txt_name);        
+        HelperUtil::addHelpGlyph($this, "right", $this->nameHelp);        
+        $this->addChild($this->txt_name);          
+        
         
         //type input
         $this->addChild($this->type = new tauAjaxXmlTag('div'));
         $this->type->addChild(new tauAjaxLabel($this->select_type = new tauAjaxSelect(), 'Type'));
+        HelperUtil::addHelpGlyph($this->type, "right", $this->fieldHelp);
         $this->type->addChild($this->select_type);
         $this->select_type->addOption("Text");
         $this->select_type->addOption("File");
         $this->select_type->addOption("Component");
         $this->select_type->addOption("Contributor");
-        $this->select_type->attachEvent("onchange", $this, "e_select_type");
+        $this->select_type->attachEvent("onchange", $this, "e_select_type");                
         
         $this->type->addChild($this->subtype = new tauAjaxXmlTag('div'));
         $this->subtype->addClass("hide");
@@ -49,11 +64,14 @@ class FieldCreator extends tauAjaxXmlTag
         $this->addChild($this->mandatory = new tauAjaxXmlTag('div'));
         $this->mandatory->addChild(new tauAjaxLabel($this->check_mandatory = new tauAjaxCheckbox(), 'Required'));
         $this->mandatory->addChild($this->check_mandatory);
-        
+        HelperUtil::addHelpGlyph($this->mandatory, "right", $this->requiredHelp);
+               
         //multi
         $this->addChild($this->multi = new tauAjaxXmlTag('div'));
         $this->multi->addChild(new tauAjaxLabel($this->check_multi = new tauAjaxCheckbox(), 'Multi'));  
         $this->multi->addChild($this->check_multi);
+        HelperUtil::addHelpGlyph($this->multi, "right", $this->multiHelp);
+        HelperUtil::initHelpGlyph($this);
         
         //add namespace dropdown
         $this->addChild($this->namespaceSelector = new NamespaceSelector(array("rdf:Property", "owl:AnnotationProperty", "owl:ObjectProperty")));        

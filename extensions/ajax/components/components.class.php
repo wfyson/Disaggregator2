@@ -3,8 +3,8 @@
 class ComponentUI extends tauAjaxXmlTag
 {
 
-	private $person;
-
+	private $person;       
+        
 	public function __construct(DisaggregatorPerson $person)
 	{
 		parent::__construct('div');
@@ -19,7 +19,7 @@ class ComponentUI extends tauAjaxXmlTag
 	}
         
         public function e_init(tauAjaxEvent $e)
-        {            
+        {                        
             $this->addChild($this->descriptorBrowser = new DescriptorBrowser($this->person));
             
             $this->addChild($this->descriptorCreator = new DescriptorCreator($this->person));

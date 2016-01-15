@@ -2,8 +2,14 @@
 
 class DescriptorCreator extends tauAjaxXmlTag
 {
-
 	private $descriptor;
+        
+        private $helpText = "
+            <p>Create a component which describes the data that may be extracted from documents during the disaggregation process.</p>
+            <p>Each component is made up of a series of fields that contain information about the item in question.</p>
+            <p>Choose a namespace and a corresponding RDF type to describe the component formally using a URI.</p>
+            <p>The 'Preview Field' is used to state which field will be used to represent the component when it is displayed on other pages of the disaggregator.</p>
+        ";
 
 	public function __construct(DisaggregatorPerson $person)
 	{
@@ -16,6 +22,9 @@ class DescriptorCreator extends tauAjaxXmlTag
         public function init($editable=array('Name', 'Description'))
         {
             $this->setData("");
+         
+            HelperUtil::addHelpGlyph($this, "right", $this->helpText);
+            HelperUtil::initHelpGlyph($this);
             
             $this->addChild($this->editor = new TauAjaxADRORecord(DisaggregatorModel::get()->descriptor));           
             $this->editor->attachEvent('save', $this, 'e_saved');

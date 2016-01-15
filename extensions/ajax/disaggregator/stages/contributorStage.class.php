@@ -2,6 +2,10 @@
 
 class ContributorStage extends BuilderStage implements DisaggregatorStage
 {    
+    private $helpText = "
+        <p>Select a contributor from the list below, or add a new contributor by entering their name or ORCID.</p>
+    ";
+    
     public function __construct(Component $component, Field $field)
     {     
         parent::__construct($component, $field);
@@ -30,6 +34,9 @@ class ContributorStage extends BuilderStage implements DisaggregatorStage
         {
             $this->setValue($this->fieldValues[$this->record]->Value);
         }
+        
+        HelperUtil::addHelpGlyph($this, "right", $this->helpText);
+        HelperUtil::initHelpGlyph($this);
     }
     
     public function newFieldValue()

@@ -4,6 +4,10 @@ class FileStage extends BuilderStage implements DisaggregatorStage
 {
     private $value;
     
+    private $helpText = "
+        <p>Upload a file to associate with this component.</p>
+    ";
+    
     public function __construct(Component $component, Field $field)
     {
         parent::__construct($component, $field);     
@@ -37,6 +41,9 @@ class FileStage extends BuilderStage implements DisaggregatorStage
         {
             $this->setValue($this->fieldValues[$this->record]->getPreview());
         }
+        
+        HelperUtil::addHelpGlyph($this, "right", $this->helpText);
+        HelperUtil::initHelpGlyph($this);
     }
         
     public function newFieldValue()

@@ -5,14 +5,22 @@ class DocumentBrowser extends tauAjaxXmlTag
 	private $person;
 	private $documentList;
 
+        private $helpText = "
+            <p>Use the 'Upload Document' button to add new documents to the Disaggregator.</p>
+            <p>The 'Progress' and 'Complete' buttons can be used to view different components that have been extracted.</p>
+            <p>'Scanner' presents options for automatically extracting components from doucments and the 'Disaggregate' button allows for manual extraction of components.</p>
+            <p>The 'Redact' button allows documents to be redacted (only available for .docx documents at present)</p>            
+        ";
+        
 	public function __construct(DisaggregatorPerson $person)
 	{
             parent::__construct('div');
 
             $this->person = $person;
 
-            $this->addChild(new BootstrapHeader('My Documents'));
-			
+            $this->addChild($header = new BootstrapHeader('My Documents'));
+            HelperUtil::addHelpGlyph($header->getHeader(), "bottom", $this->helpText);
+            
             $this->attachEvent('init', $this, 'e_init');
             $this->attachEvent('refresh', $this, 'e_refresh');
 	}
@@ -28,8 +36,10 @@ class DocumentBrowser extends tauAjaxXmlTag
 		
             //styling for the button
             $this->up->runJS("
-		$('button').addClass('btn btn-primary');
+		$('button').addClass('btn btn-primary');                
             ");
+            
+            HelperUtil::initHelpGlyph($this);
 	}
 
 	public function e_uploaded(tauAjaxEvent $e)

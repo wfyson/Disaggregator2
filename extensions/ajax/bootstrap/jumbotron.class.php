@@ -8,13 +8,18 @@ class BootstrapJumbotron extends tauAjaxXmlTag
 		
             $this->addClass("jumbotron");
 
-            $this->addChild(new tauAjaxHeading(2, $heading));
+            $this->addChild($this->heading = new tauAjaxHeading(2, $heading));
                 
             if(isset($para))
             {
                 $this->addChild(new tauAjaxParagraph($para));
             }
 	}
+        
+        public function getHeader()
+        {
+            return $this->heading;
+        }
 }
 
 ?>

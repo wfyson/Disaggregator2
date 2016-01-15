@@ -7,6 +7,11 @@ class ScannerUI extends tauAjaxXmlTag
     private $document;
     private $descriptor;
 
+    private $helpText = "
+        <p>Select a scanner to text-mine the document for components.</p>
+        <p>When the results are displayed click 'Save' to keep a record of the component, or 'Discard' to remove it from the list.</p>
+    ";
+    
     public function __construct(DisaggregatorPerson $person, Document $document=null, Descriptor $descriptor=null)
     {
 	parent::__construct('div');
@@ -46,7 +51,10 @@ class ScannerUI extends tauAjaxXmlTag
             
         //yes we have everything                        
         $intro = "Select a scanner to look for " . $this->descriptor->Name . "s in " . $this->document->Name;
-        $this->addChild(new BootstrapJumbotron("Scanner", $intro));
+        $this->addChild($jumbo = new BootstrapJumbotron("Scanner", $intro));
+        
+        HelperUtil::addHelpGlyph($jumbo->getHeader(), "bottom", $this->helpText);
+        HelperUtil::initHelpGlyph($this);
         
         $this->addChild($this->scannerView =new tauAjaxXmlTag('div'));
         

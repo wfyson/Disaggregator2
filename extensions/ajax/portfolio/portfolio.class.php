@@ -5,7 +5,14 @@ class PortfolioUI extends tauAjaxXmlTag
 
     private $contributor;
 
-    public function __construct(Contributor $contributor = null)
+    private $helpText = "
+        <p>Your portfolio as seen by other visitors to the site!</p>
+        <p>'Documents' are your documents that have been uploaded to the Disaggregator and are available to download.</p>
+        <p>'Components' shows the items you've extracted from your documents and have set to be publicly visible.</p>
+        <p>'Contributions' shows those items other users may have listed you as a contributor towards.</p>
+    ";
+    
+    public function __construct(Contributor $contributor = null, $loggedIn = false)
     {
         parent::__construct('div');
 
@@ -15,7 +22,8 @@ class PortfolioUI extends tauAjaxXmlTag
                     $contributor->Orcid));
 
             $this->contributor = $contributor;
-
+            $this->loggedIn = $loggedIn;
+            
             $this->attachEvent('init', $this, 'e_init');
             $this->attachEvent('refresh', $this, 'e_refresh');
         }
@@ -27,6 +35,12 @@ class PortfolioUI extends tauAjaxXmlTag
 
     public function e_init(tauAjaxEvent $e)
     {        
+        if($this->loggedIn)
+        {
+            HelperUtil::addHelpGlyph($this->header->getHeader(), "bottom", $this->helpText);
+            HelperUtil::initHelpGlyph($this);
+        }
+        
         //tabs
         $this->addChild($this->tabs = new BootstrapTabs("portfolio"));
         
