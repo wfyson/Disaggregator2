@@ -29,6 +29,14 @@ class ComponentPage extends tauAjaxXmlTag
         $this->addChild($this->componentViewer = new ComponentViewer());
         $this->componentViewer->showComponent($this->component);
         $this->componentViewer->addClass("col-md-6");
+                
+        $this->addChild($this->rightCol = new tauAjaxXmlTag('div'));
+        $this->rightCol->addClass("col-md-6");
+        
+        $this->rightCol->addchild(new tauAjaxHeading(4, "RDF"));
+        $this->rightCol->addChild($rdf_txtarea = new tauAjaxTextArea());
+        $rdf_txtarea->setData(htmlentities(RDFExporter::exportRDF($this->component)));
+        $rdf_txtarea->setAttribute("readonly", "readonly");
     }
     
 

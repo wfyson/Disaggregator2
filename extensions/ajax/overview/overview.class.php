@@ -163,10 +163,10 @@ class ComponentRow extends tauAjaxXmlTag
                   
         $this->component = $component;
         
-        $this->init();
+        $this->init($delete);
     }
     
-    public function init()
+    public function init($delete)
     {        
         $this->setData();
         
@@ -185,7 +185,7 @@ class ComponentRow extends tauAjaxXmlTag
       
         //edit button
         $this->addChild($this->cell_disaggregator = new tauAjaxXmlTag("td"));
-        $this->cell_disaggregator->addChild(new BootstrapLinkButton("Open in Disaggregator", "/disaggregator&component=$component->ComponentID", "btn-primary"));
+        $this->cell_disaggregator->addChild(new BootstrapLinkButton("Open in Disaggregator", "/disaggregator&component=" . $this->component->ComponentID, "btn-primary"));
     
         if($delete)
         {

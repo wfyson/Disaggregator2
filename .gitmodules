@@ -1,0 +1,3 @@
+[submodule "easyrdf"]
+	path = easyrdf
+	url = https://github.com/njh/easyrdf

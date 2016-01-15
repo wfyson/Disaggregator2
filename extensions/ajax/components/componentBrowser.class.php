@@ -86,7 +86,7 @@ class ComponentViewer extends tauAjaxXmlTag
     
     public function __construct()
     {
-        parent::__construct('div');        
+        parent::__construct('div');                      
     }    
     
     public function showComponent(Component $component)

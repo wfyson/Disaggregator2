@@ -9,7 +9,7 @@ class DocumentBrowser extends tauAjaxXmlTag
             <p>Use the 'Upload Document' button to add new documents to the Disaggregator.</p>
             <p>The 'Progress' and 'Complete' buttons can be used to view different components that have been extracted.</p>
             <p>'Scanner' presents options for automatically extracting components from doucments and the 'Disaggregate' button allows for manual extraction of components.</p>
-            <p>The 'Redact' button allows documents to be redacted (only available for .docx documents at present)</p>            
+            <p>The 'Redact' button allows documents to be redacted (only available for .docx documents at present).</p>            
         ";
         
 	public function __construct(DisaggregatorPerson $person)
@@ -112,16 +112,24 @@ class DocumentRow extends tauAjaxXmlTag
             $this->cell_name->addChild($this->span_name = new tauAjaxSpan($this->document->Name . " "));
             $this->span_name->addClass("h4");
             if($this->document->Security == "User" || $this->document->Security == "Contributors")
+            {
                 $this->cell_name->addChild($this->security = new Glyphicon("lock"));
+                $this->security->setAttribute('title', 'Closed Access');
+            }
             else
+            {
                 $this->cell_name->addChild($this->security = new Glyphicon("eye-open"));
+                $this->security->setAttribute('title', 'Open Access');
+            }
             $this->security->attachEvent("onclick", $this, "e_security");
                 
             $this->cell_name->addChild($this->edit_link = new tauAjaxLink("", "/document&document=" . $this->document->DocumentID));
             $this->edit_link->addChild($this->edit = new Glyphicon("cog"));
+            $this->edit->setAttribute('title', 'Edit');
             
             $this->cell_name->addChild($this->download_link = new tauAjaxLink("", "/documents/" . $this->document->Filepath));
             $this->download_link->addChild($this->download = new Glyphicon("download-alt"));
+            $this->download->setAttribute('title', 'Download');
             
             //incomplete components
             $this->addChild($this->cell_incomplete = new tauAjaxXmlTag("td"));

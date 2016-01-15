@@ -71,7 +71,7 @@ $loader->load(array(
     
     'portfolio/portfolio.class.php',
     'portfolio/documentPortfolio.class.php',
-    'portfolio/contributionPortfolio.class.php',
+    'portfolio/contributionPortfolio.class.php',        
 
 
 ), dirname(__FILE__) . '/ajax/');
@@ -91,7 +91,9 @@ $loader->load(array(
     
     'writers/wordWriter.class.php',
     
-    'linkeddata/linkedDataHelper.class.php'
+    'linkeddata/linkedDataHelper.class.php',
+    
+    'exporters/rdfExporter.class.php',
 ), dirname(__FILE__));
 
 

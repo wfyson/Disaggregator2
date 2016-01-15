@@ -1,11 +1,31 @@
 <?php
 
+require 'sites/Disaggregator2/vendor/autoload.php';
+
 class RDFExporter
 {
     public static function exportRDF(Component $component)
     {
-        //Perhaps this can only be allowed if all the fields have URIs - otherwise how do we depict them?
+        $model = DisaggregatorModel::get();
+                    
+        $graph = new EasyRdf_Graph("http://www.disaggregator.com/component#335");
         
+        //add the type if we have one
+        $descriptor = $component->getDescriptor();
+        if($descriptor->NamespaceID)
+        {
+            error_log("A type has been defined!!!!");
+            $namespace = $model->namespace->getRecordByPK($descriptor->NamespaceID);    
+            
+            $class = $graph->resource("http://www.disaggregator.com/component#335", $descriptor->Class);
+        }
+        
+        //foreach field addLiteral??
+        
+        $xml = $graph->serialise('rdfxml');
+        return $xml;
+        
+        //Add namespaces
         
         /*
           <?xml version=“1.0”?>

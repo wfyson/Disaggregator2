@@ -1,5 +1,9 @@
 {
     "require": {
         "smalot/pdfparser": "^0.9.24"
+    },
+
+    "require": {
+        "easyrdf/easyrdf": "*"
     }
 }
