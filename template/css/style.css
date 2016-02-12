@@ -83,6 +83,19 @@ tr.DocumentRow td:first-child span:first-child
     margin-right: 5px;
 }
 
+tr.DocumentRow td:first-child .GroupSelector
+{
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: top;
+}
+
+tr.DocumentRow td:first-child .caret
+{
+    margin: 0 !important;
+    vertical-align: super;
+}
+
 tr.DocumentRow td:first-child .glyphicon
 {
     display: inline-block;
@@ -94,11 +107,6 @@ tr.DocumentRow td:first-child .glyphicon
 tr.DocumentRow td:first-child .glyphicon-lock
 {
     color: #ce4844;
-}
-
-tr.DocumentRow td:first-child .glyphicon-eye-open
-{
-    color: #3c763d;
 }
 
 tr.DocumentRow td:first-child .glyphicon-cog

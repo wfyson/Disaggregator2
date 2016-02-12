@@ -16,6 +16,7 @@ $loader->load(array(
     'bootstrap/badge.class.php',
     'bootstrap/button.class.php',
     'bootstrap/collapsible.class.php',
+    'bootstrap/dropdown.class.php',
     'bootstrap/glyphicon.class.php',
     'bootstrap/header.class.php', 
     'bootstrap/helperUtil.class.php',
@@ -71,7 +72,9 @@ $loader->load(array(
     
     'portfolio/portfolio.class.php',
     'portfolio/documentPortfolio.class.php',
-    'portfolio/contributionPortfolio.class.php',        
+    'portfolio/contributionPortfolio.class.php', 
+    
+    'group/groupSelector.class.php',
 
 
 ), dirname(__FILE__) . '/ajax/');

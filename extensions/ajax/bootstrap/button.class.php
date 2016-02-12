@@ -12,7 +12,7 @@ class BootstrapButton extends tauAjaxXmlTag
                 $this->addClass($class);            
 	}
 }
-
+        
 class BootstrapSplitButton extends tauAjaxXmlTag
 {
     public function __construct($text, $class=null)
@@ -25,15 +25,7 @@ class BootstrapSplitButton extends tauAjaxXmlTag
             
             //dropdown
             $this->addChild($this->dropdown = new BootstrapButton("", $class));
-            $this->dropdown->addClass("dropdown-toggle");
-            $this->dropdown->setAttribute("data-toggle", "dropdown");
-            $this->dropdown->setAttribute("aria-haspopup", "true");
-            $this->dropdown->setAttribute("aria-expanded", "false");
-            
-            $this->dropdown->addChild($this->caret = new tauAjaxSpan());
-            $this->caret->addClass("caret");
-            $this->dropdown->addChild($this->toggle = new tauAjaxSpan("Toggle Dropdown"));
-            $this->toggle->addClass("sr-only");
+            $this->dropdown = BootstrapDropDown::createDropDown($this->dropdown);
             
             //menu 
             $this->addChild($this->menu = new tauAjaxList());

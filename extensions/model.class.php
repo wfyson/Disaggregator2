@@ -55,6 +55,8 @@ class DisaggregatorModel extends ADROModel
                 $this->registerClass($this->componentvalue, 'ComponentValue');
                 $this->registerClass($this->contributorvalue, 'ContributorValue');
                 
+                $this->registerClass($this->usergroup, 'Group');
+                
                 $this->registerClass($this->scanner, 'Scanner');
                 
                 $this->registerClass($this->namespace, 'DisaggregatorNamespace');
@@ -92,6 +94,12 @@ class DisaggregatorModel extends ADROModel
                 
                 $this->addRelation('descriptor.DescriptorID', 'scanner.DescriptorID');
                 $this->addRelation('scanner.DescriptorID', 'descriptor.DescriptorID');
+                
+                $this->addRelation('usergroup.GroupID', 'groupperson.GroupID');
+                $this->addRelation('groupperson.PersonID', 'person.UserID');
+                $this->addRelation('person.UserID', 'groupperson.PersonID');
+                $this->addRelation('groupperson.GroupID', 'usergroup.GroupID');        
+                        
 	}
 
 	private $user = false;
