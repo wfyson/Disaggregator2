@@ -4,6 +4,8 @@ class GroupSelector extends BootstrapDropDown
 {
     private $record;
     private $person;
+    private $selected;
+    private $items = array();
     
     public function __construct($record, DisaggregatorPerson $person)
     {                
@@ -16,48 +18,81 @@ class GroupSelector extends BootstrapDropDown
     }
     
     public function init()
-    {
+    {        
         $model = DisaggregatorModel::get();
         
         //add the open to all option
-        $this->addItem(new GroupItem("Open", "open"));
+        $this->addItem($open = new GroupItem("Open", "Public"));
         
         //add closed option
-        $this->addItem(new GroupItem("Closed", "closed"));              
+        $this->addItem($closed = new GroupItem("Closed", "User"));                                      
         
         //add the user's options
-        $gps = $this->person->getgrouppersons();
-        if($gps->count() > 0)
+        $groups = $this->person->getusergroups();
+        if($groups->count() > 0)
         {
             //divider
             $this->addDivider();
             
-            $gpi = $gps->getIterator();
-            while($gpi->hasNext())
+            $gi = $groups->getIterator();
+            while($gi->hasNext())
             {
-                $gp = $gpi->next();
-                $g = $model->usergroup->getRecordByPK($gp->GroupID);
+                $g = $gi->next();
                 
                 $this->addItem(new GroupItem($g->Name, $g->GroupID));
             }
-        }
+        }      
         
-        //divider
-        $this->addDivider();
+        //selection event
+        $this->attachEvent("selection", $this, "e_selection");
         
-        //add a new group button
-        $newItem = new tauAjaxListItem();
-        $newItem->addChild($this->new_btn = new BootstrapButton("New Group", "btn-sm"));
-        $this->new_btn->attachEvent("onclick", $this, "e_new"); 
-        $this->addItem($newItem);
+        $this->setSelected();
     }    
     
-    public function e_new(tauAjaxEvent $e)
+    public function addItem(\tauAjaxListItem $item)
     {
-        error_log("new...");
+        parent::addItem($item);
+        $this->items[] = $item;
+    }    
+    
+    public function e_selection(tauAjaxEvent $e)
+    {
+        $e->disableBubble();
+        
+        $this->selected->removeTick();        
+        $this->selected = $e->getNode();
+
+        if($e->getParam('value') == "Public" || $e->getParam('value') == "User")               
+        {
+            $this->record->Security = $e->getParam('value');
+            $this->record->GroupID = 0;
+        }
+        else
+        {
+            $this->record->Security = "Group";
+            $this->record->GroupID = $e->getParam('value');
+        }
+        $this->record->save();
+    }
+    
+    public function setSelected()
+    {  
+        foreach($this->items as $item)
+        {     
+            if($item->getValue() == $this->record->Security)
+            {
+                $this->selected = $item;
+                $item->addTick();
+            }
+            elseif($item->getValue() == $this->record->GroupID)
+            {
+                $this->selected = $item;
+                $item->addTick();
+            }
+       }
     }
 }
-
+        
 class GroupItem extends tauAjaxListItem
 {
     private $name;
@@ -70,13 +105,30 @@ class GroupItem extends tauAjaxListItem
         $this->name = $name;
         $this->value = $value;
         
-        $this->addChild(new tauAjaxLink($name, "#"));
+        $this->addChild($this->link = new tauAjaxLink($name, "#"));
         $this->attachEvent("onclick", $this, "e_select");
     }
     
     public function e_select(tauAjaxEvent $e)
     {
-        error_log("selected...." . $this->value);
+        $this->addTick();
+        $this->triggerEvent("selection", array("value" => $this->value));
+    }
+    
+    public function addTick()
+    {
+        $this->link->addChild($this->tick = new Glyphicon("ok"));
+    }
+    
+    public function removeTick()
+    {
+        if($this->tick)
+            $this->link->deleteChild($this->tick);
+    }
+    
+    public function getValue()
+    {
+        return $this->value;
     }
 }
 

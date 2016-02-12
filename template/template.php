@@ -68,6 +68,9 @@
                             <a href="/profile"><span class="glyphicon glyphicon-user"></span> Profile</a>
                         </li>
                         <li>
+                            <a href="/groups"><span class="glyphicon glyphicon-eye-close"></span> Groups</a>
+                        </li>
+                        <li>
                             <a href="/components"><span class="glyphicon glyphicon-cog"></span> Components</a>
                         </li>
                         <li>

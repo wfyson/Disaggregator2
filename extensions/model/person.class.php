@@ -63,6 +63,15 @@ class DisaggregatorPerson extends adro implements tauUser
             return false;
         }
     }
+    
+    public function getusergroups()
+    {
+        $model = DisaggregatorModel::get();
+        $query = new ADROQuery($model);
+        $query->addTable($model->getTable('usergroup'));
+        $query->addRestriction(new adroQueryEq($query, 'usergroup.UserID', $this->UserID));
+        return $query->run();
+    }  
 
     public function getdocuments($reverse = false, $security = false)
     {
@@ -92,7 +101,12 @@ class DisaggregatorPerson extends adro implements tauUser
         $contributor = $this->getContributor();
         return iotaPath::makePath($_SERVER['SERVER_NAME'] . '/portfolio&contributor='. $contributor->ContributorID);
     }
-
+    
+    public static function getUsers()
+    {
+        $model = DisaggregatorModel::get();
+        return $model->person->getRecords();
+    }
 }
 
 class disaggregatorUtil

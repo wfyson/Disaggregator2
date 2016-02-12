@@ -75,6 +75,8 @@ $loader->load(array(
     'portfolio/contributionPortfolio.class.php', 
     
     'group/groupSelector.class.php',
+    'group/groupViewer.class.php',
+    'group/groups.class.php',
 
 
 ), dirname(__FILE__) . '/ajax/');
