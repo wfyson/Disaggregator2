@@ -10,7 +10,12 @@ catch(iotaException $e)
 }
 
 $model = DisaggregatorModel::get();
-$loggedIn = false;
+$loggedIn = null;
+
+if($user->UserID != null)
+{      
+    $loggedIn = $user;
+}
 
 if(isset($_GET['contributor']))
 {
@@ -27,10 +32,10 @@ if(isset($_GET['contributor']))
 }
 else
 {
-    if($user->UserID != null)
+    if($user->UserID != null) //show user's profile if alternative not set
     {        
         $contributor = $user->getContributor();
-        $loggedIn = true;
+        $loggedIn = $user;
     }
 }
 

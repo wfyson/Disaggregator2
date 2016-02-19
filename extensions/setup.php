@@ -81,7 +81,9 @@ $loader->load(array(
 
 ), dirname(__FILE__) . '/ajax/');
 
-$loader->load(array(
+$loader->load(array(   
+    'groups/groupHelper.class.php',
+    
     'readers/openXMLReader.class.php',
     'readers/wordReader.class.php',
     'readers/powerpointReader.class.php',

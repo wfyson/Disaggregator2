@@ -41,7 +41,7 @@ class Contributor extends adro
         }
     }       
     
-    public function getComponents()
+    public function requestComponents(DisaggregatorPerson $requester=null)
     {
         $model = DisaggregatorModel::get();
         $results = array();
@@ -51,8 +51,19 @@ class Contributor extends adro
         while($cvi->hasNext())
         {
             $cv = $cvi->next();
-            $component = $model->component->getRecordByPK($cv->ComponentID);
-            $results[] = $component;
+            $c = $model->component->getRecordByPK($cv->ComponentID);
+            
+            if($c->Security == "Public")
+            {
+                $results[] = $c;
+            }
+            elseif($c->Security == "Group" && $requester instanceof DisaggregatorPerson)
+            {
+                if(GroupHelper::checkGroup($c, $requester))
+                {
+                    $results->add($c);
+                }
+            }           
         }
         return $results;
     }
@@ -74,8 +85,8 @@ class Contributor extends adro
         }
     }      
         
-    public function getUserComponents()
-    {                
+    public function requestUserComponents(DisaggregatorPerson $requester=null)
+    {                        
         $documents = $this->getDocuments();
         if($documents)
         {            
@@ -86,7 +97,23 @@ class Contributor extends adro
 		$doc = $i->next();
                 $components = array_merge($components, $doc->getCompleteComponents());                                
             }
-            return $components;
+            
+            $results = array();
+            foreach($components as $c)
+            {
+                if($c->Security == "Public")
+                {
+                    $results[] = $c;
+                }
+                elseif($c->Security == "Group" && $requester instanceof DisaggregatorPerson)
+                {
+                    if(GroupHelper::checkGroup($c, $requester))
+                    {
+                        $results->add($c);
+                    }
+                }
+            }
+            return $results;
         }
     }
 }

@@ -21,7 +21,7 @@ class GroupViewer extends tauAjaxXmlTag
         $this->addChild($this->txt_name);
         $this->txt_name->setValue($this->group->Name);
         
-        $this->addChild($this->personList = new GroupPersonListGroup());
+        $this->addChild($this->personList = new GroupPersonListGroup($this->person));
         $this->group->flushRelations();
         $this->personList->showGroupPersons($this->group->getgrouppersons());    
         
@@ -70,7 +70,14 @@ class GroupViewer extends tauAjaxXmlTag
 class GroupPersonListGroup extends ListGroup
 {
     private $items = array();
+    private $person;
     
+    public function __construct(DisaggregatorPerson $person)
+    {
+        parent::__construct();
+        $this->person = $person;
+    }
+            
     public function showGroupPersons(ADROSet $grouppersons)
     {
         $this->setData('');
@@ -81,15 +88,17 @@ class GroupPersonListGroup extends ListGroup
         while($pi->hasNext())
         {
             $p = $pi->next();
-            if($p->getContributor())
+            if($p->UserID != $this->person->UserID) //hide the logged in user
             {
-                $item = $this->addGroupPerson($p);              
-                if(in_array($p->UserID, $gpids))
+                if($p->getContributor())
                 {
-                    $item->setSelected(true);
+                    $item = $this->addGroupPerson($p);              
+                    if(in_array($p->UserID, $gpids))
+                    {
+                        $item->setSelected(true);
+                    }
                 }
             }
-            
         }                 
     }
     

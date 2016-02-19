@@ -85,6 +85,39 @@ class DisaggregatorPerson extends adro implements tauUser
             $query->setOrder('document.DocumentID DESC');
         return $query->run();
     }    
+    
+    public function requestDocuments(DisaggregatorPerson $requester=null)
+    {
+        if($requester->UserID == $this->UserID)
+        {
+            return $this->getdocuments();
+        }
+        
+        $model = DisaggregatorModel::get();
+        $query = new ADROQuery($model);
+        $query->addTable($model->getTable('document'));
+        $query->addRestriction(new adroQueryEq($query, 'document.UserID', $this->UserID));
+        $documents = $query->run();
+        
+        $results = new ADROSet($model);
+        $di = $documents->getIterator();
+        while($di->hasNext())
+        {
+            $d = $di->next();
+            if($d->Security == "Public")
+            {
+                $results->add($d);
+            }
+            elseif($d->Security == "Group" && $requester instanceof DisaggregatorPerson)
+            {
+                if(GroupHelper::checkGroup($d, $requester))
+                {
+                    $results->add($d);
+                }
+            }
+        }
+        return $results;
+    }
 
     public function getContributor()
     {

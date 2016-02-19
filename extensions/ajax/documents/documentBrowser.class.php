@@ -74,7 +74,7 @@ class DocumentList extends BootstrapTable
 {
         private $person;
                 
-        public function __construct(DisaggregatorPerson $person)
+        public function __construct(DisaggregatorPerson $person=null)
         {
             parent::__construct();
             $this->person = $person;
@@ -121,18 +121,7 @@ class DocumentRow extends tauAjaxXmlTag
             $this->addChild($this->cell_name = new tauAjaxXmlTag("td"));
             $this->cell_name->addChild($this->span_name = new tauAjaxSpan($this->document->Name . " "));
             $this->span_name->addClass("h4");
-            //if($this->document->Security == "User" || $this->document->Security == "Contributors")
-            //{
-            //    $this->cell_name->addChild($this->security = new Glyphicon("lock"));
-            //    $this->security->setAttribute('title', 'Closed Access');
-            //}
-            //else
-            //{
-            //    $this->cell_name->addChild($this->security = new Glyphicon("eye-open"));
-            //    $this->security->setAttribute('title', 'Open Access');
-            //}
-            $this->cell_name->addChild($this->security = new GroupSelector($this->document, $this->person));            
-            //$this->security->attachEvent("onclick", $tis, "e_security");
+            $this->cell_name->addChild($this->security = new GroupSelector($this->document, $this->person));                        
                 
             $this->cell_name->addChild($this->edit_link = new tauAjaxLink("", "/document&document=" . $this->document->DocumentID));
             $this->edit_link->addChild($this->edit = new Glyphicon("cog"));
@@ -218,14 +207,7 @@ class DocumentRow extends tauAjaxXmlTag
                 "
                     window.location.href = './scanner&document=" . $this->document->DocumentID . "';
                 ");
-        }
-        
-        public function e_security(tauAjaxEvent $e)
-        {
-            $this->document->changeSecurity();
-            $this->init();
-        }
-
+        }        
 }
 
 ?>

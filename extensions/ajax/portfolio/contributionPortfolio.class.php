@@ -13,15 +13,13 @@ class ContributionPortfolio extends BootstrapTable
     }
 
     public function showContributions($contributions)
-    {
+    {        
         $this->body->setData('');
         $noContributions = 0;
-        foreach($contributions as $contribution) {
-            if($contribution->Security == "Public")
-            {
+        foreach($contributions as $contribution)
+        {        
                 $noContributions++;
-                $this->addContribution($contribution);
-            }
+                $this->addContribution($contribution);         
         }
         if($noContributions == 0)
         {

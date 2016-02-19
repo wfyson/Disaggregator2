@@ -83,13 +83,6 @@ tr.DocumentRow td:first-child span:first-child
     margin-right: 5px;
 }
 
-tr.DocumentRow td:first-child .GroupSelector
-{
-    display: inline-block;
-    cursor: pointer;
-    vertical-align: top;
-}
-
 tr.DocumentRow td:first-child .caret
 {
     margin: 0 !important;
@@ -421,15 +414,6 @@ tr.DocumentRow td:first-child .glyphicon-download-alt
     margin-top: 10px;
 }
 
-tr.ComponentRow td:first-child .glyphicon-lock
-{
-    color: #ce4844;
-}
-
-tr.ComponentRow td:first-child .glyphicon-eye-open
-{
-    color: #3c763d;
-}
  
  /*
   * Scanners
@@ -508,6 +492,14 @@ tr.ComponentRow td:first-child .glyphicon-eye-open
  /*
     Group Selector
  */
+ 
+ .GroupSelector
+ {
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: top;
+ }
+ 
  .GroupSelector .GroupItem .glyphicon
  {
      margin-top: 0 !important;

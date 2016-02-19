@@ -4,7 +4,7 @@ class GroupSelector extends BootstrapDropDown
 {
     private $record;
     private $person;
-    private $selected;
+    private $selected = false;
     private $items = array();
     
     public function __construct($record, DisaggregatorPerson $person)
@@ -18,9 +18,7 @@ class GroupSelector extends BootstrapDropDown
     }
     
     public function init()
-    {        
-        $model = DisaggregatorModel::get();
-        
+    {                
         //add the open to all option
         $this->addItem($open = new GroupItem("Open", "Public"));
         
@@ -59,7 +57,9 @@ class GroupSelector extends BootstrapDropDown
     {
         $e->disableBubble();
         
-        $this->selected->removeTick();        
+        if($this->selected)
+            $this->selected->removeTick();        
+        
         $this->selected = $e->getNode();
 
         if($e->getParam('value') == "Public" || $e->getParam('value') == "User")               

@@ -73,17 +73,17 @@ class PortfolioUI extends tauAjaxXmlTag
     {
         $person = $this->contributor->getPerson();
         if($person)           
-            $this->documentPortfolio->showDocuments($person->getDocuments(false, "Public"));
+            $this->documentPortfolio->showDocuments($person->requestDocuments($this->loggedIn));
         else
         {
             $this->documentPortfolio->body->addChild(new EmptyRow("documents"));
         }        
         
         //components user has disaggregated
-        $this->componentPortfolio->showContributions($this->contributor->getUserComponents()); 
+        $this->componentPortfolio->showContributions($this->contributor->requestUserComponents($this->loggedIn)); 
         
         //contributions
-        $this->contributionPortfolio->showContributions($this->contributor->getComponents());    
+        $this->contributionPortfolio->showContributions($this->contributor->requestComponents($this->loggedIn));    
     }       
 }
 
