@@ -40,7 +40,7 @@ class DocumentUI extends tauAjaxXmlTag
         $this->addChild($this->record = new TauAjaxADRORecord(DisaggregatorModel::get()->document));
         $this->record->addClass("col-md-6");
         
-        $editable = array('Name', 'Security');
+        $editable = array('Name');
         $this->record->ignore();
         foreach($editable as $e)
         {
