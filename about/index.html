@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Disaggregator | About</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="about.css">
+        <style>
+            #draggable { width: 150px; height: 150px; padding: 0.5em; }
+        </style>
+        <script>   
+            
+            //initialise things                      
+            $(function () {
+                //$(".draggable").draggable();
+                $(".draggable, .txt").data("reset", false);
+            });                                    
+        </script>
+    </head>
+    <body>
+        <div id="page">
+            <div id="journal">
+
+                <!-- Methodology -->
+                <div id="methodology" class="draggable"></div>
+                <div id="methodology-txt" class="txt"></div>
+                
+                <!-- Graph -->
+                <div id="graph" class="draggable"></div>
+                <div id="graph-txt" class="txt"></div>
+                
+                <!-- Chemical -->
+                <div id="chemical" class="draggable"></div>
+                <div id="chemical-txt" class="txt"></div>
+                
+            </div>
+        </div>
+
+
+        <script>
+            
+            $("#methodology").click(function() {
+                move("#methodology", "750px", "-420px", "952px", "-350px");
+         
+            });
+            
+            $("#graph").click(function() {
+                move("#graph", "300px", "100px", "500px", "200px");
+            });
+            
+            $("#chemical").click(function() {
+                move("#chemical", "500px", "130px", "310px", "190px");
+            });            
+            
+            var move = function(id, left, top, left_txt, top_txt)
+            {
+                if($(id).data("reset"))
+                {
+                    $(id).animate({"left": "-="+left, "top": "-="+top}, "slow");
+                    $(id+"-txt").animate({"left": "-="+left_txt, "top": "-="+top_txt}, "slow");                    
+                    $(id).data("reset", false);
+                    
+                    $(id+"-txt").removeClass("moved");
+                }
+                else
+                {
+                    $(id).animate({"left": "+="+left, "top": "+="+top}, "slow");
+                    $(id+"-txt").animate({"left": "+="+left_txt, "top": "+="+top_txt}, "slow");
+                    
+                    $(id+"-txt").addClass("moved");
+                    
+                    $(id).data("reset", true);
+                }
+            }
+
+        </script>
+    </body>
+</html>

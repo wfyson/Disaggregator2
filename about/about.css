@@ -1,0 +1,103 @@
+.draggable
+{
+    cursor: pointer;
+}
+
+#page
+{
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#journal
+{
+    background-image: url("images/journal.png");
+    background-size: cover;
+    width: 900px;
+    height: 622px;
+}
+
+.txt
+{
+    position: relative;
+    
+    background-image: url("images/text.png");
+    background-size: cover;
+    width: 186px;
+    height: 27px;    
+}
+
+#methodology
+{
+    position: relative;
+    top: 420px;
+    left: 230px;
+    
+    background-image: url("images/methodology.png");
+    background-size: cover;
+    width: 191px;
+    height: 111px;
+}
+
+#methodology-txt
+{    
+    top: 365px;
+    left: 28px;
+}
+
+#graph
+{
+    position: relative;
+    top: -40px;
+    left: 660px;
+    
+    background-image: url("images/graph.png");
+    background-size: cover;
+    width: 224px;
+    height: 205px;
+}
+
+#graph-txt
+{    
+    top: -135px;
+    left: 485px;
+    width: 155px;
+}
+
+#chemical
+{
+    position: relative;
+    top: -40px;
+    left: 470px;
+    
+    background-image: url("images/chemical.png");
+    background-size: cover;
+    width: 196px;
+    height: 128px;
+}
+
+#chemical-txt
+{    
+    top: -100px;
+    left: 686px;
+    width: 155px;
+}
+
+/*
+    Moved Text
+*/
+#methodology-txt.moved
+{
+    background-color: rgba(0, 0, 255, 0.3);
+}
+
+#graph-txt.moved
+{
+    background-color: rgba(255, 0, 0, 0.3);
+}
+
+#chemical-txt.moved
+{
+    background-color: rgba(0, 255, 0, 0.3);
+}
